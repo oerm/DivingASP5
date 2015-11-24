@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using DivingApp.Models.DataModel;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using System;
 using System.Collections.Generic;
@@ -16,20 +17,25 @@ namespace DivingApp.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=.;Integrated security=true;Initial Catalog=Diving");
+            optionsBuilder.UseSqlServer(@"Server=.;Trusted_Connection=true;Database=Diving;MultipleActiveResultSets=true");
             base.OnConfiguring(optionsBuilder);
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        
+        }
 
-        public DbSet<Certs> Certs { get; set; }
-        public DbSet<Dic_Certs> Dic_Certs { get; set; }
-        public DbSet<Dic_Countries> Dic_Countries { get; set; }
-        public DbSet<Dic_Suit> Dic_Suit { get; set; }
-        public DbSet<Dic_Tank> Dic_Tank { get; set; }
-        public DbSet<Dic_WeightOk> Dic_WeightOk { get; set; }
-        public DbSet<Dives> Dives { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Cert> Certs { get; set; }
+        public DbSet<Dive> Dives { get; set; }
         public DbSet<Photos> Photos { get; set; }
         public DbSet<PhotoImg> PhotoImgSet { get; set; }
+
+        public DbSet<DicCert> DicCerts { get; set; }
+        public DbSet<DicCountry> DicCountries { get; set; }
+        public DbSet<DicSuit> DicSuitTypes { get; set; }
+        public DbSet<DicTank> DicTankTypes { get; set; }
+        public DbSet<DicWeightOk> DicWeightOk { get; set; }
     }
 }

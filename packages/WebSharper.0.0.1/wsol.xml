@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>wsol</name></assembly>
+<members>
+<member name="M:IntelliFactory.WebSharper.Sitelets.Offline.Extra.CopyFiles(System.String,System.String)">
+<summary>
+ Copies files specified in extra.files to the html directory of a mobile application
+ takes in the directory in which extra.files is contained and the destination.
+</summary>
+</member>
+<member name="T:IntelliFactory.WebSharper.Sitelets.Offline.Extra">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:IntelliFactory.WebSharper.Sitelets.Offline.Loader.AddSearchPath(System.String)">
+<summary>
+ Adds a search path to the assembly loader of the current domain.
+ Caution: assemblies cannot be unloaded.
+</summary>
+</member>
+<member name="P:IntelliFactory.WebSharper.Sitelets.Offline.Loader.handler">
+<summary>
+ Adding a custom assembly resolver.
+</summary>
+</member>
+<member name="P:IntelliFactory.WebSharper.Sitelets.Offline.Loader.paths">
+<summary>
+ A mapping for all located assemblies.
+</summary>
+</member>
+<member name="P:IntelliFactory.WebSharper.Sitelets.Offline.Loader.syncRoot">
+<summary>
+ A synchronization object.
+</summary>
+</member>
+<member name="T:IntelliFactory.WebSharper.Sitelets.Offline.Loader">
+<summary>
+ Assembly loader utilities.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="T:IntelliFactory.WebSharper.Sitelets.Offline.Main">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:IntelliFactory.WebSharper.Sitelets.Offline.Options.T">
+<summary>
+ Represents command-line options.
+</summary>
+</member>
+<member name="M:IntelliFactory.WebSharper.Sitelets.Offline.Options.Parse(System.Collections.Generic.IEnumerable{System.String})">
+<summary>
+ Parses the command-line arguments.
+</summary>
+</member>
+<member name="P:IntelliFactory.WebSharper.Sitelets.Offline.Options.Help">
+<summary>
+ The help string that describes the options.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:IntelliFactory.WebSharper.Sitelets.Offline.Options">
+<summary>
+ Provides tools for creating the pages as physical files.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:IntelliFactory.WebSharper.Sitelets.Offline.Output.ComputeResources(IntelliFactory.WebSharper.Sitelets.Offline.Output.Mode,Microsoft.FSharp.Collections.FSharpList{System.IO.DirectoryInfo})">
+<summary>
+ Copies over the JS files.
+</summary>
+</member>
+<member name="P:IntelliFactory.WebSharper.Sitelets.Offline.Output.ReferencedJSResources">
+<summary>
+ Keep track of the referenced resources
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:IntelliFactory.WebSharper.Sitelets.Offline.Output">
+<summary>
+ Provides page to url resolution
+</summary>
+</member>
+</members>
+</doc>

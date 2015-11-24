@@ -38,7 +38,7 @@ class loginController {
         this.showSearchNotFound = false;
         $.ajax({
             type: "GET",
-            url: "Account/GetUserByFIO/" + this.searchCriteria,
+            url: "api/users/getusersbyname/" + this.searchCriteria,
             cache: false,
             context: this,
             success: function (data) {                               

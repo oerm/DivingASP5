@@ -22,10 +22,11 @@ gulp.task('buildjs', function () {
                .pipe(gulp.dest('wwwroot/js'));    
 });
 
+//.pipe(uglify({ mangle: false }))
 gulp.task('buildangularcontrollers', function () {
     return gulp.src([path + "angular/controllers/logincontroller.js"])
                .pipe(concat('controllers.min.js'))
-               .pipe(uglify({ mangle: false }))
+            
                .pipe(gulp.dest('wwwroot/js'));
 });
 

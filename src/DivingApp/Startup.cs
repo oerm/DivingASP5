@@ -6,6 +6,9 @@ using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
 using Microsoft.Framework.DependencyInjection;
 using DivingApp.Models;
+using AutoMapper;
+using DivingApp.Models.DataModel;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DivingApp
 {
@@ -18,14 +21,23 @@ namespace DivingApp
                 .AddSqlServer()
                 .AddDbContext<EntityContext>();
 
+            services.AddIdentity<User, IdentityRole>(config =>
+            {
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequiredLength = 8;                              
+            })
+            .AddEntityFrameworkStores<EntityContext>();
+
             services.AddMvc();            
         }
 
         public void Configure(IApplicationBuilder app)
         {
+            app.UseStaticFiles();
+
             app.UseIdentity();
 
-            app.UseStaticFiles();
+            // Mapper.Map()
 
             app.UseMvc(config =>
             {

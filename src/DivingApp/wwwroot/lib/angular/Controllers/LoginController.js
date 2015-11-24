@@ -25,7 +25,7 @@ var loginController = (function () {
         this.showSearchNotFound = false;
         $.ajax({
             type: "GET",
-            url: "Account/GetUserByFIO/" + this.searchCriteria,
+            url: "api/users/getusersbyname/" + this.searchCriteria,
             cache: false,
             context: this,
             success: function (data) {
@@ -48,4 +48,3 @@ var loginController = (function () {
 })();
 var myApp = angular.module('diving-app', []);
 myApp.controller("loginController", loginController);
-//# sourceMappingURL=LoginController.js.map

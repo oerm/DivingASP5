@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>WebSharper</name></assembly>
+<members>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:WebSharper.Arguments">
+<summary>
+ Implements a monadic command-line option parser framework.
+</summary>
+</member>
+<member name="M:WebSharper.DependencyReporter.Run(System.String)">
+<summary>
+ Runs the dependency graph report generation.
+</summary>
+</member>
+<member name="T:WebSharper.DependencyReporter">
+<summary>
+ Prints resource dependency graphs in GML format.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="M:WebSharper.Loader.AddSearchPath(System.String)">
+<summary>
+ Adds a search path to the assembly loader of the current domain.
+ Caution: assemblies cannot be unloaded.
+</summary>
+</member>
+<member name="P:WebSharper.Loader.handler">
+<summary>
+ Adding a custom assembly resolver.
+</summary>
+</member>
+<member name="P:WebSharper.Loader.paths">
+<summary>
+ A mapping for all located assemblies.
+</summary>
+</member>
+<member name="P:WebSharper.Loader.syncRoot">
+<summary>
+ A synchronization object.
+</summary>
+</member>
+<member name="T:WebSharper.Loader">
+<summary>
+ Assembly loader utilities.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:WebSharper.Options">
+<summary>
+ Provides command-line option parsing for WebSharper.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:WebSharper.Program">
+<summary>
+ The main entry-point module of WebSharper.
+</summary>
+</member>
+<member name="T:WebSharper.ProxyReporter">
+<summary>
+ Constructs proxy reports in XML format.
+</summary>
+</member>
+</members>
+</doc>
