@@ -14,26 +14,29 @@ var path = "wwwroot/lib/";
 
 gulp.task('buildjs', function () {
     return gulp.src([path + "jquery/dist/jquery.js",                     
-                     path + "jquery-validation/jquery.validate.js",
-                     path + "jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-                     path + "angular/angular.js"])
+                     path + "bootstrap/dist/js/jquery.js",
+
+                     path + "angular/angular.js",
+                     path + "jasny-bootstrap/js/jasny-bootstrap.js"])
                .pipe(concat('site.min.js'))
-               .pipe(uglify())
+
                .pipe(gulp.dest('wwwroot/js'));    
 });
 
-//.pipe(uglify({ mangle: false }))
+//
 gulp.task('buildangularcontrollers', function () {
     return gulp.src([path + "angular/controllers/logincontroller.js"])
                .pipe(concat('controllers.min.js'))
-            
+               .pipe(uglify({ mangle: false }))
                .pipe(gulp.dest('wwwroot/js'));
 });
 
 gulp.task('buildcss', function () {
     return gulp.src([path + "bootstrap/dist/css/bootstrap.css",
                      path + "bootstrap/dist/css/bootstrap-theme.css",
-                     path + "font-awesome/css/font-awesome.css"])
+                     path + "font-awesome/css/font-awesome.css",
+                     path + "jasny-bootstrap/css/jasny-bootstrap.css",
+                     path + "custom/custom.css"])
                .pipe(concat('site.min.css'))
                .pipe(minifycss())
                .pipe(gulp.dest('wwwroot/css'));

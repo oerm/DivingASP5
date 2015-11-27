@@ -23,8 +23,7 @@ namespace DivingApp.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
-        
+            base.OnModelCreating(builder);        
         }
 
         public DbSet<Cert> Certs { get; set; }

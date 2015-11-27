@@ -50,36 +50,49 @@ namespace DivingApp.Controllers.Api
             return Json(projection);
         }
 
-        //// GET: api/values
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult SaveMainPhoto()
+        {
+            return null;
+            //try
+            //{
+               
+            //    var ext = Request.B .FileName.Split('\\')[Request.Files[0].FileName.Split('\\').Length - 1];
+            //    var filename = ControllerContext.HttpContext.Server.MapPath("~/Uploads//" + Request.Form["guid"] + "_" + ext);
+            //    Request.Files[0].SaveAs(filename);
+            //    if (Request.Params["userId"] != "")
+            //    {
+            //        var root = new DIVINGEntities();
+            //        var userToChange = root.Users.Where(usr => usr.Email == Request.Params["userId"].ToString()).FirstOrDefault();
+            //        byte[] buffer = new byte[Request.Files[0].InputStream.Length];
+            //        Request.Files[0].InputStream.Read(buffer, 0, (int)Request.Files[0].InputStream.Length);
+            //        userToChange.Photo = buffer;
+            //        root.SaveChanges();
+            //    }
+            //}
+            //catch {
+            //    return Content("failed");
+            //}
+            //return Content("success");
+        }
+
+        //[AllowAnonymous]
         //[HttpGet]
-        //public IEnumerable<string> Get()
+        //public ActionResult GetPhotoByEmail(string Id)
         //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        //    string contentType = "image/jpeg";
+        //    if (Id != "")
+        //    {
+        //        var root = new DIVINGEntities();
+        //        var photo = root.Users.Where(usr => usr.Email == Id).Select(usr => usr.Photo).FirstOrDefault();
+        //        if (photo != null && photo.Length > 0) return File(photo, contentType);
+        //    }
+        //    byte[] imageByte = System.IO.File.ReadAllBytes(Server.MapPath("../../images/icon.png"));
 
-        //// GET api/values/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        //    return File(imageByte, contentType);
 
-        //// POST api/values
-        //[HttpPost]
-        //public void Post([FromBody]string value)
-        //{
         //}
-
-        //// PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-
-        //// DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
 
     }
 }

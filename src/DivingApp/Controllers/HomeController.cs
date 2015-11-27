@@ -14,6 +14,7 @@ namespace DivingApp.Controllers
         public IActionResult Index()
         {
             return View();
+
         }
     }
 }

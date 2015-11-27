@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" type="text/css" href="~/css/site.min.css" />
+    <script src="~/js/site.min.js"></script>
+    <script src="~/js/controllers.min.js"></script>
 </head>
 
 <body ng-app="diving-app" ng-controller="loginController as lgCtrl">
@@ -22,7 +24,7 @@
                             </a>
                         </li>
                         <li ng-class="lgCtrl.showSearch? 'active' :''" ng-click="lgCtrl.showTab(2)">
-                            <a href=" #">
+                            <a href="#">
                                 <i class="fa fa-search"></i>
                                 &nbsp;Search Diver
                             </a>
@@ -52,12 +54,6 @@
             </h3>
         </div>
     </footer>
-
-  
-
-    <script src="~/js/site.min.js"></script>
-    <script src="~/js/controllers.min.js"></script>
-
 
 </body>
 </html>
