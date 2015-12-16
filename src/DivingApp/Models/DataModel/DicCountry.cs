@@ -16,7 +16,7 @@ namespace DivingApp.Models.DataModel
     public class DicCountry
     {    
         [Key]
-        public decimal CountryKod { get; set; }
+        public int CountryKod { get; set; }
         public string ValueRU { get; set; }
         public string ValueEU { get; set; }
         public string FullName { get; set; }

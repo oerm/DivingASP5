@@ -38,7 +38,7 @@ namespace DivingApp.Controllers.Api
                               where (usr.FirstName + " " + usr.LastName).StartsWith(name)
                               select new
                               {
-                                  id = usr.UserID,
+                                  id = usr.Id,
                                   email = usr.Email,
                                   fullName = usr.FirstName + " " + usr.LastName,
                                   age = usr.Birth.Value,

@@ -17,9 +17,13 @@ namespace DivingApp.Models.DataModel
     {    
         [Key]
         public decimal CertID { get; set; }
+
         public string CertName { get; set; }
+
         public byte Level { get; set; }
+
         public bool IsGeneral { get; set; }
+
         public string Description { get; set; }
     }
 }

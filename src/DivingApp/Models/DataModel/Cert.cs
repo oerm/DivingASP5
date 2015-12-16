@@ -17,12 +17,16 @@ namespace DivingApp.Models.DataModel
     public class Cert
     {      
         public Nullable<System.DateTime> DateArchieve { get; set; }
+
         [Key]
         public string CertNumber { get; set; }
+
         public string Issuer { get; set; }
+
         public byte[] Photo { get; set; }
     
         public virtual User User { get; set; }
+
         public virtual DicCert DicCert { get; set; }
     }
 }

@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="stylesheet" type="text/css" href="~/css/site.min.css" />
+    <script src="~/js/site.min.js"></script>
+  
+    @*<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>*@
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-brand">
+                DIVE LOGBOOK
+            </div>
+            <div class="row pull-right top-offset">
+                <a class="btn btn-default btn-sm" asp-controller="Auth" asp-action="Edit">
+                    <i class="fa fa-edit"></i>
+                    &nbsp;
+                    Edit profile
+                </a>
+                &nbsp;
+                <a class="btn btn-default btn-sm" asp-controller="Logbook" asp-action="Logout">
+                    <i class="fa fa-home"></i>
+                    &nbsp;
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="body">
+        @RenderBody()
+    </main>
+
+
+    <footer class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+            <h3 class="navbar-brand">
+                &copy; @DateTime.Now.Year - Oleksii Yermolenko
+            </h3>
+        </div>
+    </footer> 
+
+</body>
+</html>

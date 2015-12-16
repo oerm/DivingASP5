@@ -17,26 +17,47 @@ namespace DivingApp.Models.DataModel
     {    
         [Key]
         public decimal DiveID { get; set; }
+
         public DateTime DiveDate { get; set; }
+
         public Nullable<decimal> Country { get; set; }
+
         public string Location { get; set; }
+
         public Nullable<byte> DiveType { get; set; }
+
         public Nullable<double> Weight { get; set; }
+
         public Nullable<byte> WeightIsOk { get; set; }
+
         public Nullable<byte> Tank { get; set; }
+
         public Nullable<byte> TankStart { get; set; }
+
         public Nullable<byte> TankEnd { get; set; }
+
         public Nullable<double> AirTemperature { get; set; }
+
         public Nullable<double> WaterTemperature { get; set; }
+
         public Nullable<byte> Visibility { get; set; }
+
         public Nullable<byte> TotalMinutes { get; set; }
+
         public Nullable<double> MaxDepth { get; set; }
+
         public Nullable<byte> FiveMetersMinutes { get; set; }
+
         public Nullable<byte> SuitType { get; set; }
+
         public string Comments { get; set; }
+
         public Nullable<double> DiveX { get; set; }
+
         public Nullable<double> DiveY { get; set; }
+
         public bool Status { get; set; }
+
         public Nullable<System.DateTime> UpdDate { get; set; }
     
         public virtual DicCountry Countries { get; set; }

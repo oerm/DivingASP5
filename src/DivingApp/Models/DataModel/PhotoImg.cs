@@ -17,6 +17,7 @@ namespace DivingApp.Models.DataModel
     {
         [Key]
         public decimal PhotoID { get; set; }
+
         public byte[] PhotoVal { get; set; }
     
         //public virtual Photos Photos { get; set; }

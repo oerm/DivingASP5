@@ -1,9 +1,7 @@
-﻿@model DivingApp.Models.ViewModel.Auth.NewUserViewModel
+﻿@model DivingApp.Models.ViewModel.Auth.UserViewModel
 @{    
     Layout = "_ReturnLayout";
 }
-
-
 
 <form asp-controller="auth" asp-action="register" asp-anit-forgery="true" enctype="multipart/form-data">
 
@@ -40,7 +38,7 @@
                 </div>
 
                 <div class="row col-lg-12 top-offset-double form-group">
-                    <div class="col-lg-4 col-md-5 col-sm-6"><span style="color:tomato">*</span>&nbsp;FirstName</div>
+                    <div class="col-lg-4 col-md-5 col-sm-6"><span class="danger" >*</span>&nbsp;FirstName</div>
                     <div class="col-lg-8 col-md-7 col-sm-6">
                         <input class="form-control input-sm " asp-for="FirstName" type="text" />
                     </div>
@@ -56,13 +54,15 @@
                 <div class="row col-lg-12 form-group">
                     <div class="loginLabel col-lg-4 col-md-5  col-sm-6">Date birth</div>
                     <div class="col-lg-8 col-md-7 col-sm-6">
-                        <input class="form-control input-sm" asp-for="BirthDay" type="datetime" />
+                        <input class="form-control input-sm" asp-for="BirthDay" type="datetime" />                      
                         <script type="text/javascript">
                             $(function () {
-                                $('#BirthDay').datepicker();
+                                $('#BirthDay').datetimepicker({
+                                    format: 'DD/MM/YYYY',
+                                    defaultDate: new Date()
+                                });
                             });
                         </script>
-
                     </div>
                 </div>
 
@@ -70,7 +70,8 @@
                     <div class="loginLabel col-lg-4 col-md-5  col-sm-6">Country</div>
                     <div class="col-lg-8 col-md-7 col-sm-6">
                         <div class="styled-select" style="margin-top:3px;width:100%">
-                            <select asp-for="CountryKod" class="form-control input-sm"></select>
+                            <select asp-items="@ViewBag.Countries" asp-for="CountryKod" class="form-control input-sm">                             
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -116,7 +117,7 @@
         <div class="col-lg-12 row" style="margin-top:100px;padding-left:20px;">
             <a class="btn btn-primary" asp-controller="home" asp-action="index">Return back</a>
             &nbsp;
-            <input type="submit" class="btn btn-success" onclick="$('#PhotoGuid').val($('#logo_hidden').val())" value="Create user" />
+            <input type="submit" class="btn btn-success" value="Create user" />
         </div>
     </div>
 

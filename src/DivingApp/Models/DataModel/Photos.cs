@@ -17,11 +17,17 @@ namespace DivingApp.Models.DataModel
     {
         [Key]
         public decimal PhotoID { get; set; }
-        public decimal DiveID { get; set; }       
+
+        public decimal DiveID { get; set; }  
+             
         public string PhotoName { get; set; }
+
         public byte[] PhotoThumb { get; set; }
+
         public string PhotoComment { get; set; }
+
         public System.DateTime PhotoDate { get; set; }
+
         public bool Status { get; set; }
     
         //public virtual Dives Dives { get; set; }

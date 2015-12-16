@@ -17,6 +17,7 @@ namespace DivingApp.Models.DataModel
     {    
         [Key]
         public byte TankId { get; set; }
+
         public string TankValue { get; set; }
     }
 }

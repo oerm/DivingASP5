@@ -51,7 +51,7 @@ namespace DivingApp.Migrations
 
             modelBuilder.Entity("DivingApp.Models.DataModel.DicCountry", b =>
                 {
-                    b.Property<decimal>("CountryKod");
+                    b.Property<int>("CountryKod");
 
                     b.Property<string>("Description");
 
@@ -113,7 +113,7 @@ namespace DivingApp.Migrations
 
                     b.Property<string>("Comments");
 
-                    b.Property<decimal?>("CountriesCountryKod");
+                    b.Property<int?>("CountriesCountryKod");
 
                     b.Property<decimal?>("Country");
 
@@ -207,9 +207,9 @@ namespace DivingApp.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .ConcurrencyToken();
 
-                    b.Property<decimal?>("Country");
+                    b.Property<int?>("Country");
 
-                    b.Property<decimal?>("DicCountryCountryKod");
+                    b.Property<int?>("DicCountryCountryKod");
 
                     b.Property<string>("Email")
                         .Annotation("MaxLength", 256);
@@ -232,8 +232,6 @@ namespace DivingApp.Migrations
 
                     b.Property<string>("PasswordHash");
 
-                    b.Property<string>("Phone");
-
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
@@ -244,11 +242,7 @@ namespace DivingApp.Migrations
 
                     b.Property<bool>("Status");
 
-                    b.Property<string>("SurName");
-
                     b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<int>("UserID");
 
                     b.Property<string>("UserName")
                         .Annotation("MaxLength", 256);

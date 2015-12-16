@@ -1,0 +1,126 @@
+﻿@model DivingApp.Models.ViewModel.Auth.UserViewModel
+@{    
+    Layout = "_ReturnLayout";
+}
+
+<form asp-controller="auth" asp-action="register" asp-anit-forgery="true" enctype="multipart/form-data">
+
+    <div class="container">
+
+        <div class="row col-lg-12" style="top:70px">
+            <div asp-validation-summary="ValidationSummary.All" class="text-danger" style="padding-top:10px;"></div>
+
+            <h3>User settings</h3>
+            <h4><b>Edit user</b></h4>
+
+            <br />
+
+            <div class="row col-lg-7 col-md-6 col-sm-6 ">
+                <div class="row col-lg-12 top-offset form-group">
+                    <label class="col-lg-4 col-md-5 col-sm-6"><span style="color:tomato">*</span>&nbsp;Email</label>
+                    <div class="col-lg-8 col-md-7 col-sm-6 ">
+                        <input class="form-control input-sm" style="width:100%" asp-for="Email" type="email" />
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 form-group">
+                    <label class="col-lg-4 col-md-5 col-sm-6"><span style="color:tomato">*</span>&nbsp;New password</label>
+                    <div class="col-lg-8 col-md-7 col-sm-6">
+                        <input class="form-control input-sm" style="width:100%" asp-for="Password " type="password" />
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 form-group">
+                    <label class="col-lg-4 col-md-5 col-sm-6"><span style="color:tomato">*</span>&nbsp;Confirm new password</label>
+                    <div class="col-lg-8 col-md-7 col-sm-6">
+                        <input class="form-control input-sm " style="width:100%" asp-for="ConfirmPassword" type="password" />
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 top-offset-double form-group">
+                    <div class="col-lg-4 col-md-5 col-sm-6"><span class="danger" >*</span>&nbsp;FirstName</div>
+                    <div class="col-lg-8 col-md-7 col-sm-6">
+                        <input class="form-control input-sm " asp-for="FirstName" type="text" />
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 form-group">
+                    <div class="loginLabel col-lg-4 col-md-5  col-sm-6">LastName</div>
+                    <div class="col-lg-8 col-md-7 col-sm-6">
+                        <input class="form-control input-sm " asp-for="LastName" type="text" />
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 form-group">
+                    <div class="loginLabel col-lg-4 col-md-5  col-sm-6">Date birth</div>
+                    <div class="col-lg-8 col-md-7 col-sm-6">
+                        <input class="form-control input-sm" asp-for="BirthDay" type="datetime" />                      
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#BirthDay').datetimepicker({
+                                    format: 'DD/MM/YYYY',
+                                    defaultDate: new Date()
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 form-group">
+                    <div class="loginLabel col-lg-4 col-md-5  col-sm-6">Country</div>
+                    <div class="col-lg-8 col-md-7 col-sm-6">
+                        <div class="styled-select" style="margin-top:3px;width:100%">
+                            <select asp-items="@ViewBag.Countries" asp-for="CountryKod" class="form-control input-sm">                             
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 form-group">
+                    <div class="loginLabel col-lg-4 col-md-5  col-sm-6">City</div>
+                    <div class="col-lg-8 col-md-7 col-sm-6">
+                        <input class="form-control input-sm " asp-for="City" type="text" />
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group">
+                    <div class="loginLabel col-lg-4 col-md-5  col-sm-6">Address</div>
+                    <div class="col-lg-8 col-md-7 col-sm-6">
+                        <input class="form-control input-sm " asp-for="Adress" type="text" />
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group">
+                    <div class="loginLabel col-lg-4 col-md-5  col-sm-6">Phone number</div>
+                    <div class="col-lg-8 col-md-7 col-sm-6">
+                        <input class="form-control input-sm " asp-for="Phone" type="tel" id="phone" name="phone" style="width:100%" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="row">
+                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                        <div class="fileinput-preview thumbnail top-offset" data-trigger="fileinput" style="width: 200px; height: 185px;"></div>
+                        <div class="top-offset">
+                            <center>
+                                <div class="btn btn-primary btn-file">
+                                    <span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span>
+                                    <input type="file" asp-for="ImageUpload">
+                                </div>
+                                <div href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Remove</div>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 row" style="margin-top:100px;padding-left:20px;">
+            <a class="btn btn-primary" asp-controller="home" asp-action="index">Return back</a>
+            &nbsp;
+            <input type="submit" class="btn btn-success" value="Create user" />
+        </div>
+    </div>
+
+</form>
+
+

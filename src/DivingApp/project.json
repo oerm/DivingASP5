@@ -1,8 +1,6 @@
 {
   "webroot": "wwwroot",
-  "sdk": {
-    "version": "1.0.0-beta7"
-  },
+ 
 
   "dependencies": {
     "Microsoft.AspNet.Server.IIS": "1.0.0-beta7",

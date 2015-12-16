@@ -9,6 +9,9 @@ using DivingApp.Models;
 using AutoMapper;
 using DivingApp.Models.DataModel;
 using Microsoft.AspNet.Identity.EntityFramework;
+using DivingApp.Models.ViewModel.Auth;
+using System.IO;
+using DivingApp.Common.Convertor;
 
 namespace DivingApp
 {
@@ -37,7 +40,27 @@ namespace DivingApp
 
             app.UseIdentity();
 
-            // Mapper.Map()
+            Mapper.CreateMap<UserViewModel, User>()
+                .ForMember(g => g.UserName, r => r.MapFrom(s => s.Email))
+                .ForMember(g => g.Email, r => r.MapFrom(s => s.Email))
+                .ForMember(g => g.FirstName, r => r.MapFrom(s => s.FirstName))
+                .ForMember(g => g.LastName, r => r.MapFrom(s => s.LastName))
+                .ForMember(g => g.Birth, r => r.MapFrom(s => s.BirthDay))
+                //.ForMember(g => g.DicCountry, r => r.MapFrom(s => s.CountryKod))
+                .ForMember(g => g.City, r => r.MapFrom(s => s.City))
+                .ForMember(g => g.Adress, r => r.MapFrom(s => s.Adress))
+                .ForMember(g => g.PhoneNumber, r => r.MapFrom(s => s.Phone))
+                .ForMember(g => g.Photo, r => r.MapFrom(s => s.ImageUpload))
+                .ForMember(g => g.City, r => r.MapFrom(s => s.City))
+                .ReverseMap();
+
+            Mapper.CreateMap<UserViewModel, User>()
+                .ForMember(g => g.UserName, r => r.MapFrom(s => s.Email));
+
+            Mapper.CreateMap<IFormFile, byte[]>()
+               .ConvertUsing<HttpPostedFileBaseTypeConverter>();
+              
+
 
             app.UseMvc(config =>
             {

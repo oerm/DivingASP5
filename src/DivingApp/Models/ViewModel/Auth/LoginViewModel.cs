@@ -7,8 +7,10 @@ namespace DivingApp.Models.ViewModel
 {
     public class LoginViewModel
     {
-        public string email;
-        public string password;
-        public bool rememberme;
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+        public bool RememberMe { get; set; }
     }
 }

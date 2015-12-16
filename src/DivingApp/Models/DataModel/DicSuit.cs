@@ -17,6 +17,7 @@ namespace DivingApp.Models.DataModel
     {    
         [Key]
         public byte SuitID { get; set; }
+
         public string SuitValue { get; set; }
     }
 }

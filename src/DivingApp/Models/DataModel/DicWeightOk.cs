@@ -17,6 +17,7 @@ namespace DivingApp.Models.DataModel
     {    
         [Key]
         public byte WeightOkID { get; set; }
+
         public string WeightOkValue { get; set; }
     }
 }

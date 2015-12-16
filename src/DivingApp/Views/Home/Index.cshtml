@@ -1,6 +1,6 @@
 ﻿@model DivingApp.Models.ViewModel.LoginViewModel
 
-<form asp-controller="Home" asp-action="login" asp-anit-forgery="true">
+<form asp-controller="Auth" asp-action="Login" asp-anit-forgery="true">
     <div class="row col-lg-12">
         <div class="container" style="position:relative;top:250px" id="loginPanel" ng-show="lgCtrl.showLogin">
             <div class="col-lg-3"></div>
@@ -10,26 +10,30 @@
                         <h3 class="panel-title">Logbook owner information</h3>
                     </div>
                     <div class="panel-body">
-                        <input asp-for="email" placeholder="Email adress" class="form-control" />
+                        <input asp-for="Email" placeholder="Email adress" class="form-control" />
                     </div>
                     <div class="panel-body">
-                        <input asp-for="password" placeholder="Password" class="form-control" />
+                        <input asp-for="Password" placeholder="Password" type="password" class="form-control" />
                     </div>
                     <div class="panel-body">
                         <div>
-                            <div class="checkbox hidden">
-                                <input asp-for="rememberme" />
-                            </div>
                             <input type="submit" value="Open logbook" class="btn  btn-primary btn-md pull-right btn-block" />
                         </div>
                     </div>
                     <div class="panel-footer">
-                        <a asp-controller="Auth" asp-action="Register">Create new logbook</a>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <a asp-controller="Auth" asp-action="Register">Create new logbook</a>
+                            </div>
+                            <div class="col-lg-6 text-right">
+                                <input asp-for="RememberMe" type="checkbox" />
+                                <span>Remember me</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div id="loginError" class="hiddenIfEmptyDiv">
-                    @Html.ValidationSummary(true, "Errors:", new { @class = "alert alert-danger" })
-                </div>
+                <div asp-validation-summary="ValidationSummary.All" class="text-danger" style="padding-top:10px;"></div>
+              
             </div>
             <div class="col-lg-3"></div>
 
