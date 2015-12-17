@@ -7,6 +7,7 @@ using DivingApp.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using DivingApp.Models.DataModel;
 using Newtonsoft.Json;
+using Microsoft.AspNet.Identity;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,14 +15,17 @@ namespace DivingApp.Controllers.Api
 {
     public class UserController : Controller
     {
-        EntityContext _context;
+        const string imageContentType = "image/jpeg";
 
-        public UserController(EntityContext context)
+        EntityContext _context;
+        UserManager<User> _manager;
+
+        public UserController(EntityContext context, UserManager<User> manager)
         {
-            this._context = context;
+            _context = context;
+            _manager = manager;
         }
 
-        // GET: api/values
         [HttpGet("api/users/getusersbyname/{name}")]
         public JsonResult GetUsersByName(string name)
         {
@@ -77,22 +81,16 @@ namespace DivingApp.Controllers.Api
             //return Content("success");
         }
 
-        //[AllowAnonymous]
-        //[HttpGet]
-        //public ActionResult GetPhotoByEmail(string Id)
-        //{
-        //    string contentType = "image/jpeg";
-        //    if (Id != "")
-        //    {
-        //        var root = new DIVINGEntities();
-        //        var photo = root.Users.Where(usr => usr.Email == Id).Select(usr => usr.Photo).FirstOrDefault();
-        //        if (photo != null && photo.Length > 0) return File(photo, contentType);
-        //    }
-        //    byte[] imageByte = System.IO.File.ReadAllBytes(Server.MapPath("../../images/icon.png"));
-
-        //    return File(imageByte, contentType);
-
-        //}
+        [HttpGet("api/getuserphoto/{Email}")]
+        public async Task<IActionResult> GetPhotoByEmail(string Email)
+        {
+            if (!string.IsNullOrWhiteSpace(Email))
+            {
+                var user = await _manager.FindByEmailAsync(Email);              
+                if (user != null && user.Photo != null && user.Photo.Length > 0) return File(user.Photo, UserController.imageContentType);
+            }
+            return new HttpNotFoundResult();
+        }
 
     }
 }

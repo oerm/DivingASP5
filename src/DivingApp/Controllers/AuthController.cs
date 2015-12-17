@@ -18,6 +18,7 @@ namespace DivingApp.Controllers
     public class AuthController : Controller
     {
         const string selectedCode = "804";
+        const int emptyCountryCode = 0;
 
         EntityContext _context;
         UserManager<User> _manager;
@@ -29,7 +30,7 @@ namespace DivingApp.Controllers
             _manager = userManager;
             _signManager = signManager;
         }
-       
+
         public IActionResult Register()
         {
             FillViewBag();
@@ -42,7 +43,7 @@ namespace DivingApp.Controllers
             if (!string.Equals(viewModel.Password, viewModel.ConfirmPassword))
             {
                 ModelState.AddModelError("", "Passwords mismatch");
-            }           
+            }
 
             if (ModelState.IsValid)
             {
@@ -63,30 +64,70 @@ namespace DivingApp.Controllers
             FillViewBag();
             return View(viewModel);
         }
-        
-        public IActionResult Edit()
+
+        public async Task<IActionResult> Edit()
         {
             if (User.Identity.IsAuthenticated)
-            {   
-               // var user =  User.Identity.Name              
-              //  var viewModel = Mapper.Map<UserViewModel>(User);
+            {
+                var user = await _manager.FindByEmailAsync(User.Identity.Name);
+                var viewModel = Mapper.Map<UserViewModel>(user);
 
-              //  FillViewBag();
-              //  return View(viewModel);
+                //TODO - Find out why automapper dont work
+                viewModel.BirthDay = user.Birth;
+                viewModel.Phone = user.PhoneNumber;
+
+                if (viewModel.CountryKod == AuthController.emptyCountryCode) FillViewBag();
+                else FillViewBag(viewModel.CountryKod.ToString());
+
+                return View(viewModel);
             }
-            return RedirectToAction("Index", "Home");         
+            return RedirectToAction("Index", "Home");
         }
 
-        private void FillViewBag()
+        public async Task<IActionResult> Edit(UserViewModel viewModel)
         {
-            var countries = _context.DicCountries.Select(item => new SelectListItem()
+            if (User.Identity.IsAuthenticated)
             {
-                Text = item.ValueEU,
-                Value = item.CountryKod.ToString()
-            }).ToList();
+                var user = await _manager.FindByEmailAsync(User.Identity.Name);
+                var viewModel = Mapper.Map<UserViewModel>(user);
 
-            var selectedCountry = countries.Where(c => c.Value.Equals(selectedCode)).FirstOrDefault();
-            if (selectedCountry != null) selectedCountry.Selected = true;
+                //TODO - Find out why automapper dont work
+                viewModel.BirthDay = user.Birth;
+                viewModel.Phone = user.PhoneNumber;
+
+                if (viewModel.CountryKod == AuthController.emptyCountryCode) FillViewBag();
+                else FillViewBag(viewModel.CountryKod.ToString());
+
+                return View(viewModel);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        private void FillViewBag(string selectedCountryCode = AuthController.selectedCode)
+        {
+            var countries = _context.DicCountries.Select(item =>
+                                                         new SelectListItem()
+                                                         {
+                                                             Text = item.ValueEU,
+                                                             Value = item.CountryKod.ToString()
+                                                         })
+                                                 .ToList();
+
+            countries.Add(new SelectListItem()
+            {
+                Text = "Not selected",
+                Value = AuthController.emptyCountryCode.ToString(),
+                Selected = true
+            });
+
+
+            if (selectedCountryCode != AuthController.selectedCode)
+            {
+                var selectedCountry = countries.Where(c => c.Value.Equals(selectedCountryCode))
+                                               .FirstOrDefault();
+
+                if (selectedCountry != null) selectedCountry.Selected = true;
+            }
             ViewBag.Countries = countries;
         }
     }

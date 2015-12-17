@@ -22,14 +22,12 @@ namespace DivingApp.Models.ViewModel.Auth
         [Required]
         public string ConfirmPassword { get; set; }
 
-        [Required]
         [StringLength(100)]
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        [DataType(DataType.Date, ErrorMessage = "DateBirth should be in Datatime format")]
-        public DateTime BirthDay { get; set; }
+        public Nullable<DateTime> BirthDay { get; set; }
 
         public int CountryKod { get; set; }
 

@@ -19,7 +19,7 @@ namespace DivingApp.Models.DataModel
 
         public string LastName { get; set; }
 
-        public Nullable<System.DateTime> Birth { get; set; }
+        public Nullable<DateTime> Birth { get; set; }
 
         public Nullable<int> Country { get; set; }
 

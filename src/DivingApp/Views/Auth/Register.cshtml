@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="row col-lg-12 top-offset-double form-group">
-                    <div class="col-lg-4 col-md-5 col-sm-6"><span class="danger" >*</span>&nbsp;FirstName</div>
+                    <div class="loginLabel col-lg-4 col-md-5 col-sm-6">FirstName</div>
                     <div class="col-lg-8 col-md-7 col-sm-6">
                         <input class="form-control input-sm " asp-for="FirstName" type="text" />
                     </div>
@@ -58,8 +58,7 @@
                         <script type="text/javascript">
                             $(function () {
                                 $('#BirthDay').datetimepicker({
-                                    format: 'DD/MM/YYYY',
-                                    defaultDate: new Date()
+                                    format: 'DD/MM/YYYY'
                                 });
                             });
                         </script>
@@ -99,7 +98,10 @@
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="row">
                     <div class="fileinput fileinput-new" data-provides="fileinput">
-                        <div class="fileinput-preview thumbnail top-offset" data-trigger="fileinput" style="width: 200px; height: 185px;"></div>
+                        <div class="fileinput-new thumbnail top-offset" style="width: 200px; height: 185px;">
+                            <img src="~/images/icon.png" alt="...">
+                        </div>
+                        <div class="fileinput-preview fileinput-exists thumbnail top-offset" data-trigger="fileinput" style="width: 200px; height: 185px;"></div>
                         <div class="top-offset">
                             <center>
                                 <div class="btn btn-primary btn-file">
