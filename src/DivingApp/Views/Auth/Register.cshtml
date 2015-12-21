@@ -1,4 +1,4 @@
-﻿@model DivingApp.Models.ViewModel.Auth.UserViewModel
+﻿@model DivingApp.Models.ViewModel.Auth.NewUserViewModel
 @{    
     Layout = "_ReturnLayout";
 }
@@ -9,6 +9,8 @@
 
         <div class="row col-lg-12" style="top:70px">
             <div asp-validation-summary="ValidationSummary.All" class="text-danger" style="padding-top:10px;"></div>
+            <div class="text-success">@ViewBag.ChangedOkText</div>
+
 
             <h3>Registration</h3>
             <h4><b>Create new user</b></h4>

@@ -19,9 +19,7 @@ namespace DivingApp.Models.DataModel
 
         public string LastName { get; set; }
 
-        public Nullable<DateTime> Birth { get; set; }
-
-        public Nullable<int> Country { get; set; }
+        public Nullable<DateTime> Birth { get; set; }       
 
         public string City { get; set; }
 
@@ -31,8 +29,11 @@ namespace DivingApp.Models.DataModel
 
         public bool Status { get; set; }
 
+        public Nullable<int> DicCountryId { get; set; }
         public virtual DicCountry DicCountry { get; set; }
-        public virtual ICollection<Cert> Certs { get; set; }     
+
+        public virtual ICollection<Cert> Certs { get; set; } 
+            
         public virtual ICollection<Dive> Dives { get; set; }
     }
 }

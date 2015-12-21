@@ -22,19 +22,26 @@ namespace DivingApp.Models
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);        
+        {            
+            base.OnModelCreating(builder);      
         }
 
         public DbSet<Cert> Certs { get; set; }
+
         public DbSet<Dive> Dives { get; set; }
+
         public DbSet<Photos> Photos { get; set; }
+
         public DbSet<PhotoImg> PhotoImgSet { get; set; }
 
         public DbSet<DicCert> DicCerts { get; set; }
+
         public DbSet<DicCountry> DicCountries { get; set; }
+
         public DbSet<DicSuit> DicSuitTypes { get; set; }
+
         public DbSet<DicTank> DicTankTypes { get; set; }
+
         public DbSet<DicWeightOk> DicWeightOk { get; set; }
     }
 }

@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AutoMapper;
+using DivingApp.Models;
+using DivingApp.Models.DataModel;
+using DivingApp.Models.ViewModel.Auth;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Rendering;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
-using DivingApp.Models.ViewModel.Auth;
-using DivingApp.Models;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.AspNet.Identity;
-using DivingApp.Models.DataModel;
-using AutoMapper;
-using DivingApp.Models.ViewModel;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DivingApp.Controllers
 {
     public class AuthController : Controller
-    {
-        const string selectedCode = "804";
+    {       
         const int emptyCountryCode = 0;
+
+        //TODO - Add to resource file
+        const string changedOkText = "Changes in profile saved successfuly";
 
         EntityContext _context;
         UserManager<User> _manager;
@@ -38,7 +38,7 @@ namespace DivingApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(UserViewModel viewModel)
+        public async Task<IActionResult> Register(NewUserViewModel viewModel)
         {
             if (!string.Equals(viewModel.Password, viewModel.ConfirmPassword))
             {
@@ -69,41 +69,70 @@ namespace DivingApp.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var user = await _manager.FindByEmailAsync(User.Identity.Name);
-                var viewModel = Mapper.Map<UserViewModel>(user);
+                var user = await _manager.FindByEmailAsync(User.Identity.Name);                    
+                var viewModel = Mapper.Map<EditUserViewModel>(user);
 
                 //TODO - Find out why automapper dont work
                 viewModel.BirthDay = user.Birth;
                 viewModel.Phone = user.PhoneNumber;
+                viewModel.CountryKod = user.DicCountryId;
 
-                if (viewModel.CountryKod == AuthController.emptyCountryCode) FillViewBag();
-                else FillViewBag(viewModel.CountryKod.ToString());
+                if (!viewModel.CountryKod.HasValue || viewModel.CountryKod == emptyCountryCode) FillViewBag();
+                else FillViewBag(viewModel.CountryKod.Value);
 
                 return View(viewModel);
             }
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task<IActionResult> Edit(UserViewModel viewModel)
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditUserViewModel viewModel)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var user = await _manager.FindByEmailAsync(User.Identity.Name);
-                var viewModel = Mapper.Map<UserViewModel>(user);
+                var currentUserInfo = await _manager.FindByEmailAsync(User.Identity.Name);
+                
+
+                User updatedUserInfo = Mapper.Map<User>(viewModel);
 
                 //TODO - Find out why automapper dont work
-                viewModel.BirthDay = user.Birth;
-                viewModel.Phone = user.PhoneNumber;
+                updatedUserInfo.Birth = viewModel.BirthDay;
+                updatedUserInfo.PhoneNumber = viewModel.Phone;
 
-                if (viewModel.CountryKod == AuthController.emptyCountryCode) FillViewBag();
-                else FillViewBag(viewModel.CountryKod.ToString());
+                if (viewModel.NewPassword != null)
+                {
+                    if (!string.Equals(viewModel.NewPassword, viewModel.ConfirmPassword))
+                    {
+                        ModelState.AddModelError("", "Passwords mismatch");
+                    }
+                    else if (ModelState.IsValid)
+                    {
+                        await _manager.ChangePasswordAsync(currentUserInfo, viewModel.OldPassword, viewModel.NewPassword);
+                    }
+                }
+
+                currentUserInfo.Email = updatedUserInfo.Email;
+                currentUserInfo.Adress = updatedUserInfo.Adress;
+                currentUserInfo.Birth = updatedUserInfo.Birth;
+                currentUserInfo.City = updatedUserInfo.City;
+                currentUserInfo.DicCountry = viewModel.CountryKod != 0 ? _context.DicCountries.Where(c => c.CountryKod == viewModel.CountryKod).First() : null;
+                currentUserInfo.PhoneNumber = updatedUserInfo.PhoneNumber;
+                if (updatedUserInfo.Photo != null) currentUserInfo.Photo = updatedUserInfo.Photo;
+
+                var result = await _manager.UpdateAsync(currentUserInfo);
+                if (result.Succeeded)
+                {
+                    ViewBag.ChangedOkText = changedOkText;
+                    if (viewModel.CountryKod == emptyCountryCode) FillViewBag();
+                    else FillViewBag(viewModel.CountryKod.Value);
+                }
 
                 return View(viewModel);
             }
             return RedirectToAction("Index", "Home");
         }
 
-        private void FillViewBag(string selectedCountryCode = AuthController.selectedCode)
+        private void FillViewBag(int selectedCountryCode = emptyCountryCode)
         {
             var countries = _context.DicCountries.Select(item =>
                                                          new SelectListItem()
@@ -111,6 +140,7 @@ namespace DivingApp.Controllers
                                                              Text = item.ValueEU,
                                                              Value = item.CountryKod.ToString()
                                                          })
+                                                 .OrderBy(item=> item.Text)
                                                  .ToList();
 
             countries.Add(new SelectListItem()
@@ -121,7 +151,7 @@ namespace DivingApp.Controllers
             });
 
 
-            if (selectedCountryCode != AuthController.selectedCode)
+            if (selectedCountryCode != AuthController.emptyCountryCode)
             {
                 var selectedCountry = countries.Where(c => c.Value.Equals(selectedCountryCode))
                                                .FirstOrDefault();

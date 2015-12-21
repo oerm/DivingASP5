@@ -1,44 +1,52 @@
-﻿@model DivingApp.Models.ViewModel.Auth.UserViewModel
+﻿@model DivingApp.Models.ViewModel.Auth.EditUserViewModel
 @{    
     Layout = "_ReturnLayout";
 }
 
-<form asp-controller="auth" asp-action="register" asp-anit-forgery="true" enctype="multipart/form-data">
+<form asp-controller="auth" asp-action="edit" asp-anit-forgery="true" enctype="multipart/form-data">
 
     <div class="container">
 
         <div class="row col-lg-12" style="top:70px">
+            <div class="text-success">@ViewBag.ChangedOkText</div>
             <div asp-validation-summary="ValidationSummary.All" class="text-danger" style="padding-top:10px;"></div>
 
-            <h3>User settings</h3>
-            <h4><b>Edit user</b></h4>
+            <h3>Edit user settings</h3>        
 
             <br />
 
             <div class="row col-lg-7 col-md-6 col-sm-6 ">
                 <div class="row col-lg-12 top-offset form-group">
-                    <label class="col-lg-4 col-md-5 col-sm-6"><span style="color:tomato">*</span>&nbsp;Email</label>
+                    <label class="col-lg-4 col-md-5 col-sm-6">Email</label>
                     <div class="col-lg-8 col-md-7 col-sm-6 ">
                         <input class="form-control input-sm" style="width:100%" asp-for="Email" type="email" />
                     </div>
                 </div>
 
                 <div class="row col-lg-12 form-group">
-                    <label class="col-lg-4 col-md-5 col-sm-6"><span style="color:tomato">*</span>&nbsp;New password</label>
+                    <label class="col-lg-4 col-md-5 col-sm-6">Old password</label>
                     <div class="col-lg-8 col-md-7 col-sm-6">
-                        <input class="form-control input-sm" style="width:100%" asp-for="Password " type="password" />
+                        <input class="form-control input-sm" style="width:100%" asp-for="OldPassword " type="password" />
                     </div>
                 </div>
 
                 <div class="row col-lg-12 form-group">
-                    <label class="col-lg-4 col-md-5 col-sm-6"><span style="color:tomato">*</span>&nbsp;Confirm new password</label>
+                    <label class="col-lg-4 col-md-5 col-sm-6">New password</label>
+                    <div class="col-lg-8 col-md-7 col-sm-6">
+                        <input class="form-control input-sm" style="width:100%" asp-for="NewPassword " type="password" />
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 form-group">
+                    <label class="col-lg-4 col-md-5 col-sm-6">Confirm Password</label>
                     <div class="col-lg-8 col-md-7 col-sm-6">
                         <input class="form-control input-sm " style="width:100%" asp-for="ConfirmPassword" type="password" />
                     </div>
                 </div>
+                
 
                 <div class="row col-lg-12 top-offset-double form-group">
-                    <div class="loginLabel col-lg-4 col-md-5 col-sm-6">&nbsp;FirstName</div>
+                    <div class="loginLabel col-lg-4 col-md-5 col-sm-6">FirstName</div>
                     <div class="col-lg-8 col-md-7 col-sm-6">
                         <input class="form-control input-sm " asp-for="FirstName" type="text" />
                     </div>
@@ -93,15 +101,13 @@
                         <input class="form-control input-sm " asp-for="Phone" type="tel" id="phone" name="phone" style="width:100%" />
                     </div>
                 </div>
-            </div>
-
-            
+            </div>            
 
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="row">
                     <div class="fileinput fileinput-new" data-provides="fileinput">
                         <div class="fileinput-new thumbnail top-offset" style="width: 200px; height: 185px;">
-                            <img src="/api/getuserphoto/oerm85@gmail.com" alt="...">
+                            <img src="/api/getuserphoto/@User.Identity.Name" alt="...">
                         </div>
                         <div class="fileinput-preview thumbnail fileinput-exists top-offset" data-trigger="fileinput" style="width: 200px; height: 185px;"></div>
                         <div class="top-offset">

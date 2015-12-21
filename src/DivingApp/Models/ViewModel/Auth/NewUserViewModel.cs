@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DivingApp.Models.ViewModel.Auth
 {
-    public class UserViewModel
+    public class NewUserViewModel: UserViewModelBase
     {
         [DataType(DataType.EmailAddress)]
         [Required]
@@ -20,26 +20,7 @@ namespace DivingApp.Models.ViewModel.Auth
 
         [DataType(DataType.Password)]
         [Required]
-        public string ConfirmPassword { get; set; }
-
-        [StringLength(100)]
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public Nullable<DateTime> BirthDay { get; set; }
-
-        public int CountryKod { get; set; }
-
-        public string City { get; set; }
-
-        public string Adress { get; set; }
-
-        public string Phone { get; set; }
-
-        [DataType(DataType.Upload)]
-        public IFormFile ImageUpload { get; set; }
-
+        public string ConfirmPassword { get; set; }             
     }
 
 }
