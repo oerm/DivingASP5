@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using DivingApp.Models.DataModel;
 using Newtonsoft.Json;
 using Microsoft.AspNet.Identity;
+using AutoMapper;
+using DivingApp.Models.ViewModel;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,29 +31,14 @@ namespace DivingApp.Controllers.Api
         [HttpGet("api/users/getusersbyname/{name}")]
         public JsonResult GetUsersByName(string name)
         {
-            try
-            {
-                var users = _context.Dives.FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
 
-            }
+            var foundUsers = _context.Users
+                           //      .Where(u => u.FirstName.StartsWith(name) || u.LastName.StartsWith(name))
+                                 .ToList();
 
-            var projection = (from usr in _context.Users
-                              where (usr.FirstName + " " + usr.LastName).StartsWith(name)
-                              select new
-                              {
-                                  id = usr.Id,
-                                  email = usr.Email,
-                                  fullName = usr.FirstName + " " + usr.LastName,
-                                  age = usr.Birth.Value,
-                               //   country = usr.Dic_Countries.dic_val_ru,
-                               //   countryCode = usr.Dic_Countries.dic_val_kod,
-                                  city = usr.City,
-                                  address = usr.Adress
-                              }).ToList();
-            return Json(projection);
+            var searchResults = Mapper.Map<IEnumerable<UsersSearchResultViewModel>>(foundUsers);
+
+            return Json(searchResults);
         }
 
         [HttpPost]
