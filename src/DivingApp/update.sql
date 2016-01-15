@@ -201,3 +201,15 @@ INSERT INTO [__MigrationHistory] ([MigrationId], [ProductVersion])
 VALUES (N'20151221143656_DicCountryMigration', N'7.0.0-beta7-15540');;
 GO
 
+insert into [Diving].[dbo].[DicCert] ([CertID],[CertName],[Description],[IsGeneral],[Level])
+SELECT [CertID],[CertName],[Description],[IsGeneral],[Level] FROM [DIVING_TMP].[dbo].[Dic_Certs]
+
+insert into [Diving].[dbo].[DicSuit]
+SELECT TOP 1000 [SuitID],[SuitValue] FROM [DIVING_TMP].[dbo].[Dic_Suit]
+
+insert into  [Diving].[dbo].[DicTank]
+SELECT [TankId],[TankValue] FROM [DIVING_TMP].[dbo].[Dic_Tank]
+
+insert into  [Diving].[dbo].[DicWeightOk]
+SELECT [WeightOkID],[WeightOkValue] FROM [DIVING_TMP].[dbo].[Dic_WeightOk]
+

@@ -1,15 +1,12 @@
-﻿using AutoMapper;
-using DivingApp.Common.Convertor;
-using DivingApp.Common.Resolver;
+﻿using DivingApp.BusinessLayer;
+using DivingApp.BusinessLayer.Interface;
 using DivingApp.Mappings;
 using DivingApp.Models;
 using DivingApp.Models.DataModel;
-using DivingApp.Models.ViewModel.Auth;
+using DivingSite.Models;
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Framework.DependencyInjection;
-using System;
 
 namespace DivingApp
 {
@@ -29,7 +26,10 @@ namespace DivingApp
             })
             .AddEntityFrameworkStores<EntityContext>();
 
-            services.AddMvc();            
+            services.AddMvc();
+
+            services.AddTransient<IPassportManager, PassportManager>();
+            services.AddTransient<IPhotoManager, PhotoManager>();            
         }
 
         public void Configure(IApplicationBuilder app)

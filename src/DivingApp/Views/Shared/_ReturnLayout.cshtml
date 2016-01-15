@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" type="text/css" href="~/css/site.min.css" />
     <script src="~/js/site.min.js"></script>
+    <script src="~/js/controllers.min.js"></script>
   
     @*<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>*@
 
@@ -19,6 +20,13 @@
         <div class="container">
             <div class="navbar-brand">
                 DIVE LOGBOOK
+            </div>
+            <div class="row pull-right top-offset">               
+                <a class="btn btn-default btn-sm" asp-controller="Home" asp-action="Index">
+                    <i class="fa fa-home"></i>
+                    &nbsp;
+                    Return
+                </a>
             </div>
         </div>
     </nav>

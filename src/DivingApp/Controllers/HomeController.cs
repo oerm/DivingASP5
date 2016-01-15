@@ -23,7 +23,7 @@ namespace DivingApp.Controllers
         UserManager<User> _userManager;
 
         public HomeController(SignInManager<User> signManager, UserManager<User> userManager)
-        {
+        {           
             _signManager = signManager;
             _userManager = userManager;
         }

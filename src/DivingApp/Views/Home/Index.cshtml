@@ -64,31 +64,31 @@
 
 
             <div class="col-lg-3"></div>
-        </div>
+        </div>       
 
-        <div class="container" style="position:relative;top:150px;" id="diversResults" ng-show="lgCtrl.showSearchResults">
+        <div class="container" style="position:relative;top:120px;" id="diversResults" ng-show="lgCtrl.showSearchResults">
 
-            <div class="panel panel-primary">
+            <h1 class="text-center">Search results:</h1>
+
+            <div class="panel panel-primary top-offset-double">              
                 <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <span class="col-lg-1">&nbsp;</span>
+                    <h3 class="panel-title" style="padding-left:15px;">                       
                         <span class="hidden-md hidden-sm hidden-xs col-lg-1">Photo</span>
-                        <span>Information</span>
+                        <span style="padding-left:15px;">Information</span>
                     </h3>
                 </div>
-                <div class="panel-body" ng-repeat="p in lgCtrl.searchResults">
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <div class="hidden-md hidden-sm hidden-xs col-lg-1" style="margin-left:-10px;padding-left:-10px">
-                                <div class="btn btn-primary btn-sm" ng-click="lgCtrl.openPasp(p.email)" style="position:absolute;top:25%">Open</div>
-                            </div>
-                            <div class="hidden-md hidden-sm hidden-xs col-lg-1" style="margin-left:-10px;margin-right:20px;padding-left:-10px;width:75px;height:50px">
-                                <img ng-src="api/getuserphoto/{{p.UserName}}" class="img-responsive img-circle pull-left" style="height:100%;width:100%; margin:5px;" />
+                <div class="panel-body">
+                    <div class="list-group" style="padding-left:10px;padding-right:10px;margin-bottom:5px;">
+                        <div class="list-group-item row" ng-repeat="p in lgCtrl.searchResults">                           
+                            <div class="hidden-md hidden-sm hidden-xs col-lg-1" style="margin-left:-10px;margin-right:20px;padding-left:-10px;width:90px;height:70px">
+                                <img ng-src="api/getuserphoto/{{p.UserName}}" class="img-responsive pull-left img-thumbnail img-circle " style="height:100%;width:100%" />
                             </div>                    
-                            <div>
-                                <h5><b>Diver: </b>{{p.FullName}}, <b>Age:</b> {{p.age}}</h5>
-                                <h5><b>Email: </b> {{p.UserName}} <b>Contact: </b>{{p.FullAddress}} &nbsp;<img ng-src="@Url.Action("GetFlag", "Dive")/{{p.countryCode}}" /></h5>
-                             
+                            <div class="hidden-md hidden-sm hidden-xs col-lg-10">
+                                <p><b>Birth year:</b> {{p.BirthYear}}<b>&nbsp;&nbsp; Diver: </b>{{p.FullName}}</p>
+                                <p><b>Email: </b> {{p.UserName}} <b>&nbsp;&nbsp;Contact: </b>{{p.PhoneNumber}} &nbsp;&nbsp;&nbsp;<img style="margin-top:-2px" ng-src="api/getcountryflag/{{p.CountryKod}}" /></p>
+                            </div>
+                            <div class="hidden-md hidden-sm hidden-xs col-lg-1" style="margin-left:-10px;padding-left:-10px">
+                                <div class="btn btn-primary btn-sm top-offset-double" ng-click="lgCtrl.openPasp(p.UserName)" style="top:25%">Open</div>
                             </div>
                         </div>
                     </div>

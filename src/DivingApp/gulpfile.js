@@ -25,9 +25,14 @@ gulp.task('buildjs', function () {
 });
 
 gulp.task('buildangularcontrollers', function () {
-    return gulp.src([path + "angular/controllers/logincontroller.js"])
+      return gulp.src([path + "angular/services/paspinfoprovider.js",
+                       path + "angular/controllers/logincontroller.js",
+                       path + "angular/controllers/paspcontroller.js",
+                       path + "angular/app.js"])
                .pipe(concat('controllers.min.js'))
+    /*
                .pipe(uglify({ mangle: false }))
+    */
                .pipe(gulp.dest('wwwroot/js'));
 });
 

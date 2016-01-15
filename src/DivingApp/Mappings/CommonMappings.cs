@@ -79,9 +79,9 @@ namespace DivingApp.Mappings
               .ForMember(g => g.FullName, r => r.MapFrom(s => string.IsNullOrWhiteSpace((s.FirstName + " " + s.LastName))
                                                               ? NoDataTextMessage
                                                               : (s.FirstName + " " + s.LastName).Trim()))
-              .ForMember(g => g.CountryKod, r => r.MapFrom(s => s.DicCountryId))             
-              .ForMember(g => g.FullAddress, r => r.MapFrom(s => string.Join(" ",
-                                                                             s.DicCountry.ValueEU,
+              .ForMember(g => g.CountryKod, r => r.MapFrom(s => s.DicCountryId.HasValue? s.DicCountryId.Value : 0))
+              .ForMember(g => g.PhoneNumber, r => r.MapFrom(s => s.PhoneNumber != null ? s.PhoneNumber : NoDataTextMessage))
+              .ForMember(g => g.FullAddress, r => r.MapFrom(s =>  string.Join(" ",                                                                            
                                                                              s.City, 
                                                                              s.Adress)))
               .ForMember(g => g.BirthYear, r => r.MapFrom(s => s.Birth.HasValue ? s.Birth.Value.Year.ToString() : NoDataTextMessage))

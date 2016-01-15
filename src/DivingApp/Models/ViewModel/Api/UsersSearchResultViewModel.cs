@@ -16,5 +16,7 @@ namespace DivingApp.Models.ViewModel
         public Nullable<int> CountryKod { get; set; }
 
         public string FullAddress { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }

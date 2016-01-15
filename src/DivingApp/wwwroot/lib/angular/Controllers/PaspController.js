@@ -112,7 +112,4 @@ var Diving;
 })(Diving || (Diving = {}));
 var MarkerClusterer;
 var moment;
-var myApp = angular.module("diving-app", []);
-myApp.factory("PaspService", ["$http", function ($http) { return new Diving.Services.PaspService($http); }]);
-myApp.controller('paspController', ['$scope', "PaspService", Diving.Controllers.paspController]);
 //myApp.controller("paspController", ["$scope", "PaspService", ($scope, PaspService) => new Diving.Controllers.paspController($scope, PaspService)]);

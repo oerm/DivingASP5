@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNet.Identity;
 using AutoMapper;
 using DivingApp.Models.ViewModel;
+using DivingApp.BusinessLayer.Interface;
+using DivingApp.BusinessLayer;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,26 +22,30 @@ namespace DivingApp.Controllers.Api
         const string imageContentType = "image/jpeg";
 
         EntityContext _context;
-        UserManager<User> _manager;
+        UserManager<User> _userManager;
+        IPhotoManager _photoManager;
 
-        public UserController(EntityContext context, UserManager<User> manager)
+        public UserController(EntityContext context, UserManager<User> userManager, IPhotoManager photoManager)
         {
             _context = context;
-            _manager = manager;
+            _userManager = userManager;
+            _photoManager = photoManager;
         }
 
         [HttpGet("api/users/getusersbyname/{name}")]
         public JsonResult GetUsersByName(string name)
         {
-
             var foundUsers = _context.Users
-                           //      .Where(u => u.FirstName.StartsWith(name) || u.LastName.StartsWith(name))
+#if !DEBUG
+                                 .Where(u => u.FirstName.StartsWith(name) || u.LastName.StartsWith(name))
+#endif
                                  .ToList();
 
             var searchResults = Mapper.Map<IEnumerable<UsersSearchResultViewModel>>(foundUsers);
 
             return Json(searchResults);
         }
+       
 
         [HttpPost]
         [AllowAnonymous]
@@ -73,10 +79,17 @@ namespace DivingApp.Controllers.Api
         {
             if (!string.IsNullOrWhiteSpace(Email))
             {
-                var user = await _manager.FindByEmailAsync(Email);              
+                var user = await _userManager.FindByEmailAsync(Email);              
                 if (user != null && user.Photo != null && user.Photo.Length > 0) return File(user.Photo, UserController.imageContentType);
             }
             return new HttpNotFoundResult();
+        }
+
+        [HttpGet("api/getcountryflag/{countrycode}")]
+        [AllowAnonymous]
+        public ActionResult GetFlag(int countrycode)
+        {            
+            return base.File(_photoManager.GetFlag(countrycode), "image/jpeg");
         }
 
     }

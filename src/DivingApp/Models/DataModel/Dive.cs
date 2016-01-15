@@ -61,10 +61,15 @@ namespace DivingApp.Models.DataModel
         public Nullable<System.DateTime> UpdDate { get; set; }
     
         public virtual DicCountry Countries { get; set; }
+
         public virtual DicSuit Suit { get; set; }
+
         public virtual DicTank TankName { get; set; }
+
         public virtual DicWeightOk WeightOk { get; set; }
+
         public virtual User User { get; set; }
+
         public virtual ICollection<Photos> Photos { get; set; }
     }
 }
