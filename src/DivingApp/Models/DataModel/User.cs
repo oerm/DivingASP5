@@ -30,6 +30,7 @@ namespace DivingApp.Models.DataModel
         public bool Status { get; set; }
 
         public Nullable<int> DicCountryId { get; set; }
+
         public virtual DicCountry DicCountry { get; set; }
 
         public virtual ICollection<Cert> Certs { get; set; } 

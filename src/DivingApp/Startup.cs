@@ -3,7 +3,6 @@ using DivingApp.BusinessLayer.Interface;
 using DivingApp.Mappings;
 using DivingApp.Models;
 using DivingApp.Models.DataModel;
-using DivingSite.Models;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Framework.DependencyInjection;

@@ -16,11 +16,11 @@ namespace DivingApp.Models.DataModel
     public class Dive
     {    
         [Key]
-        public decimal DiveID { get; set; }
+        public long DiveID { get; set; }
 
         public DateTime DiveDate { get; set; }
 
-        public Nullable<decimal> Country { get; set; }
+        public Nullable<long> Country { get; set; }
 
         public string Location { get; set; }
 

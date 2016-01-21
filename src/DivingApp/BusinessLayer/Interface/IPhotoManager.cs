@@ -9,12 +9,16 @@ namespace DivingApp.BusinessLayer.Interface
     {
         byte[] GetFlag(int countryCode);
 
+        byte[] GetPhoto(string userEmail, long photoId);
+
         //bool ConfirmSaving(decimal? photoId, string comment = "");
         //bool DeletePhoto(decimal photoId);
 
         //byte[] GetPhoto(decimal photoId);
         //PhotoDetails GetPhotoDetails(decimal photoId);
-        //string GetPhotoIdsInJSon(decimal diveId, decimal maxPhotoId = -1);
+
+        IEnumerable<long> GetPhotoIdsByDiveId(string userId, long diveId, long minPhotoId = -1);
+
         //byte[] GetThumbPhoto(decimal photoId);
         //byte[] GetSmallThumbPhoto(decimal photoId);
         //decimal SaveImage(byte[] file, string filename, decimal diveId);

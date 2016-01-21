@@ -201,6 +201,11 @@ INSERT INTO [__MigrationHistory] ([MigrationId], [ProductVersion])
 VALUES (N'20151221143656_DicCountryMigration', N'7.0.0-beta7-15540');;
 GO
 
+
+
+INSERT INTO [Diving].[dbo].[DicCountry]  ([CountryKod],[Description],[Flag],[FullName],[PhoneCode],[ShortName],[ShortName2],[Tmp1],[Tmp2],[Tmp3],[ValueEU],[ValueRU])
+SELECT [dic_val_kod],[description],[flag],[fullname],[phone_code],[smallname],[smallname2],[tmp1],[tmp2],[tmp3],[dic_val_ua],[dic_val_ru] FROM [DIVING_TMP].[dbo].[Dic_Countries]
+
 insert into [Diving].[dbo].[DicCert] ([CertID],[CertName],[Description],[IsGeneral],[Level])
 SELECT [CertID],[CertName],[Description],[IsGeneral],[Level] FROM [DIVING_TMP].[dbo].[Dic_Certs]
 
@@ -212,4 +217,21 @@ SELECT [TankId],[TankValue] FROM [DIVING_TMP].[dbo].[Dic_Tank]
 
 insert into  [Diving].[dbo].[DicWeightOk]
 SELECT [WeightOkID],[WeightOkValue] FROM [DIVING_TMP].[dbo].[Dic_WeightOk]
+
+SET IDENTITY_INSERT [Diving].[dbo].[Dive] ON
+INSERT INTO [Diving].[dbo].[Dive] ([DiveID],[AirTemperature],[Comments],[CountriesCountryKod],[Country],[DiveDate],[DiveType],[DiveX],[DiveY]
+      ,[FiveMetersMinutes],[Location],[MaxDepth],[Status],[SuitSuitID],[SuitType],[Tank],[TankEnd],[TankNameTankId],[TankStart]
+      ,[TotalMinutes],[UpdDate],[UserId],[Visibility],[WaterTemperature],[Weight],[WeightIsOk],[WeightOkWeightOkID])
+SELECT  [DiveID],[AirTemperature],[Comments],[Country],[Country],[DiveDate],[DiveType],[DiveX],[DiveY]
+      ,[FiveMetersMinutes],[Location],[MaxDepth],[Status],[SuitType],[SuitType],[Tank],[TankEnd],[Tank],[TankStart]
+      ,[TotalMinutes],[UpdDate],[UserId],[Visibility],[WaterTemperature],[Weight],[WeightIsOk],[WeightIsOk]
+FROM [DIVING_TMP].[dbo].[Dives] 
+SET IDENTITY_INSERT [Diving].[dbo].[Dive] OFF
+
+INSERT INTO [Diving].[dbo].[Photos] ([PhotoID],[DiveID],[PhotoComment],[PhotoDate],[PhotoName],[PhotoThumb],[Status])
+SELECT [PhotoID],[DiveID],[PhotoComment] ,[PhotoDate],[PhotoName] ,[PhotoThumb],[Status] FROM [DIVING_TMP].[dbo].[Photos]
+
+INSERT INTO [Diving].[dbo].[PhotoImg] ([PhotoID],[PhotoVal])
+SELECT [PhotoID],[PhotoVal] FROM [DIVING_TMP].[dbo].[Photos]
+
 

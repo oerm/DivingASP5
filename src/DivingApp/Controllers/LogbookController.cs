@@ -23,6 +23,11 @@ namespace DivingApp.Controllers
             _signManager = signManager;
         }
 
+        public IActionResult Dives()
+        {           
+            return View();
+        }
+
         public async Task<IActionResult> Logout()
         {
             if (User.Identity.IsAuthenticated)

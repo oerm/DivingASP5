@@ -10,15 +10,15 @@ module Diving.Services {
         }
 
         GetGeoPoints(email: string, callback: Function) {
-            this.http.get('/api/GetDivesWithCoordinates/' + email).success((data, status) => {
+            this.http.get('/api/getdiveswithcoordinates/' + email).success((data, status) => {
                 callback(data);
             }).error(error => {
                 callback(error);
             });
         }
 
-        GetPhotosIds(email: string, diveId: string, callback: Function) {
-            this.http.get('GetPhotoIds/' + email + '/' + diveId).success((data, status) => {
+        GetPhotosIds(email: string, diveId: string, minPhoto: number, callback: Function) {
+            this.http.get('/api/getuserphotoidsbydiveids/' + email + '/' + diveId + '/' + minPhoto).success((data, status) => {
                 callback(data);
             }).error(error => {
                 callback(error);

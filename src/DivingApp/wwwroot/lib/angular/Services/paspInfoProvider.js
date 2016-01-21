@@ -8,14 +8,14 @@ var Diving;
                 this.http = $http;
             }
             PaspService.prototype.GetGeoPoints = function (email, callback) {
-                this.http.get('/api/GetDivesWithCoordinates/' + email).success(function (data, status) {
+                this.http.get('/api/getdiveswithcoordinates/' + email).success(function (data, status) {
                     callback(data);
                 }).error(function (error) {
                     callback(error);
                 });
             };
-            PaspService.prototype.GetPhotosIds = function (email, diveId, callback) {
-                this.http.get('GetPhotoIds/' + email + '/' + diveId).success(function (data, status) {
+            PaspService.prototype.GetPhotosIds = function (email, diveId, minPhoto, callback) {
+                this.http.get('/api/getuserphotoidsbydiveids/' + email + '/' + diveId + '/' + minPhoto).success(function (data, status) {
                     callback(data);
                 }).error(function (error) {
                     callback(error);

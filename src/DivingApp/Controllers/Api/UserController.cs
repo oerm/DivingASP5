@@ -44,8 +44,8 @@ namespace DivingApp.Controllers.Api
             var searchResults = Mapper.Map<IEnumerable<UsersSearchResultViewModel>>(foundUsers);
 
             return Json(searchResults);
-        }
-       
+        }       
+
 
         [HttpPost]
         [AllowAnonymous]
@@ -91,6 +91,5 @@ namespace DivingApp.Controllers.Api
         {            
             return base.File(_photoManager.GetFlag(countrycode), "image/jpeg");
         }
-
     }
 }

@@ -12,6 +12,7 @@ var Diving;
                 this.showDives = true;
                 this.showMaps = false;
                 this.showPhoto = false;
+                this.showGeoDiveInfo = true;
                 this.map = undefined;
                 this.scope = $scope;
             }
@@ -62,8 +63,8 @@ var Diving;
                 this.resetPhoto();
                 this.selectedDiveId = diveId;
                 var that = this;
-                this.paspService.GetPhotosIds(this.currentUserEmail, this.selectedDiveId, function (data) {
-                    that.photos = data.split(',');
+                this.paspService.GetPhotosIds(this.currentUserEmail, this.selectedDiveId, 0, function (data) {
+                    that.photos = data;
                     if (that.photos.length > 0) {
                         that.selectedPhotoIndex = 0;
                         that.changeCurrentPhotoIndex(that.selectedPhotoIndex);

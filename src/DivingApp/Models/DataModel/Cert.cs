@@ -10,13 +10,11 @@
 namespace DivingApp.Models.DataModel
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Cert
     {      
-        public Nullable<System.DateTime> DateArchieve { get; set; }
+        public Nullable<DateTime> DateArchieve { get; set; }
 
         [Key]
         public string CertNumber { get; set; }

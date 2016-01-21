@@ -16,7 +16,7 @@ namespace DivingApp.Models.DataModel
     public class PhotoImg
     {
         [Key]
-        public decimal PhotoID { get; set; }
+        public long PhotoID { get; set; }
 
         public byte[] PhotoVal { get; set; }
     

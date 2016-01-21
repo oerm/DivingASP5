@@ -16,9 +16,9 @@ namespace DivingApp.Models.DataModel
     public class Photos
     {
         [Key]
-        public decimal PhotoID { get; set; }
+        public long PhotoID { get; set; }
 
-        public decimal DiveID { get; set; }  
+        public long DiveID { get; set; }  
              
         public string PhotoName { get; set; }
 

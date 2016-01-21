@@ -2,13 +2,13 @@
 using DivingApp.Models;
 using DivingApp.Models.DataModel;
 using DivingApp.Models.ViewModel;
-using System;
+using DivingApp.Models.ViewModel.Helper;
 using Microsoft.Data.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using DivingApp.Models.ViewModel.Helper;
 
-namespace DivingSite.Models
+namespace DivingApp.BusinessLayer
 {
     public class PassportManager : IPassportManager
     {
@@ -30,15 +30,18 @@ namespace DivingSite.Models
             model.Email = user.Email;
             model.Fio = string.Format("{0} {1}", user.FirstName, user.LastName);
             if (string.IsNullOrWhiteSpace(model.Fio)) model.Fio = unknownUser;
-            DateTime today = DateTime.Today;
-            int age = today.Year - user.Birth.Value.Year;
-            if (user.Birth.Value > today.AddYears(-age)) age--;
-            model.Age = age;
+            if (user.Birth.HasValue)
+            {
+                DateTime today = DateTime.Today;
+                int age = today.Year - user.Birth.Value.Year;
+                if (user.Birth.Value > today.AddYears(-age)) age--;
+                model.Age = age;
+            }
             var country = (from c in _context.DicCountries where c.CountryKod == user.DicCountryId select c).First();
             model.Country = country.ValueEU;
             model.CountryId = country.CountryKod;
             model.DivesCount = dives.Count();
-            model.MaxDepth = dives.Select(d => d.MaxDepth.Value).Max();
+            model.MaxDepth = dives.Any() ? dives.Select(d => d.MaxDepth.Value).Max() : 0;
             model.SumDiveMinutes = dives.Select(d => (int)d.TotalMinutes).Sum();
             model.diveCountries = dives.Where(d=> d.Countries!= null)
                                        .GroupBy(d => d.Countries.CountryKod)
@@ -78,7 +81,7 @@ namespace DivingSite.Models
                                        PhotoId = (int)p.PhotoID,
                                        Date = p.PhotoDate,
                                        Comment = p.PhotoComment
-                                   })
+                                   }).ToArray()
                                }).ToArray();
 
 
@@ -102,16 +105,27 @@ namespace DivingSite.Models
 
         public IEnumerable<DiveGeoViewModel> GetDivesGeoData(User user)
         {
-            return _context.Dives.Where(d => d.User.Id == user.Id && d.Status)
-                                 .Select(dive => new DiveGeoViewModel()
-                                 {
-                                     DiveId = dive.DiveID,
-                                     DiveDate = dive.DiveDate,
-                                     DiveComment = dive.Comments,
-                                     Location = dive.Location,
-                                     CoordinateX = dive.DiveX.ToString(),
-                                     CoordinateY = dive.DiveY.ToString()
-                                 });
+            try
+            {
+                var result = _context.Dives.Where(d => d.User.Id == user.Id && d.Status)
+                                           .ToArray()
+                                           .Select(dive => new DiveGeoViewModel()
+                                           {
+                                               DiveId = dive.DiveID,
+                                               DiveDate = dive.DiveDate,
+                                               DiveComment = dive.Comments,
+                                               Location = dive.Location,
+                                               CoordinateX = dive.DiveX.ToString(),
+                                               CoordinateY = dive.DiveY.ToString()
+                                           });
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+
         }
     }  
 }

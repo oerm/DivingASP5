@@ -16,7 +16,7 @@ namespace DivingApp.Models.DataModel
     public class DicCert
     {    
         [Key]
-        public decimal CertID { get; set; }
+        public long CertID { get; set; }
 
         public string CertName { get; set; }
 

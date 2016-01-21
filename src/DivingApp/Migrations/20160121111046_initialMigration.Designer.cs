@@ -9,11 +9,11 @@ using Microsoft.Data.Entity.SqlServer.Metadata;
 namespace DivingApp.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    partial class DicCountryMigration
+    partial class initialMigration
     {
         public override string Id
         {
-            get { return "20151221143656_DicCountryMigration"; }
+            get { return "20160121111046_initialMigration"; }
         }
 
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace DivingApp.Migrations
 
                     b.Property<DateTime?>("DateArchieve");
 
-                    b.Property<decimal?>("DicCertCertID");
+                    b.Property<long?>("DicCertCertID");
 
                     b.Property<string>("Issuer");
 
@@ -41,7 +41,7 @@ namespace DivingApp.Migrations
 
             modelBuilder.Entity("DivingApp.Models.DataModel.DicCert", b =>
                 {
-                    b.Property<decimal>("CertID");
+                    b.Property<long>("CertID");
 
                     b.Property<string>("CertName");
 
@@ -112,7 +112,8 @@ namespace DivingApp.Migrations
 
             modelBuilder.Entity("DivingApp.Models.DataModel.Dive", b =>
                 {
-                    b.Property<decimal>("DiveID");
+                    b.Property<long>("DiveID")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<double?>("AirTemperature");
 
@@ -120,7 +121,7 @@ namespace DivingApp.Migrations
 
                     b.Property<int?>("CountriesCountryKod");
 
-                    b.Property<decimal?>("Country");
+                    b.Property<long?>("Country");
 
                     b.Property<DateTime>("DiveDate");
 
@@ -171,7 +172,7 @@ namespace DivingApp.Migrations
 
             modelBuilder.Entity("DivingApp.Models.DataModel.PhotoImg", b =>
                 {
-                    b.Property<decimal>("PhotoID");
+                    b.Property<long>("PhotoID");
 
                     b.Property<byte[]>("PhotoVal");
 
@@ -180,9 +181,9 @@ namespace DivingApp.Migrations
 
             modelBuilder.Entity("DivingApp.Models.DataModel.Photos", b =>
                 {
-                    b.Property<decimal>("PhotoID");
+                    b.Property<long>("PhotoID");
 
-                    b.Property<decimal>("DiveID");
+                    b.Property<long>("DiveID");
 
                     b.Property<string>("PhotoComment");
 
