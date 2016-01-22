@@ -12,7 +12,7 @@ var Diving;
                 this.showDives = true;
                 this.showMaps = false;
                 this.showPhoto = false;
-                this.showGeoDiveInfo = true;
+                this.showGeoDiveInfo = false;
                 this.map = undefined;
                 this.scope = $scope;
             }
@@ -39,20 +39,43 @@ var Diving;
                         };
                         if (!that.map) {
                             that.map = new google.maps.Map(document.getElementById('map'), this.options);
+                            that.map.addListener('zoom_changed', function () {
+                                that.showGeoDiveInfo = false;
+                                that.scope.$apply();
+                            });
+                            that.map.addListener('click', function () {
+                                that.showGeoDiveInfo = false;
+                                that.scope.$apply();
+                            });
                         }
                         that.paspService.GetGeoPoints(that.currentUserEmail, function (data) {
                             that.markers = [];
                             var marker;
                             for (var i = 0; i < data.length; i++) {
-                                var a = function () {
+                                var clickHandler = function () {
+                                    var currentDive = data[i];
                                     var diveId = data[i].DiveId;
                                     marker = new google.maps.Marker({ map: that.map, draggable: false, title: data[i].Location + ": " + data[i].DiveComment, position: new google.maps.LatLng(data[i].CoordinateX, data[i].CoordinateY) });
-                                    marker.addListener('click', function () {
-                                        that.getPhotos(diveId);
+                                    marker.data = data[i];
+                                    marker.addListener('click', function (e) {
+                                        that.selectedGeoDive = this.data;
+                                        var overlay = new google.maps.OverlayView();
+                                        overlay.draw = function () { };
+                                        overlay.setMap(that.map);
+                                        var proj = overlay.getProjection();
+                                        var pos = this.getPosition();
+                                        var p = proj.fromLatLngToContainerPixel(pos);
+                                        $('#geoDiveDetails').css({
+                                            top: p.y + $('#geoDiveDetails').parent().position().top - $('#geoDiveDetails').height(),
+                                            left: p.x + 40,
+                                            position: 'absolute'
+                                        });
+                                        that.showGeoDiveInfo = true;
+                                        that.scope.$apply();
                                     });
                                     that.markers.push(marker);
                                 };
-                                a();
+                                clickHandler();
                             }
                             var marker = new MarkerClusterer(that.map, that.markers);
                         });
@@ -60,6 +83,7 @@ var Diving;
                 }
             };
             paspController.prototype.getPhotos = function (diveId) {
+                this.showGeoDiveInfo = false;
                 this.resetPhoto();
                 this.selectedDiveId = diveId;
                 var that = this;
@@ -109,8 +133,13 @@ var Diving;
             return photoDetailes;
         })();
         Controllers.photoDetailes = photoDetailes;
+        var selectedGeoDetailes = (function () {
+            function selectedGeoDetailes() {
+            }
+            return selectedGeoDetailes;
+        })();
+        Controllers.selectedGeoDetailes = selectedGeoDetailes;
     })(Controllers = Diving.Controllers || (Diving.Controllers = {}));
 })(Diving || (Diving = {}));
 var MarkerClusterer;
 var moment;
-//myApp.controller("paspController", ["$scope", "PaspService", ($scope, PaspService) => new Diving.Controllers.paspController($scope, PaspService)]);

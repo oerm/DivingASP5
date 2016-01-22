@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-xs-8 col-md-9 col-lg-10">
                         <p>Diver: <b>@Model.Fio</b></p>
-                        <p>Age: @Model.Age years</p>
+                        <p>Age: @(Model.Age > 0 ? @Model.Age + " years": "Unknown")</p>
                         <p>Origin: @Model.Country &nbsp; <img title='@Model.Country' src='/api/getcountryflag/@Model.CountryId' style="margin-top:-2px" /></p>
                         <p>Number of dives: @Model.DivesCount</p>
                         <p><b>Diving statistics:</b></p>
@@ -94,59 +94,96 @@
                         <b>Dives details:</b>
                     </p>
 
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <ul class="nav nav-pills">
-                                    <li role="presentation" ng-class="pCtrl.showDives? 'active' :''" ng-click="pCtrl.showTab(1)"><a href="#">Dives</a></li>
-                                    <li role="presentation" id="tmp2" ng-class="pCtrl.showMaps? 'active' :''" ng-click="pCtrl.showTab(2)"><a href="#">World map</a></li>
-                                </ul>
-                            </div>
-                            <div class="panel-body" ng-show="pCtrl.showDives">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills">
+                                <li role="presentation" ng-class="pCtrl.showDives? 'active' :''" ng-click="pCtrl.showTab(1)"><a href="#">Dives</a></li>
+                                <li role="presentation" id="tmp2" ng-class="pCtrl.showMaps? 'active' :''" ng-click="pCtrl.showTab(2)"><a href="#">World map</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body" ng-show="pCtrl.showDives">
 
-                                <div class="list-group" style="padding-left:20px;margin-right:20px;margin-bottom:5px">
+                            <div class="list-group" style="padding-left:20px;margin-right:20px;margin-bottom:5px">
 
-                                    <div class="list-group-item-heading row " >
-                                        <p class="col-lg-2 col-sm-2 col-md-2 col-xs-4"><b>Dive ID</b></p>
-                                        <p class="col-lg-8 col-sm-2 col-md-2 col-xs-8"><b>Dive Description</b></p>
-                                    </div>
-
-                                    @foreach (var d in Model.Dives.Select((d, n) => new { dive = d, number = n + 1 }))
-                                    {
-                                        <div class="list-group-item row" style="border-top-left-radius:0;border-top-right-radius:0;padding-left:0px" id="dive_@d.dive.DiveID">
-
-                                            <div class="col-lg-2 col-sm-2 col-md-2 col-xs-4">
-                                                <div>№ <b>@d.number</b> from <b>@d.dive.DiveDate.ToString("dd.MM.yyyy")</b></div>
-                                                <div class="top-offset"><img src='/Images/clock.png' title='time of dive in minutes' style="margin-top:-3px" /> &nbsp;: @d.dive.TotalMinutes minutes</div>
-                                                <div><img src='/Images/arrow-315.png' title='dive depth' style="margin-top:-3px" />&nbsp; : @d.dive.MaxDepth meters</div>
-                                            </div>
-
-                                            <div class="col-lg-8 col-sm-8 col-md-7 col-xs-8" style="padding:0">
-                                                @if (d.dive.DiveType == 1)
-                                                {<img src="/Images/morning_sun.png" style='margin-top:-3px;' /> }
-                                                @if (d.dive.DiveType == 2)
-                                                {<img src="/Images/noon_sun.png" style='margin-top:-3px;' /> }
-                                                @if (d.dive.DiveType == 3)
-                                                {<img src="/Images/evening_moon.png" style='margin-top:-3px;' /> }
-                                                @if (d.dive.DiveType == 4)
-                                                {<img src="/Images/moon.png" style='margin-top:-3px;' /> }
-                                                : @d.dive.Comments
-                                            </div>
-
-                                            <div class="col-lg-2 col-sm-2 col-md-3 hidden-xs">
-                                                <a class="btn btn-link" ng-click="" style="margin-top:-10px"><b>Map </b></a>
-                                                <a class="btn btn-link  @(!d.dive.Photos.Any() ? "hidden" : "")" ng-click="pCtrl.getPhotos(@d.dive.DiveID)" style="margin-top:-10px"><b>Photos </b></a>
-                                            </div>
-
-                                        </div>
-                                    }
+                                <div class="list-group-item-heading row ">
+                                    <p class="col-lg-2 col-sm-2 col-md-2 col-xs-4"><b>Dive ID</b></p>
+                                    <p class="col-lg-8 col-sm-2 col-md-2 col-xs-8"><b>Dive Description</b></p>
                                 </div>
-                            </div>
 
-                            <div class="panel-body" ng-show="pCtrl.showMaps" >
-                                <div class="thumbnail" id="map" style="width:100%;height:510px; max-width: none;"></div>
+                                @foreach (var d in Model.Dives.Select((d, n) => new { dive = d, number = n + 1 }))
+                                {
+                                    <div class="list-group-item row" style="border-top-left-radius:0;border-top-right-radius:0;padding-left:0px" id="dive_@d.dive.DiveID">
+
+                                        <div class="col-lg-2 col-sm-2 col-md-2 col-xs-4">
+                                            <div>№ <b>@d.number</b> from <b>@d.dive.DiveDate.ToString("dd.MM.yyyy")</b></div>
+                                            <div class="top-offset"><img src='/Images/clock.png' title='time of dive in minutes' style="margin-top:-3px" /> &nbsp;: @d.dive.TotalMinutes minutes</div>
+                                            <div><img src='/Images/arrow-315.png' title='dive depth' style="margin-top:-3px" />&nbsp; : @d.dive.MaxDepth meters</div>
+                                        </div>
+
+                                        <div class="col-lg-8 col-sm-8 col-md-7 col-xs-8" style="padding:0">
+                                            @if (d.dive.DiveType == 1)
+                                            {<img src="/Images/morning_sun.png" style='margin-top:-3px;' /> }
+                                            @if (d.dive.DiveType == 2)
+                                            {<img src="/Images/noon_sun.png" style='margin-top:-3px;' /> }
+                                            @if (d.dive.DiveType == 3)
+                                            {<img src="/Images/evening_moon.png" style='margin-top:-3px;' /> }
+                                            @if (d.dive.DiveType == 4)
+                                            {<img src="/Images/moon.png" style='margin-top:-3px;' /> }
+                                            : @d.dive.Comments
+                                        </div>
+
+                                        <div class="col-lg-2 col-sm-2 col-md-3 hidden-xs">
+                                            <a class="btn btn-link" ng-click="" style="margin-top:-10px"><b>Map </b></a>
+                                            <a class="btn btn-link  @(!d.dive.Photos.Any() ? "hidden" : "")" ng-click="pCtrl.getPhotos(@d.dive.DiveID)" style="margin-top:-10px"><b>Photos </b></a>
+                                        </div>
+
+                                    </div>
+                                }
                             </div>
                         </div>
-                    }
+
+                        <div class="panel-body" ng-show="pCtrl.showMaps">
+                            <div ng-click='pCtrl.hideGeoDiveInfo()' ng-show="pCtrl.showGeoDiveInfo" ng-cloak id="geoDiveDetails" style="z-index:5;">
+                                <div class="panel panel-primary" style="cursor:pointer; padding-left:15px;padding-right:15px;width:400px;" onclick="event.cancelBubble = true;">
+                                    <div class="row panel-heading">
+                                        <p class="col-lg-7 col-md-5 col-sm-5 text-left top-offset" style="margin:0;padding:0">Dive №<b>{{pCtrl.selectedGeoDive.DiveNumber}}</b> from <b>{{pCtrl.selectedGeoDive.DiveDate}}</b></p>
+                                        <p class="col-lg-5 col-md-7 col-sm-7 text-right" style="margin:0;padding:0">
+                                            <a class="btn btn-default" ng-show="pCtrl.selectedGeoDive.HasPhotos" style="margin:0;padding:3px" ng-click="pCtrl.getPhotos(pCtrl.selectedGeoDive.DiveId)">
+                                                &nbsp;
+                                                <i class="fa fa-photo"></i>
+                                                See photos
+                                                &nbsp;
+                                            </a>
+                                        </p>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <p class="col-lg-4 col-md-5 col-sm-5 text-left top-offset"><b>Location: </b></p>
+                                        <p class="col-lg-8 col-md-7 col-sm-7 text-left top-offset">{{pCtrl.selectedGeoDive.Location}}</p>
+                                    </div>
+
+                                    <div class="row">
+                                        <p class="col-lg-4 col-md-5 col-sm-5 text-left"><b>Time: </b></p>
+                                        <p class="col-lg-8 col-md-7 col-sm-7 text-left">{{pCtrl.selectedGeoDive.DiveTime}}</p>
+                                    </div>
+
+                                    <div class="row">
+                                        <p class="col-lg-4 col-md-5 col-sm-5 text-left"><b>Depth: </b></p>
+                                        <p class="col-lg-8 col-md-7 col-sm-7 text-left">{{pCtrl.selectedGeoDive.Depth}}</p>
+                                    </div>
+
+                                    <div class="row" style="max-height:140px;overflow-y:auto">
+                                        <p class="col-lg-4 col-md-5 col-sm-5 text-left"><b>Description: </b></p>
+                                        <p class="col-lg-8 col-md-7 col-sm-7 text-justify" style="padding-right:5px;">{{pCtrl.selectedGeoDive.DiveComment}}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="thumbnail" id="map" style="width:100%;height:510px; max-width: none;"></div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -173,38 +210,6 @@
             </div>
         </div>
     </div>
-
-   
-
-    <div ng-click='pCtrl.hideGeoDiveInfo()' ng-show="pCtrl.showGeoDiveInfo" >
-        <div class="panel panel-primary" style="z-index:5; cursor:pointer; padding-left:15px;padding-right:15px;width:300px;height:200px;position:absolute;  top: 50%;left: 50%;  " onclick="event.cancelBubble = true;">
-            <div class="row panel-heading">
-               Dive number from date
-            </div>
-           
-            <div class="row">
-                <p class="col-lg-6 col-md-5 col-sm-5 text-left top-offset"><b>Location: </b></p>
-                <p class="col-lg-6 col-md-7 col-sm-7 text-right top-offset">{{pCtrl.selectedGeoDive.location}}<span ></span> </p>
-            </div>
-
-            <div class="row">
-                <p class="col-lg-6 col-md-5 col-sm-5 text-left top-offset"><b>Time: </b></p>
-                <p class="col-lg-6 col-md-7 col-sm-7 text-right top-offset">{{pCtrl.selectedGeoDive.time}}<span ></span> </p>
-            </div>
-
-            <div class="row">
-                <p class="col-lg-6 col-md-5 col-sm-5 text-left top-offset"><b>Depth: </b></p>
-                <p class="col-lg-6 col-md-7 col-sm-7 text-right top-offset">{{pCtrl.selectedGeoDive.depth}}<span ></span> </p>
-            </div>
-
-            <div class="row">
-                <p class="col-lg-6 col-md-5 col-sm-5 text-left top-offset"><b>Description: </b></p>
-                <p class="col-lg-6 col-md-7 col-sm-7 text-right top-offset">{{pCtrl.selectedGeoDive.description}}<span ></span> </p>
-            </div>
-
-        </div>
-    </div>
-
 </div>
 
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>

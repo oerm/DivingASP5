@@ -108,15 +108,21 @@ namespace DivingApp.BusinessLayer
             try
             {
                 var result = _context.Dives.Where(d => d.User.Id == user.Id && d.Status)
+                                           .Include(d => d.Photos)
+                                           .OrderBy(d => d.DiveDate)
                                            .ToArray()
-                                           .Select(dive => new DiveGeoViewModel()
+                                           .Select((dive,i) => new DiveGeoViewModel()
                                            {
                                                DiveId = dive.DiveID,
-                                               DiveDate = dive.DiveDate,
+                                               DiveNumber = (i+1),
+                                               DiveDate = dive.DiveDate.ToShortDateString(),
                                                DiveComment = dive.Comments,
+                                               Depth = dive.MaxDepth.ToString(),
+                                               DiveTime = dive.TotalMinutes.ToString(),
                                                Location = dive.Location,
                                                CoordinateX = dive.DiveX.ToString(),
-                                               CoordinateY = dive.DiveY.ToString()
+                                               CoordinateY = dive.DiveY.ToString(),
+                                               HasPhotos = dive.Photos.Any()
                                            });
                 return result;
             }

@@ -7,16 +7,24 @@ namespace DivingApp.Models.ViewModel
 {
     public class DiveGeoViewModel
     {
-        public decimal DiveId { get; set; }
+        public long DiveId { get; set; }
+
+        public long DiveNumber { get; set; }
 
         public string Location { get; set; }
 
-        public DateTime DiveDate { get; set; }
+        public string DiveDate { get; set; }
+
+        public string DiveTime { get; set; }
+
+        public string Depth { get; set; }
 
         public string DiveComment { get; set; }
 
         public string CoordinateX { get; set; }
 
         public string CoordinateY { get; set; }
+
+        public bool HasPhotos { get; set; }
     }
 }
