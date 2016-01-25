@@ -17,6 +17,7 @@ namespace DivingApp.Controllers.Api
         UserManager<User> _userManager;
         IPassportManager _passportManager;
         IPhotoManager _photoManager;
+        IDiveManager _diveManager;
 
 
         public DiveDetailsController(EntityContext context, UserManager<User> userManager)
@@ -25,6 +26,7 @@ namespace DivingApp.Controllers.Api
             _userManager = userManager;
             _passportManager = new PassportManager(context);
             _photoManager = new PhotoManager(context);
+            _diveManager = new DiveManager(context);
         }
 
         [AllowAnonymous]
@@ -36,6 +38,7 @@ namespace DivingApp.Controllers.Api
             return Json(_passportManager.GetDivesGeoData(user));
         }
 
+        [AllowAnonymous]
         [HttpGet("api/getuserdivephotobyid/{Email}/{PhotoId}")]
         public async Task<IActionResult> GetUserDivePhotoById(string Email, long PhotoId)
         {
@@ -80,6 +83,21 @@ namespace DivingApp.Controllers.Api
                 }
             }
             return new HttpNotFoundResult();        
+        }
+
+     
+        [Route("api/getuserdives")]
+        [HttpGet]
+        public async Task<IActionResult> GetShortDives()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+                var dives = _diveManager.GetShortDivesListByUserId(user.Id);
+                return Json(dives);
+            }
+            return new HttpUnauthorizedResult();      
+          
         }
 
     }

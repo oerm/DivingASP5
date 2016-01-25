@@ -8,11 +8,11 @@ namespace DivingApp.Models.ViewModel
 {
     public class DiveViewModel
     {
-        public decimal DiveID { get; set; }
+        public long DiveID { get; set; }
         
         [DefaultValue(1)]
         [Editable(false)]
-        public decimal DiveNumber { get; set; }
+        public long DiveNumber { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]

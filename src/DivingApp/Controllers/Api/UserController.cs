@@ -33,6 +33,7 @@ namespace DivingApp.Controllers.Api
         }
 
         [HttpGet("api/users/getusersbyname/{name}")]
+        [AllowAnonymous]
         public JsonResult GetUsersByName(string name)
         {
             var foundUsers = _context.Users
@@ -72,6 +73,13 @@ namespace DivingApp.Controllers.Api
             //    return Content("failed");
             //}
             //return Content("success");
+        }       
+
+        [HttpGet("api/getcountryflag/{countrycode}")]
+        [AllowAnonymous]
+        public ActionResult GetFlag(int countrycode)
+        {            
+            return base.File(_photoManager.GetFlag(countrycode), "image/jpeg");
         }
 
         [HttpGet("api/getuserphoto/{Email}")]
@@ -79,17 +87,10 @@ namespace DivingApp.Controllers.Api
         {
             if (!string.IsNullOrWhiteSpace(Email))
             {
-                var user = await _userManager.FindByEmailAsync(Email);              
+                var user = await _userManager.FindByEmailAsync(Email);
                 if (user != null && user.Photo != null && user.Photo.Length > 0) return File(user.Photo, UserController.imageContentType);
             }
             return new HttpNotFoundResult();
-        }
-
-        [HttpGet("api/getcountryflag/{countrycode}")]
-        [AllowAnonymous]
-        public ActionResult GetFlag(int countrycode)
-        {            
-            return base.File(_photoManager.GetFlag(countrycode), "image/jpeg");
         }
     }
 }

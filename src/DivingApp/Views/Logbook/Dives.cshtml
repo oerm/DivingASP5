@@ -2,97 +2,42 @@
     Layout = "_LogbookLayout";
 }
 
-<form asp-anit-forgery="true">
-    <div class="row col-lg-12">
-        @*<div class="container" style="position:relative;top:250px" id="loginPanel" ng-show="lgCtrl.showLogin">
-            <div class="col-lg-3"></div>
-            <div class="col-lg-5">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Logbook owner information</h3>
-                    </div>
-                    <div class="panel-body">
-                        <input asp-for="email" placeholder="Email adress" class="form-control" />
-                    </div>
-                    <div class="panel-body">
-                        <input asp-for="password" placeholder="Password" class="form-control" />
-                    </div>
-                    <div class="panel-body">
-                        <div>
-                            <div class="checkbox hidden">
-                                <input asp-for="rememberme" />
-                            </div>
-                            <input type="submit" value="Open logbook" class="btn  btn-primary btn-md pull-right btn-block" />
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                        <a asp-controller="Auth" asp-action="Register">Create new logbook</a>
-                    </div>
-                </div>
-                <div id="loginError" class="hiddenIfEmptyDiv">
-                    @Html.ValidationSummary(true, "Errors:", new { @class = "alert alert-danger" })
-                </div>
-            </div>
-            <div class="col-lg-3"></div>
-
-        </div>
-
-        <div class="container" style="position:relative;top:250px" id="paspPanel" ng-show="lgCtrl.showSearch">
-
-            <div class="col-lg-3"></div>
-
-            <div class="col-lg-5">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Search diver</h3>
-                    </div>
-                    <div class="panel-body">
-                        <input id="diverSearch" type="text" class="form-control" placeholder="Firstname, Lastname" ng-model="lgCtrl.searchCriteria" />
-                    </div>
-
-                    <div class="panel-body">
-                        <div class="btn  btn-primary btn-md pull-right btn-block" ng-click="lgCtrl.searchDivers()">Start search </div>
-                    </div>
-                </div>
-
-                <div id="diversNotFound" class="alert alert-warning text-center" ng-show="lgCtrl.showSearchNotFound">
-                    No entries found by search criteria
-                </div>
-            </div>
-
-
-            <div class="col-lg-3"></div>
-        </div>
-
-        <div class="container" style="position:relative;top:150px;" id="diversResults" ng-show="lgCtrl.showSearchResults">
-
+<form asp-anit-forgery="true" ng-app="diving-app" ng-controller="diveController as diveCtrl" ng-init="diveCtrl.init('@User.Identity.Name')">
+    <div class="container" style="height:100%;">
+        <div style="width:250px;margin-top:80px">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <span class="col-lg-1">&nbsp;</span>
-                        <span class="hidden-md hidden-sm hidden-xs col-lg-1">Photo</span>
-                        <span>Information</span>
-                    </h3>
+                    <span class="navmenu-text"><b>My dives</b></span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="btn btn-default btn-sm" >
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;Create new
+                    </a>
                 </div>
-                <div class="panel-body" ng-repeat="p in lgCtrl.searchResults">
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <div class="hidden-md hidden-sm hidden-xs col-lg-1" style="margin-left:-10px;padding-left:-10px">
-                                <div class="btn btn-primary btn-sm" ng-click="lgCtrl.openPasp(p.email)" style="position:absolute;top:25%">Open</div>
-                            </div>
-                            <div class="hidden-md hidden-sm hidden-xs col-lg-1" style="margin-left:-10px;padding-left:-10px">
-                                <img ng-src="Account/GetPhotoById/{{p.id}}" class="img-responsive img-thumbnail pull-left" />
-                            </div>
+                <div class="panel-body" style="padding:0;">
+                    <ui class="list-group" >
+                        <li>
                             <div>
-                                <h5><b>Diver: </b>{{p.fullName}}, <b>Age:</b> {{p.age}}</h5>
-                                <h5><b>Email: </b> {{p.email}}</h5>
-                                <h5><b>Contact: </b>{{p.city}} {{p.adress}} {{p.country}} &nbsp;<img ng-src="@Url.Action("GetFlag", "Dive")/{{p.countryCode}}" /></h5>
+                                <a class="list-group-item" href="#" ng-repeat="d in diveCtrl.Dives">
+                                    {{d.DiveNumber}} {{d.DiveDate}} {{d.DiveCountry}}
+                                </a>
                             </div>
-                        </div>
-                    </div>
+                        </li>
+                        @*<div class="hidden-md hidden-sm hidden-xs col-lg-1" style="margin-left:-10px;margin-right:20px;padding-left:-10px;width:90px;height:70px">
+                                <img ng-src="api/getuserphoto/{{p.UserName}}" class="img-responsive pull-left img-thumbnail img-circle " style="height:100%;width:100%" />
+                            </div>
+                            <div class="hidden-md hidden-sm hidden-xs col-lg-10">
+                                <p><b>Birth year:</b> {{p.BirthYear}}<b>&nbsp;&nbsp; Diver: </b>{{p.FullName}}</p>
+                                <p><b>Email: </b> {{p.UserName}} <b>&nbsp;&nbsp;Contact: </b>{{p.PhoneNumber}} &nbsp;&nbsp;&nbsp;<img style="margin-top:-2px" ng-src="api/getcountryflag/{{p.CountryKod}}" /></p>
+                            </div>
+                            <div class="hidden-md hidden-sm hidden-xs col-lg-1" style="margin-left:-10px;padding-left:-10px">
+                                <div class="btn btn-primary btn-sm top-offset-double" ng-click="lgCtrl.openPasp(p.UserName)" style="top:25%">Open</div>
+                            </div>*@
+                        
+                    </ui>
                 </div>
+
             </div>
-        </div>*@
+        </div>    
     </div>
 </form>
 

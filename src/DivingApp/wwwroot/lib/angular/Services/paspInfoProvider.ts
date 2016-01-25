@@ -1,7 +1,7 @@
 ﻿///<reference path="../../typings/angularjs/angular.d.ts" /> 
 
 module Diving.Services {
-    export class PaspService implements IPaspDataService {
+    export class DataService implements IPaspDataService {
 
         private http;
 
@@ -32,10 +32,19 @@ module Diving.Services {
                 callback(error);
             });
         }
+
+        GetAuthorizedUserDives(callback: Function) {
+            this.http.get('/api/getuserdives').success((data, status) => {
+                callback(data);
+            }).error(error => {
+                callback(error);
+            });            
+        }
     }
 
     export interface IPaspDataService {
         GetGeoPoints(email: string, callback: Function);
+        GetAuthorizedUserDives(callback: Function);
     }
 }
 

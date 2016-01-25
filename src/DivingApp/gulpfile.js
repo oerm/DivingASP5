@@ -28,6 +28,7 @@ gulp.task('buildangularcontrollers', function () {
       return gulp.src([path + "angular/services/paspinfoprovider.js",
                        path + "angular/controllers/logincontroller.js",
                        path + "angular/controllers/paspcontroller.js",
+                       path + "angular/controllers/divecontroller.js",
                        path + "angular/app.js"])
                .pipe(concat('controllers.min.js'))
     /*
