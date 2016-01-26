@@ -2,9 +2,18 @@
     width:100%
 }
 
+.top-offset-sm {
+    margin-top:5px
+}
+
 .top-offset {
     margin-top:10px
 }
+
+.top-offset-lg {
+    margin-top:15px
+}
+
 
 .top-offset-double {
     margin-top:20px
