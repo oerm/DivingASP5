@@ -15,7 +15,9 @@ module Diving.Controllers {
         public Dives;
         public photos;     
 
-        public showDives: boolean;        
+        public showDivesTab: boolean; 
+        public showMapsTab: boolean;      
+        public showPhotosTab: boolean;           
 
         private dataService;  
         private options: any;
@@ -28,7 +30,9 @@ module Diving.Controllers {
             this.dataService = dataService;
             this.selectedDiveId = -1;
             this.selectedPhotoIndex = -1;
-            this.showDives = true;        
+            this.showDivesTab = true; 
+            this.showMapsTab = false;
+            this.showPhotosTab = false;
             this.map = undefined;
             this.scope = $scope;
             var that = this;
@@ -40,6 +44,26 @@ module Diving.Controllers {
 
         public init(userEmail) {            
             this.currentUserEmail = userEmail;
+        }
+
+        public showSelectedDiveTab(tabIndex: number) {
+            if (tabIndex == 1) {
+                this.showDivesTab = true;
+                this.showMapsTab = false;
+                this.showPhotosTab = false;               
+            }
+
+            if (tabIndex == 2) {
+                this.showDivesTab = false;
+                this.showMapsTab = true;
+                this.showPhotosTab = false;         
+            }
+
+            if (tabIndex == 3) {
+                this.showDivesTab = false;
+                this.showMapsTab = false;
+                this.showPhotosTab = true;
+            }
         }
     }
 }

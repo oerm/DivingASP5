@@ -3,20 +3,25 @@
 }
 
 <form asp-anit-forgery="true" ng-app="diving-app" ng-controller="diveController as diveCtrl" ng-init="diveCtrl.init('@User.Identity.Name')">
-    <div class="container" style="height:100%;padding-top:80px">
+
+    <div class="row">
         <div style="width:280px;display:inline-block">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <div style="display:inline-block;width:144px">
-                        <span class="navmenu-text"><b>My dives</b></span>
-                    </div>
-                    <div class="btn btn-default btn-sm" style="display:inline-block">
-                        <i class="fa fa-plus"></i>&nbsp;&nbsp;Create new
+                    <div class="row">
+                        <div style="display:inline-block;padding:5px;padding-left:10px">
+                            <span class="navmenu-text"><b>My dives</b></span>
+                        </div>
+                        <div class="btn-group pull-right" style="margin-right:10px;">
+                            <span class="btn btn-default btn-sm">
+                                <span class="fa fa-plus"></span>&nbsp;&nbsp;Create new
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="panel-body" style="padding:0;margin-bottom:-1px;">
                     <ul class="list-group" style="padding:0;margin-bottom:0" ng-show="diveCtrl.Dives.length>0">
-                        <li class="list-group-item" ng-repeat="d in diveCtrl.Dives" style="padding-right:0;padding-left:10px;border-radius:0">
+                        <li class="list-group-item" ng-repeat="d in diveCtrl.Dives" style="padding-right:0;padding-left:10px;border-radius:0;border-left:0;border-right:0">
                             <div style="width:210px;display: inline-block">
                                 <img style="margin-top:-4px;display: inline-block" ng-src="/api/getcountryflag/{{d.CountryID}}" />
                                 &nbsp;
@@ -41,15 +46,15 @@
 
                 </div>
                 <div class="panel-footer">
-                    <div class="row" style="margin:0">
-                        <div style="padding-left:5px;display: inline-block;width:110px">
-                            <p>
-                                Total count &nbsp;
+                    <div class="row">
+                        <div style="display: inline-block;padding:5px;padding-left:10px">
+                            <span>
+                                <b>Total</b> &nbsp;
                                 <span class="label label-info">{{diveCtrl.Dives.length}}</span>
-                            </p>
+                            </span>
                         </div>
-                        <div style="display: inline-block;padding:0;margin:0;">
-                            <ul class="pagination pagination-sm pull-right" style="margin:0;display: inline-block;">
+                        <div class="pull-right" style="display: inline-block;padding:0;margin-right:10px;">
+                            <ul class="pagination pagination-sm " style="margin:0;display: inline-block;">
                                 <li class="disabled">
                                     <a href="#">«</a>
                                 </li>
@@ -79,76 +84,138 @@
                         <div style="display:inline-block;padding:5px;padding-left:10px">
                             <span class="navmenu-text"><b>Dive properties</b></span>
                         </div>
-                        <div class="btn btn-success btn-sm pull-right" style="display:inline-block;margin-right:10px;">
+                        <div class="btn btn-default btn-sm pull-right" style="display:inline-block;margin-right:10px;">
                             <i class="fa fa-save"></i>&nbsp;&nbsp;Save changes
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div class="col-lg-2 col-md-4 form-group-sm top-offset">
-                        Dive date
-                    </div>
-                    <div class="col-lg-4 col-md-8 top-offset-sm">
-                        <input type="text" class="form-control input-sm" placeholder="Select dive date" />
-                    </div>
-                    <div class="col-lg-2 col-md-4 form-group-sm top-offset">
-                        Country
-                    </div>
-                    <div class="col-lg-4 col-md-8 top-offset-sm">
-                        <select asp-items="@ViewBag.Countries" class="form-control input-sm"></select>
-                    </div>
+                    <div class="row" style="padding-left:25px;">
+                        <ul class="nav nav-pills">
+                            <li role="presentation" ng-class="diveCtrl.showDivesTab? 'active' :''" ng-click="diveCtrl.showSelectedDiveTab(1)">
+                                <a href="#">
+                                    <i class="fa fa-list"></i>&nbsp;&nbsp;
+                                    Details
+                                </a>
+                            </li>
+                            <li role="presentation" ng-class="diveCtrl.showMapsTab? 'active' :''" ng-click="diveCtrl.showSelectedDiveTab(2)">
+                                <a href="#">
+                                    <i class="fa fa-globe"></i>&nbsp;&nbsp;
+                                    Map
+                                </a>
+                            </li>
+                            <li role="presentation" ng-class="diveCtrl.showPhotosTab? 'active' :''" ng-click="diveCtrl.showSelectedDiveTab(3)">
+                                <a href="#">
+                                    <i class="fa fa-image"></i>&nbsp;&nbsp;
+                                    Photos
+                                </a>
+                            </li>
+                        </ul>
+                    </div>                 
 
-                    <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg" placeholder="Dive location name">
-                        Location
-                    </div>
-                    <div class="col-lg-10 col-md-8 top-offset">
-                        <input type="text" class="form-control input-sm" />
-                    </div>                  
+                    <div ng-show="diveCtrl.showDivesTab">
+                            <div class="row text-left" style="padding-left:25px;padding-bottom:10px;">
+                                <h3>General Dive details:</h3>
+                            </div>
 
-                    <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
-                        Maximum depth
-                    </div>
-                    <div class="col-lg-4 col-md-8 top-offset">
-                        <input type="text" class="form-control input-sm" />
-                    </div>
-                    <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
-                        Total minutes
-                    </div>
-                    <div class="col-lg-4 col-md-8 top-offset">
-                        <input type="text" class="form-control input-sm" />
-                    </div>
+                            <div class="col-lg-2 col-md-4 form-group-sm top-offset ">
+                                Dive date
+                            </div>
+                            <div class="col-lg-4 col-md-8 top-offset-sm">
+                                <input type="text" class="form-control input-sm" placeholder="Select dive date" />
+                            </div>
+                            <div class="col-lg-2 col-md-4 form-group-sm top-offset">
+                                Country
+                            </div>
+                            <div class="col-lg-4 col-md-8 top-offset-sm">
+                                <select asp-items="@ViewBag.Countries" class="form-control input-sm"></select>
+                            </div>
 
-                    <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
-                        Suit type
-                    </div>
-                    <div class="col-lg-4 col-md-8 top-offset">
-                        <select asp-items="@ViewBag.Suits" class="form-control input-sm"></select>
-                    </div>
-                    <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
-                        Tank type
-                    </div>
-                    <div class="col-lg-4 col-md-8 top-offset">
-                        <select asp-items="@ViewBag.Suits" class="form-control input-sm"></select>
-                    </div>
+                            <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg" placeholder="Dive location name">
+                                Location
+                            </div>
+                            <div class="col-lg-10 col-md-8 top-offset">
+                                <input type="text" class="form-control input-sm" />
+                            </div>
 
-                    <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
-                        Tank consume
-                    </div>
-                    <div class="col-lg-4 col-md-8 top-offset">
-                        <input type="text" class="form-control input-sm" placeholder="Start" style="width:44%;display:inline-block"  />
-                        <input type="text" class="form-control input-sm pull-right" placeholder="End" style="width:44%;display:inline-block" />
-                    </div>
-                    <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
-                        Tank type
-                    </div>
-                    <div class="col-lg-4 col-md-8 top-offset">
-                        <select asp-items="@ViewBag.Suits" class="form-control input-sm"></select>
-                    </div>
+                            <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
+                                Dive depth
+                            </div>
+                            <div class="col-lg-4 col-md-8 top-offset">
+                                <input type="text" class="form-control input-sm" placeholder="Maximum depth in meters" />
+                            </div>
+                            <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
+                                Total minutes
+                            </div>
+                            <div class="col-lg-4 col-md-8 top-offset">
+                                <input type="text" class="form-control input-sm" placeholder="Time in minutes" />
+                            </div>
 
+                            <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
+                                Suit type
+                            </div>
+                            <div class="col-lg-4 col-md-8 top-offset">
+                                <select asp-items="@ViewBag.Suits" class="form-control input-sm"></select>
+                            </div>
+                            <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
+                                Tank type
+                            </div>
+                            <div class="col-lg-4 col-md-8 top-offset">
+                                <select asp-items="@ViewBag.Suits" class="form-control input-sm"></select>
+                            </div>
 
-                </div>
-            </div>
+                            <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
+                                Tank consume
+                            </div>
+                            <div class="col-lg-4 col-md-8 top-offset">
+                                <input type="text" class="form-control input-sm" placeholder="Start" style="width:44%;display:inline-block" />
+                                <input type="text" class="form-control input-sm pull-right" placeholder="End" style="width:44%;display:inline-block" />
+                            </div>
+                            <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
+                                Visibility
+                            </div>
+                            <div class="col-lg-4 col-md-8 top-offset">
+                                <input type="text" class="form-control input-sm" placeholder="Approximet in meters" />
+                            </div>
+
+                            <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
+                                Total weights
+                            </div>
+                            <div class="col-lg-4 col-md-8 top-offset">
+                                <input type="text" class="form-control input-sm" placeholder="Kilos" />
+                            </div>
+                            <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
+                                Weights suit
+                            </div>
+                            <div class="col-lg-4 col-md-8 top-offset">
+                                <select asp-items="@ViewBag.WeightIsOk" class="form-control input-sm"></select>
+                            </div>
+
+                            <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
+                                Description
+                            </div>
+                            <div class="col-lg-10 col-md-8 top-offset">
+                                <textarea rows="10" class="form-control input-sm"></textarea>
+                            </div>
+
+                        </div>
+
+                        <div ng-show="diveCtrl.showMapsTab">
+                            <div class="row text-left" style="padding-left:25px;padding-bottom:10px;">
+                                <h3>Dive location on world map:</h3>
+                            </div>
+                            
+                            <div class="thumbnail" id="map" style="width:100%;height:510px; max-width: none;"></div>                          
+                        </div>
+
+                        <div ng-show="diveCtrl.showPhotosTab">
+                            <div class="row text-left" style="padding-left:25px;padding-bottom:10px;">
+                                <h3>Photos from the dive:</h3>
+                            </div>
+                        </div>
+                    </div>
         </div>
+    </div>
     </div>
 </form>
 

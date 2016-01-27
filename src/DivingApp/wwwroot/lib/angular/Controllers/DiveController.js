@@ -9,7 +9,9 @@ var Diving;
                 this.dataService = dataService;
                 this.selectedDiveId = -1;
                 this.selectedPhotoIndex = -1;
-                this.showDives = true;
+                this.showDivesTab = true;
+                this.showMapsTab = false;
+                this.showPhotosTab = false;
                 this.map = undefined;
                 this.scope = $scope;
                 var that = this;
@@ -19,6 +21,23 @@ var Diving;
             }
             diveController.prototype.init = function (userEmail) {
                 this.currentUserEmail = userEmail;
+            };
+            diveController.prototype.showSelectedDiveTab = function (tabIndex) {
+                if (tabIndex == 1) {
+                    this.showDivesTab = true;
+                    this.showMapsTab = false;
+                    this.showPhotosTab = false;
+                }
+                if (tabIndex == 2) {
+                    this.showDivesTab = false;
+                    this.showMapsTab = true;
+                    this.showPhotosTab = false;
+                }
+                if (tabIndex == 3) {
+                    this.showDivesTab = false;
+                    this.showMapsTab = false;
+                    this.showPhotosTab = true;
+                }
             };
             return diveController;
         })();

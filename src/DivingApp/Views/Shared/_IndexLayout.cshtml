@@ -9,37 +9,36 @@
 </head>
 
 <body ng-app="diving-app" ng-controller="loginController as lgCtrl">
-    <div class="bs-component">
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-brand">
-                    DIVE LOGBOOK
-                </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li ng-class="lgCtrl.showLogin? 'active' :''" ng-click="lgCtrl.showTab(1)">
-                            <a href="#">
-                                <i class="fa fa-user"></i>
-                                &nbsp;Login Logbook<span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li ng-class="lgCtrl.showSearch? 'active' :''" ng-click="lgCtrl.showTab(2)">
-                            <a href="#">
-                                <i class="fa fa-search"></i>
-                                &nbsp;Search Diver
-                            </a>
-                        </li>
-                        <li ng-class="lgCtrl.showSearchResults? 'active' :''" ng-click="lgCtrl.showTab(3)" ng-show="lgCtrl.searchResults.length>0">
-                            <a href="#">
-                                <i class="fa fa-list"></i>
-                                &nbsp;Search Results
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-brand">
+                DIVE LOGBOOK
             </div>
-        </nav>
-    </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li ng-class="lgCtrl.showLogin? 'active' :''" ng-click="lgCtrl.showTab(1)">
+                        <a href="#">
+                            <i class="fa fa-user"></i>
+                            &nbsp;Login Logbook<span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li ng-class="lgCtrl.showSearch? 'active' :''" ng-click="lgCtrl.showTab(2)">
+                        <a href="#">
+                            <i class="fa fa-search"></i>
+                            &nbsp;Search Diver
+                        </a>
+                    </li>
+                    <li ng-class="lgCtrl.showSearchResults? 'active' :''" ng-click="lgCtrl.showTab(3)" ng-show="lgCtrl.searchResults.length>0">
+                        <a href="#">
+                            <i class="fa fa-list"></i>
+                            &nbsp;Search Results
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <main id="body">
         @RenderBody()

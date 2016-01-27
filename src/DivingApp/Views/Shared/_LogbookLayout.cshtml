@@ -12,16 +12,15 @@
   
 </head>
 
-<body style="height:100%;min-height: 100%;">
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+<body>
+    <nav class="navbar navbar-inverse">
         <div class="container">
             <div class="navbar-brand">
                 DIVE LOGBOOK
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown" ng-class="lgCtrl.showLogin? 'active' :''" ng-click="lgCtrl.showTab(1)">
+                    <li class="dropdown active" ng-class="lgCtrl.showLogin? 'active' :''" ng-click="lgCtrl.showTab(1)">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-flag"></i>
                             &nbsp;Dives&nbsp;&nbsp;<span class="caret"></span>
@@ -34,11 +33,11 @@
                         </ul>
                     </li>
                     @*<li ng-class="lgCtrl.showSearch? 'active' :''" ng-click="lgCtrl.showTab(2)">
-                            <a href="#">
-                                <i class="fa fa-search"></i>
-                                &nbsp;Search Diver
-                            </a>
-                    </li>*@
+                                <a href="#">
+                                    <i class="fa fa-search"></i>
+                                    &nbsp;Search Diver
+                                </a>
+                        </li>*@
 
                 </ul>
                 <div class="pull-right top-offset">
@@ -60,8 +59,10 @@
         </div>
     </nav>
 
-   <main id="body"  style="height:100%;min-height: 100%;">      
-        @RenderBody()
+    <main id="body">
+        <div class="container">
+            @RenderBody()
+        </div>
     </main>
 
     <footer class="navbar navbar-default navbar-fixed-bottom">
@@ -70,7 +71,7 @@
                 &copy; @DateTime.Now.Year - Oleksii Yermolenko
             </h3>
         </div>
-    </footer> 
+    </footer>
 
 </body>
 </html>
