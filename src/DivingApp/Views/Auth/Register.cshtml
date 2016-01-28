@@ -7,8 +7,8 @@
 
     <div class="container">
 
-        <div class="row col-lg-12" style="top:70px">
-            <div asp-validation-summary="ValidationSummary.All" class="text-danger" style="padding-top:10px;"></div>
+        <div class="row col-lg-12">
+            <div asp-validation-summary="ValidationSummary.All" class="text-danger" ></div>
             <div class="text-success">@ViewBag.ChangedOkText</div>
 
             <h3>Registration</h3>
@@ -117,7 +117,7 @@
             </div>
         </div>
 
-        <div class="col-lg-12 row" style="margin-top:100px;padding-left:20px;">
+        <div class="col-lg-12 row" style="margin-top:40px;padding-left:20px;">
             <a class="btn btn-primary" asp-controller="home" asp-action="index">Return back</a>
             &nbsp;
             <input type="submit" class="btn btn-success" value="Create user" />

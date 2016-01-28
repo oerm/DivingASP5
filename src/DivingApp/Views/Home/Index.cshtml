@@ -1,94 +1,91 @@
 ﻿@model DivingApp.Models.ViewModel.LoginViewModel
 
-<form asp-controller="Auth" asp-action="Login" asp-anit-forgery="true">
-    <div class="row col-lg-12">
-        <div class="container" style="position:relative;top:250px" id="loginPanel" ng-show="lgCtrl.showLogin">
-            <div class="col-lg-3"></div>
-            <div class="col-lg-5">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Logbook owner information</h3>
-                    </div>
-                    <div class="panel-body">
-                        <input asp-for="Email" placeholder="Email address" class="form-control" />
-                    </div>
-                    <div class="panel-body">
-                        <input asp-for="Password" placeholder="Password" type="password" class="form-control" />
-                    </div>
-                    <div class="panel-body">
-                        <div>
-                            <input type="submit" value="Open logbook" class="btn  btn-primary btn-md pull-right btn-block" />
+<form asp-controller="Auth" asp-action="Login" asp-anit-forgery="true" >
+    <div class="container" >
+        <div class="row col-lg-12">
+
+            <div id="loginPanel" ng-show="lgCtrl.showLogin" style="margin-top:100px;">
+                <div class="col-lg-4 col-lg-offset-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Logbook owner information</h3>
                         </div>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <a asp-controller="Auth" asp-action="Register">Create new logbook</a>
-                            </div>
-                            <div class="col-lg-6 text-right">
-                                <input asp-for="RememberMe" type="checkbox" />
-                                <span>Remember me</span>
+                        <div class="panel-body">
+                            <input asp-for="Email" placeholder="Email address" class="form-control" />
+                        </div>
+                        <div class="panel-body">
+                            <input asp-for="Password" placeholder="Password" type="password" class="form-control" />
+                        </div>
+                        <div class="panel-body">
+                            <div>
+                                <input type="submit" value="Open logbook" class="btn  btn-primary btn-md pull-right btn-block" />
                             </div>
                         </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <a asp-controller="Auth" asp-action="Register">Create new logbook</a>
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    <input asp-for="RememberMe" type="checkbox" />
+                                    <span>Remember me</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div asp-validation-summary="ValidationSummary.All" class="text-danger" style="padding-top:10px;"></div>
-              
-            </div>
-            <div class="col-lg-3"></div>
-
-        </div>
-
-        <div class="container" style="position:relative;top:250px" id="paspPanel" ng-show="lgCtrl.showSearch">
-
-            <div class="col-lg-3"></div>
-
-            <div class="col-lg-5">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Search diver</h3>
-                    </div>
-                    <div class="panel-body">
-                        <input id="diverSearch" type="text" class="form-control" placeholder="Firstname, Lastname" ng-model="lgCtrl.searchCriteria" />
-                    </div>
-
-                    <div class="panel-body">
-                        <div class="btn  btn-primary btn-md pull-right btn-block" ng-click="lgCtrl.searchDivers()">Start search </div>
-                    </div>
-                </div>
-
-                <div id="diversNotFound" class="alert alert-warning text-center" ng-show="lgCtrl.showSearchNotFound">
-                    No entries found by search criteria
+                    <div asp-validation-summary="ValidationSummary.All" class="text-danger" style="padding-top:10px;"></div>
                 </div>
             </div>
 
+            <div id="paspPanel" ng-show="lgCtrl.showSearch" style="margin-top:100px;">
 
-            <div class="col-lg-3"></div>
-        </div>       
+                <div class="col-lg-6 col-lg-offset-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Search diver</h3>
+                        </div>
+                        <div class="panel-body">
+                            <input id="diverSearch" type="text" class="form-control" placeholder="Firstname, Lastname" ng-model="lgCtrl.searchCriteria" />
+                        </div>
 
-        <div class="container" style="position:relative;top:120px;" id="diversResults" ng-show="lgCtrl.showSearchResults">
+                        <div class="panel-body">
+                            <div class="btn  btn-primary btn-md pull-right btn-block" ng-click="lgCtrl.searchDivers()">Start search </div>
+                        </div>
+                    </div>
 
-            <h1 class="text-center">Search results:</h1>
-
-            <div class="panel panel-primary top-offset-double">              
-                <div class="panel-heading">
-                    <h3 class="panel-title" style="padding-left:15px;">                       
-                        <span class="hidden-md hidden-sm hidden-xs col-lg-1">Photo</span>
-                        <span style="padding-left:15px;">Information</span>
-                    </h3>
+                    <div id="diversNotFound" class="alert alert-warning text-center" ng-show="lgCtrl.showSearchNotFound">
+                        No entries found by search criteria
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <div class="list-group" style="padding-left:10px;padding-right:10px;margin-bottom:5px;">
-                        <div class="list-group-item row" ng-repeat="p in lgCtrl.searchResults">                           
-                            <div class="hidden-md hidden-sm hidden-xs col-lg-1" style="margin-left:-10px;margin-right:20px;padding-left:-10px;width:90px;height:70px">
-                                <img ng-src="api/getuserphoto/{{p.UserName}}" class="img-responsive pull-left img-thumbnail img-circle " style="height:100%;width:100%" />
-                            </div>                    
-                            <div class="hidden-md hidden-sm hidden-xs col-lg-10">
-                                <p><b>Birth year:</b> {{p.BirthYear}}<b>&nbsp;&nbsp; Diver: </b>{{p.FullName}}</p>
-                                <p><b>Email: </b> {{p.UserName}} <b>&nbsp;&nbsp;Contact: </b>{{p.PhoneNumber}} &nbsp;&nbsp;&nbsp;<img style="margin-top:-2px" ng-src="api/getcountryflag/{{p.CountryKod}}" /></p>
-                            </div>
-                            <div class="hidden-md hidden-sm hidden-xs col-lg-1" style="margin-left:-10px;padding-left:-10px">
-                                <div class="btn btn-primary btn-sm top-offset-double" ng-click="lgCtrl.openPasp(p.UserName)" style="top:25%">Open</div>
+
+            </div>
+
+            <div id="diversResults" ng-show="lgCtrl.showSearchResults">
+
+                <h1 class="text-center">Search results:</h1>
+
+                <div class="panel panel-primary top-offset-double">
+                    <div class="panel-heading">
+                        <div class="panel-title" style="padding-left:35px;">
+                            <div style="width:90px;display:inline-block;">Photo</div>
+                            <div style="display:inline-block">Information</div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="list-group" style="padding-left:10px;padding-right:10px;margin-bottom:5px;">
+                            <div class="list-group-item" ng-repeat="p in lgCtrl.searchResults">
+                                <div style="width:80px;display:inline-block">
+                                    <div style="padding-top:5px;padding-left:5px; height:60px;width:60px;">
+                                        <img ng-src="api/getuserphoto/{{p.UserName}}" onerror="this.src = '/images/icon.png'" class="img-responsive pull-left img-thumbnail img-circle " style="height:100%;width:100%" />
+                                    </div>
+                                </div>
+                                <div style="display:inline-block;vertical-align:top;padding-top:7px">
+                                    <p><b>Birth year:</b> {{p.BirthYear}}<b>&nbsp;&nbsp; Diver: </b>{{p.FullName}}</p>
+                                    <div><b>Email: </b> {{p.UserName}} <b>&nbsp;&nbsp;Contact: </b>{{p.PhoneNumber}} &nbsp;&nbsp;&nbsp;<img style="margin-top:-2px" ng-src="api/getcountryflag/{{p.CountryKod}}" /></div>
+                                </div>
+                                <div class="pull-right" >
+                                    <div class="btn btn-primary btn-sm top-offset-double" ng-click="lgCtrl.openPasp(p.UserName)" style="top:25%">Open</div>
+                                </div>
                             </div>
                         </div>
                     </div>

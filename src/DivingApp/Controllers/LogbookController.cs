@@ -10,7 +10,6 @@ using DivingApp.Models.DataModel;
 namespace DivingApp.Controllers
 {
 
-    [Authorize]
     public class LogbookController : Controller
     {
         const string LogoutControllerName = "Home";
@@ -24,8 +23,12 @@ namespace DivingApp.Controllers
         }
 
         public IActionResult Dives()
-        {           
-            return View();
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            return RedirectToAction(LogbookController.LogoutDefaultActionName, LogbookController.LogoutControllerName);
         }
 
         public async Task<IActionResult> Logout()
