@@ -23,6 +23,8 @@ namespace DivingApp.Models.ViewModel
         }
         private DateTime _diveDate = DateTime.Now;
 
+        public string DiveDateString { get; set; }
+
         [Required]
         public Nullable<decimal> CountryId { get; set; }
 

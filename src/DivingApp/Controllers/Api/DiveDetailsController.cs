@@ -96,9 +96,20 @@ namespace DivingApp.Controllers.Api
                 var dives = _diveManager.GetShortDivesListByUserId(user.Id);
                 return Json(dives);
             }
-            return new HttpUnauthorizedResult();      
-          
+            return new HttpUnauthorizedResult();        
         }
 
+        [Route("api/getuserdivebyid/{diveId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetDiveById(long diveId)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+                var dive = _diveManager.GetDiveById(user.Id,diveId);
+                return Json(dive);
+            }
+            return new HttpUnauthorizedResult();
+        }
     }
 }

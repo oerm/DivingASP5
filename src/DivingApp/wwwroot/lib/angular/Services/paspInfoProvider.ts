@@ -40,11 +40,20 @@ module Diving.Services {
                 callback(error);
             });            
         }
+
+        GetAuthorizedUserDiveById(diveId: string, callback: Function) {
+            this.http.get('/api/getuserdivebyid/' + diveId).success((data, status) => {
+                callback(data);
+            }).error(error => {
+                callback(error);
+            });
+        }
     }
 
     export interface IPaspDataService {
         GetGeoPoints(email: string, callback: Function);
         GetAuthorizedUserDives(callback: Function);
+        GetAuthorizedUserDiveById(diveId: string, callback: Function);
     }
 }
 

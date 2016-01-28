@@ -35,6 +35,13 @@ var Diving;
                     callback(error);
                 });
             };
+            DataService.prototype.GetAuthorizedUserDiveById = function (diveId, callback) {
+                this.http.get('/api/getuserdivebyid/' + diveId).success(function (data, status) {
+                    callback(data);
+                }).error(function (error) {
+                    callback(error);
+                });
+            };
             return DataService;
         })();
         Services.DataService = DataService;

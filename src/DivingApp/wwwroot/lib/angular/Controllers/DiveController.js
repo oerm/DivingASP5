@@ -7,8 +7,8 @@ var Diving;
         var diveController = (function () {
             function diveController($scope, dataService) {
                 this.dataService = dataService;
-                this.selectedDiveId = -1;
                 this.selectedPhotoIndex = -1;
+                this.selectedDiveId = -1;
                 this.showDivesTab = true;
                 this.showMapsTab = false;
                 this.showPhotosTab = false;
@@ -16,7 +16,10 @@ var Diving;
                 this.scope = $scope;
                 var that = this;
                 dataService.GetAuthorizedUserDives(function (data) {
-                    that.Dives = data;
+                    that.dives = data;
+                    if (data.length > 0) {
+                        that.GetDive(data[0].DiveID);
+                    }
                 });
             }
             diveController.prototype.init = function (userEmail) {
@@ -32,12 +35,37 @@ var Diving;
                     this.showDivesTab = false;
                     this.showMapsTab = true;
                     this.showPhotosTab = false;
+                    var that = this;
+                    setTimeout(function () {
+                        this.options = {
+                            zoom: 2,
+                            center: new google.maps.LatLng(1, 1),
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                        };
+                        if (!that.map) {
+                            that.map = new google.maps.Map(document.getElementById('map'), this.options);
+                            that.map.addListener('zoom_changed', function () {
+                                that.scope.$apply();
+                            });
+                            that.map.addListener('click', function () {
+                                that.scope.$apply();
+                            });
+                        }
+                    });
                 }
                 if (tabIndex == 3) {
                     this.showDivesTab = false;
                     this.showMapsTab = false;
                     this.showPhotosTab = true;
                 }
+            };
+            diveController.prototype.GetDive = function (diveId) {
+                var that = this;
+                that.selectedDiveId = diveId;
+                this.dataService.GetAuthorizedUserDiveById(diveId, function (data) {
+                    that.selectedDive = data;
+                    that.scope.$apply();
+                });
             };
             return diveController;
         })();
