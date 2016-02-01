@@ -83,7 +83,12 @@ module Diving.Controllers {
                             var clickHandler = function () {
                                 var currentDive = data[i];
                                 var diveId = data[i].DiveId;
-                                marker = new google.maps.Marker({ map: that.map, draggable: false, title: data[i].Location + ": " + data[i].DiveComment, position: new google.maps.LatLng(data[i].CoordinateX, data[i].CoordinateY) });
+                                marker = new google.maps.Marker({
+                                    map: that.map,
+                                    draggable: false,
+                                    title: data[i].Location + ": " + data[i].DiveComment,
+                                    position: new google.maps.LatLng(data[i].CoordinateX, data[i].CoordinateY)
+                                });
                                 marker.data = data[i];
                                 marker.addListener('click', function (e) {                                   
                                     that.selectedGeoDive = this.data;

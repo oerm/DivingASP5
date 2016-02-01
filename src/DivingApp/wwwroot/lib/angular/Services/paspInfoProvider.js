@@ -42,6 +42,13 @@ var Diving;
                     callback(error);
                 });
             };
+            DataService.prototype.GetDiveDictionaries = function (callback) {
+                this.http.get('/api/getdivedictionaries').success(function (data, status) {
+                    callback(data);
+                }).error(function (error) {
+                    callback(error);
+                });
+            };
             return DataService;
         })();
         Services.DataService = DataService;

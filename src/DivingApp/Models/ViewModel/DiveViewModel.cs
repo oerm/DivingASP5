@@ -26,7 +26,7 @@ namespace DivingApp.Models.ViewModel
         public string DiveDateString { get; set; }
 
         [Required]
-        public Nullable<decimal> CountryId { get; set; }
+        public Nullable<long> CountryId { get; set; }
 
         public string Location { get; set; }
 

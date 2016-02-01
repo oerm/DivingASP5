@@ -48,12 +48,21 @@ module Diving.Services {
                 callback(error);
             });
         }
+
+        GetDiveDictionaries(callback: Function) {
+            this.http.get('/api/getdivedictionaries').success((data, status) => {
+                callback(data);
+            }).error(error => {
+                callback(error);
+            });
+        }   
     }
 
     export interface IPaspDataService {
         GetGeoPoints(email: string, callback: Function);
         GetAuthorizedUserDives(callback: Function);
         GetAuthorizedUserDiveById(diveId: string, callback: Function);
+        GetDiveDictionaries(allback: Function);
     }
 }
 

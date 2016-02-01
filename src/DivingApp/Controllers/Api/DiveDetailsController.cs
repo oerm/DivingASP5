@@ -5,6 +5,7 @@ using DivingApp.Models.DataModel;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DivingApp.Controllers.Api
@@ -60,6 +61,60 @@ namespace DivingApp.Controllers.Api
             }
             return new HttpNotFoundResult();
         }
+
+        [AllowAnonymous]
+        [HttpGet("/api/getdivedictionaries")]
+        public IActionResult GetDictionaries()
+        {
+            var countries = _context.DicCountries.Select(item =>
+                                                         new
+                                                         {
+                                                             Text = item.ValueEU,
+                                                             Value = item.CountryKod
+                                                         })
+                                                 .OrderBy(item => item.Text)
+                                                 .ToList();
+
+            var tanks = _context.DicTankTypes.ToArray().Select((item, i) =>
+                                                        new
+                                                        {
+                                                            Selected = i == 0,
+                                                            Text = item.TankValue,
+                                                            Value = item.TankId
+                                                        })
+                                                .OrderBy(item => item.Text)
+                                                .ToList();
+
+            var weights = _context.DicWeightOk.ToArray().Select((item, i) =>
+                                                       new
+                                                       {
+                                                           Selected = i == 0,
+                                                           Text = item.WeightOkValue,
+                                                           Value = item.WeightOkID
+                                                       })
+                                               .OrderBy(item => item.Text)
+                                               .ToList();
+
+            var suits = _context.DicSuitTypes.ToArray().Select((item, i) =>
+                                                    new
+                                                    {
+                                                        Selected = i == 0,
+                                                        Text = item.SuitValue,
+                                                        Value = item.SuitID
+                                                    })
+                                            .OrderBy(item => item.Text)
+                                            .ToList();
+
+            return Json(new
+            {
+                Suits = suits,
+                Weights = weights,
+                Tanks = tanks,
+                Countries = countries
+            });
+        }
+
+      
 
         [AllowAnonymous]
         [Route("api/getuserphotoidsbydiveids/{userMail}/{diveId}/{minId}")]
