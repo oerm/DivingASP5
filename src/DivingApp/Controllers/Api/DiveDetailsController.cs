@@ -63,6 +63,29 @@ namespace DivingApp.Controllers.Api
         }
 
         [AllowAnonymous]
+        [HttpGet("api/getuserthumbdivephotobyid/{Email}/{PhotoId}")]
+        public async Task<IActionResult> GetUserThumbDivePhotoById(string Email, long PhotoId)
+        {
+            if (!string.IsNullOrWhiteSpace(Email))
+            {
+                var user = await _userManager.FindByEmailAsync(Email);
+                if (user != null)
+                {
+                    try
+                    {
+                        var photo = _photoManager.GetThumbPhoto(user.Id, PhotoId);
+                        return File(photo, imageContentType);
+                    }
+                    catch (Exception ex)
+                    {
+                        return new HttpNotFoundResult();
+                    }
+                }
+            }
+            return new HttpNotFoundResult();
+        }
+
+        [AllowAnonymous]
         [HttpGet("/api/getdivedictionaries")]
         public IActionResult GetDictionaries()
         {

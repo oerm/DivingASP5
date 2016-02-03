@@ -140,6 +140,15 @@
           "lib/net45/EntityFramework.SqlServer.dll": {}
         }
       },
+      "ImageProcessor/2.3.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net45/ImageProcessor.dll": {}
+        },
+        "runtime": {
+          "lib/net45/ImageProcessor.dll": {}
+        }
+      },
       "Ix-Async/1.2.5": {
         "type": "package",
         "frameworkAssemblies": [
@@ -1805,6 +1814,17 @@
         "repo.json"
       ]
     },
+    "ImageProcessor/2.3.2.0": {
+      "type": "package",
+      "sha512": "ws1yw4PkrYb716SPWXSIPZDqcOQAno/I2mZcxQJmUm1b2Cc92DwSeHd9nx/XLpmLyTUscro3vzwL165abtC98A==",
+      "files": [
+        "ImageProcessor.2.3.2.nupkg",
+        "ImageProcessor.2.3.2.nupkg.sha512",
+        "ImageProcessor.nuspec",
+        "lib/net40/ImageProcessor.dll",
+        "lib/net45/ImageProcessor.dll"
+      ]
+    },
     "Ix-Async/1.2.5": {
       "type": "package",
       "sha512": "8EXO8q7cpDUH9G2q+UOPOO/6uZ9aN7mx/4xjFIfkp+qLWVJiYuglkRhjY8Ggs2CucXzHR8GHnovJKB5yQoYaJg==",
@@ -3126,7 +3146,8 @@
       "Microsoft.AspNet.StaticFiles >= 1.0.0-beta7",
       "Microsoft.AspNet.Mvc.TagHelpers >= 6.0.0-beta7",
       "AutoMapper >= 4.1.1",
-      "Newtonsoft.Json >= 7.0.1"
+      "Newtonsoft.Json >= 7.0.1",
+      "ImageProcessor >= 2.3.2"
     ],
     "DNX,Version=v4.5.1": []
   }

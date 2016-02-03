@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Drawing;
-using System.IO;
+using ImageProcessor;
 using DivingApp.BusinessLayer.Interface;
 using DivingApp.Models;
 using Microsoft.Data.Entity;
+using System.IO;
+using ImageProcessor.Imaging.Formats;
 
 namespace DivingApp.BusinessLayer
 {
     public class PhotoManager : IPhotoManager
     {
         private const string notFoundString = "Photo with id {0} not found for this user";
+        private const int qualityProcent = 20;
         EntityContext _context; 
 
         public PhotoManager(EntityContext context)
@@ -93,23 +94,26 @@ namespace DivingApp.BusinessLayer
             {
                 throw new Exception(string.Format(notFoundString, photoId));
             }
-        }    
+        }
 
-        //    public byte[] GetThumbPhoto(Decimal photoId)
-        //    {
-        //        var bt = (from img in root.Photos where img.PhotoID == photoId select img.PhotoImg.PhotoVal).First();
-        //        var thumb = GetThumb(bt, 120);
-        //        return thumb;
-        //    }
+        public byte[] GetThumbPhoto(string userId, long photoId)
+        {
+            var isUserPhotoCheck = _context.Dives.Where(d => d.User.Id == userId && d.Status)
+                                                .Include(d => d.Photos)
+                                                .Where(d => d.Photos.Any(p => p.PhotoID == photoId))
+                                                .ToArray();
 
-        //    public byte[] GetSmallThumbPhoto(Decimal photoId)
-        //    {
-        //        var bt = (from img in root.Photos where img.PhotoID == photoId select img.PhotoImg.PhotoVal).First();
-        //        var thumb = GetThumb(bt, 52);
-        //        return thumb;
-        //    }
-
-
+            if (isUserPhotoCheck.Any())
+            {
+                return GetThumb(_context.PhotoImgSet.Where(p => p.PhotoID == photoId)
+                                           .Select(p => p.PhotoVal)
+                                           .First(), qualityProcent);
+            }
+            else
+            {
+                throw new Exception(string.Format(notFoundString, photoId));
+            }
+        }
 
         //    public PhotoDetails GetPhotoDetails(Decimal photoId)
         //    {
@@ -119,27 +123,26 @@ namespace DivingApp.BusinessLayer
         //        return new PhotoDetails() { Comment = file.PhotoComment, Date = file.PhotoDate, Size = fullsizeImage.Size };   
         //    }
 
-        //    private byte[] GetThumb(byte[] photo, int maxPixels)
-        //    {
-        //        if (photo != null && photo.Length > 0)
-        //        {
-        //            using (var stream = new MemoryStream(photo))
-        //            {
-        //                var img = Image.FromStream(stream);                 
-        //                int originalWidth = img.Width;
-        //                int originalHeight = img.Height;
-        //                double factor = ((originalWidth > originalHeight ? ((double)maxPixels / originalWidth) : ((double)maxPixels / originalHeight)));
-        //                var size = new Size((int)(originalWidth * factor), (int)(originalHeight * factor));
-        //                var thumb = img.GetThumbnailImage(size.Width, size.Height, null, new IntPtr());
-        //                using (var thumbStream = new MemoryStream())
-        //                {
-        //                    thumb.Save(thumbStream, System.Drawing.Imaging.ImageFormat.Png);
-        //                    return thumbStream.ToArray();
-        //                }
-        //            }
-        //        }
-        //        else return null;
-        //    }     
+        private byte[] GetThumb(byte[] photo, int qualityProcentage)
+        {           
+            using (var imageFactory = new ImageFactory())
+            {
+                using (var newStream = new MemoryStream())
+                {
+                    imageFactory.Load(photo)
+                            .Resolution(7, 5)
+                            .Format(new JpegFormat()
+                            {
+                                Quality = qualityProcentage
+                            })
+                            .Quality(qualityProcentage)                            
+                            .Save(newStream);
+                    byte[] modifiedFile = new byte[newStream.Length];
+                    newStream.Read(modifiedFile, 0, modifiedFile.Length);
+                    return modifiedFile;
+                }                
+            } 
+        }
     }
 
 }

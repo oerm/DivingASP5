@@ -1,6 +1,6 @@
 {
   "webroot": "wwwroot",
- 
+
 
   "dependencies": {
     "Microsoft.AspNet.Server.IIS": "1.0.0-beta7",
@@ -14,7 +14,8 @@
     "Microsoft.AspNet.StaticFiles": "1.0.0-beta7",
     "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-beta7",
     "AutoMapper": "4.1.1",
-    "Newtonsoft.Json": "7.0.1"
+    "Newtonsoft.Json": "7.0.1",
+    "ImageProcessor": "2.3.2"
   },
 
   "commands": {

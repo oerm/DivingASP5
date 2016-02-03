@@ -11,6 +11,8 @@ namespace DivingApp.BusinessLayer.Interface
 
         byte[] GetPhoto(string userEmail, long photoId);
 
+        byte[] GetThumbPhoto(string userEmail, long photoId);
+
         //bool ConfirmSaving(decimal? photoId, string comment = "");
         //bool DeletePhoto(decimal photoId);
 
@@ -19,7 +21,7 @@ namespace DivingApp.BusinessLayer.Interface
 
         IEnumerable<long> GetPhotoIdsByDiveId(string userId, long diveId, long minPhotoId = -1);
 
-        //byte[] GetThumbPhoto(decimal photoId);
+       
         //byte[] GetSmallThumbPhoto(decimal photoId);
         //decimal SaveImage(byte[] file, string filename, decimal diveId);
     }
