@@ -15,21 +15,23 @@ var path = "wwwroot/lib/";
 gulp.task('buildjs', function () {
     return gulp.src([path + "jquery/dist/jquery.js",                     
                      path + "bootstrap/dist/js/bootstrap.js",
+                     path + "bootstrap/js/modal.js",
                      path + "moment/min/moment.min.js",
                      path + "angular/angular.js",
+                     path + "angular-animate/angular-animate.js",
                      path + "eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
                      path + "jasny-bootstrap/js/jasny-bootstrap.js"])
                .pipe(concat('site.min.js'))
-
+               .pipe(uglify({ mangle: false }))
                .pipe(gulp.dest('wwwroot/js'));    
 });
 
 gulp.task('buildangularcontrollers', function () {
-      return gulp.src([path + "angular/services/paspinfoprovider.js",
-                       path + "angular/controllers/logincontroller.js",
-                       path + "angular/controllers/paspcontroller.js",
-                       path + "angular/controllers/divecontroller.js",
-                       path + "angular/app.js"])
+      return gulp.src([path + "custom/services/paspinfoprovider.js",
+                       path + "custom/controllers/logincontroller.js",
+                       path + "custom/controllers/paspcontroller.js",
+                       path + "custom/controllers/divecontroller.js",
+                       path + "custom/app.js"])
                .pipe(concat('controllers.min.js'))
     /*
                .pipe(uglify({ mangle: false }))
@@ -43,7 +45,7 @@ gulp.task('buildcss', function () {
                      path + "font-awesome/css/font-awesome.css",
                      path + "jasny-bootstrap/css/jasny-bootstrap.css",
                      path + "eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
-                     path + "custom/custom.css"])
+                     path + "custom/css/custom.css"])
                .pipe(concat('site.min.css'))
                .pipe(minifycss())
                .pipe(gulp.dest('wwwroot/css'));

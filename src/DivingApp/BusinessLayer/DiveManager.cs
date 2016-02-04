@@ -30,7 +30,7 @@ namespace DivingApp.BusinessLayer
                                         CountryId = d.Country,
                                         AirTemperature = d.AirTemperature,
                                         Comments = d.Comments,
-                                        DiveDateString = d.DiveDate.ToShortDateString(),
+                                        DiveDateString = d.DiveDate.ToString("dd.MM.yyyy"),
                                         DiveType = d.DiveType,
                                         FiveMetersMinutes = d.FiveMetersMinutes,
                                         Latitude = d.DiveX,

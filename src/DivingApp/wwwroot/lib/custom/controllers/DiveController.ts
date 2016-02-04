@@ -1,5 +1,5 @@
-﻿///<reference path="../../typings/angularjs/angular.d.ts" /> 
-///<reference path="../../typings/google.maps.d.ts" /> 
+﻿///<reference path="../../../typings/angularjs/angular.d.ts" /> 
+///<reference path="../../../typings/google.maps.d.ts" /> 
 
 module Diving.Controllers {
 
@@ -28,6 +28,7 @@ module Diving.Controllers {
         public showLoadingTab: boolean;
         public showSearchingGeoStatus: boolean;
         public showPhoto: boolean;
+        public showPhotoDelete: boolean;
 
         public location: string;
         public map: any;
@@ -44,6 +45,7 @@ module Diving.Controllers {
             this.showMapsTab = false;
             this.showPhotosTab = false;
             this.showPhoto = false;
+            this.showPhotoDelete = false;
             this.showSearchingGeoStatus = false;
             this.map = undefined;
             this.scope = $scope;
@@ -83,8 +85,8 @@ module Diving.Controllers {
                     var that = this;
                     setTimeout(function () {
                         this.options = {
-                            zoom: 2,
-                            center: new google.maps.LatLng(1, 1),
+                            zoom: 6,
+                            center: new google.maps.LatLng(that.selectedDive.Latitude, that.selectedDive.Longitude),
                             mapTypeId: google.maps.MapTypeId.ROADMAP
                         };
                         if (!that.map) {
@@ -148,8 +150,7 @@ module Diving.Controllers {
                   
                     google.maps.event.addListener(that.marker, 'dragend', function () {
                         that.selectedDive.Latitude = that.marker.getPosition().lat().toFixed(6).replace(".", ",");
-                        that.selectedDive.Longitude = that.marker.getPosition().lng().toFixed(6).replace(".", ",");
-                        that.scope.$apply();
+                        that.selectedDive.Longitude = that.marker.getPosition().lng().toFixed(6).replace(".", ",");                      
                     });
                 } else {
                     alert("Failed to make request to GEO service: " + status);
@@ -187,6 +188,14 @@ module Diving.Controllers {
             this.showPhoto = false;
         }
 
+        public ShowPhotoDelete() {
+            this.showPhotoDelete = true;
+        }
+
+        public HidePhotoDelete() {
+            this.showPhotoDelete = false;
+        }
+
         private changeCurrentPhotoIndex(index: number) {
             if (index == -1) this.HidePhoto();
             else {
@@ -194,7 +203,7 @@ module Diving.Controllers {
                 this.dataService.GetPhoto(this.currentUserEmail, this.selectedDive.Photos[this.selectedPhotoIndex], function (data) {
                     that.selectedPhotoInfo = new photoDetailes();
                     that.selectedPhotoInfo.photoId = that.selectedDive.Photos[that.selectedPhotoIndex];
-                    that.selectedPhotoInfo.photoDate = "Photo date: " + moment(data.Date).format('DD/MM/YYYY');
+                    that.selectedPhotoInfo.photoDate = moment(data.Date).format('DD/MM/YYYY');
                     that.selectedPhotoInfo.photoInfo = data.Comment;
                     that.showPhoto = true;
                     that.scope.$apply();
@@ -206,6 +215,8 @@ module Diving.Controllers {
             this.selectedPhotoIndex = -1;
             this.changeCurrentPhotoIndex(this.selectedPhotoIndex);
         }
+
+        
     }
 }
 

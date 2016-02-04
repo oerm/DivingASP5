@@ -39,24 +39,44 @@
     position: fixed;
     top: 0%;
     left: 0%;
-    background: rgba(200, 200, 200, .5);
+    overflow: auto;
+    background: rgba(200, 200, 200, .5); 
 }
 
 .centeredWindow {
     top: 50%;
     left: 50%;
     margin-left:-400px;
-    margin-top:-300px;
-    width:800px;
-    height:600px;
+    margin-top:-350px;   
+    width:750px;
+    height:550px;
     background: white;
     box-shadow: 5px 5px 5px #ccc;
     opacity: 1.0;
     border: #eee;
-    position:absolute;   
+    position:absolute;       
 }
 
-.shadowBackground{
+.shadowBackground:hover{
     background: #ddd;
+    cursor:pointer;
+}
+
+.animate-show {
+  line-height: 20px;
+  opacity: 1;
+  padding: 10px;
+  border: 1px solid black;
+  background: white;
+}
+
+.animate-show.ng-hide-add, .animate-show.ng-hide-remove {
+  transition: all linear 0.5s;
+}
+
+.animate-show.ng-hide {
+  line-height: 0;
+  opacity: 0;
+  padding: 0 10px;
 }
 
