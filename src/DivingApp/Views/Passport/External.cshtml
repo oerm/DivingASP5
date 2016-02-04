@@ -190,26 +190,28 @@
 
     @*TODO - put this into angular separate view *@
     <div ng-click='pCtrl.hidePhoto()' ng-show="pCtrl.showPhoto" ng-cloak class="grayFullScreen">
-        <div class="centeredWindow" style="z-index:5; cursor:pointer; padding-left:15px;padding-right:15px; " onclick="event.cancelBubble = true;$('#largeImage').hide();">
-            <div class="row">
-                <p class="col-lg-6 col-md-5 col-sm-5 text-left top-offset">Photo <b>{{pCtrl.selectedPhotoIndex+1}} </b>from<b> {{pCtrl.photos.length}} </b></p>
-                <p class="col-lg-6 col-md-7 col-sm-7 text-right top-offset"><a ng-click="pCtrl.hidePhoto()">Close</a></p>
-            </div>
+        <center>
+            <div class="centeredWindow" style="z-index:5; cursor:pointer; padding-left:15px;padding-right:15px; " onclick="event.cancelBubble = true;$('#largeImage').hide();">
+                <div class="row">
+                    <p class="col-lg-6 col-md-5 col-sm-5 text-left top-offset">Photo <b>{{pCtrl.selectedPhotoIndex+1}} </b>from<b> {{pCtrl.photos.length}} </b></p>
+                    <p class="col-lg-6 col-md-7 col-sm-7 text-right top-offset"><a ng-click="pCtrl.hidePhoto()">Close</a></p>
+                </div>
 
-            <div style="overflow:hidden; height:490px;background:grey " id="largeImageImgDiv" ng-click="pCtrl.showNext()">
-                <center style="height:100%">
-                    <img id="largeImageImg" ng-src="/api/getuserdivephotobyid/{{pCtrl.currentUserEmail}}/{{pCtrl.photos[pCtrl.selectedPhotoIndex]}}" style="height:100%" />
-                </center>
-            </div>
-            <div class="row">
-                <p class="col-lg-6 col-md-5 col-sm-5 text-left top-offset"><b> Description: </b></p>
-                <p class="col-lg-6 col-md-7 col-sm-7 text-right top-offset">{{pCtrl.selectedPhotoInfo.photoDate}}<span id="largePhotoDate"></span> </p>
-            </div>
+                <div style="overflow:hidden; height:490px;background:grey " id="largeImageImgDiv" ng-click="pCtrl.showNext()">
+                    <center style="height:100%">
+                        <img id="largeImageImg" ng-src="/api/getuserdivephotobyid/{{pCtrl.currentUserEmail}}/{{pCtrl.photos[pCtrl.selectedPhotoIndex]}}" style="height:100%" />
+                    </center>
+                </div>
+                <div class="row">
+                    <p class="col-lg-6 col-md-5 col-sm-5 text-left top-offset"><b> Description: </b></p>
+                    <p class="col-lg-6 col-md-7 col-sm-7 text-right top-offset">{{pCtrl.selectedPhotoInfo.photoDate}}<span id="largePhotoDate"></span> </p>
+                </div>
 
-            <div class="row">
-                <p class="col-lg-12 col-md-8">{{pCtrl.selectedPhotoInfo.photoInfo.ln}}</p>
+                <div class="row">
+                    <p class="col-lg-12 col-md-8">{{pCtrl.selectedPhotoInfo.photoInfo.ln}}</p>
+                </div>
             </div>
-        </div>
+        </center>
     </div>
 </div>
 

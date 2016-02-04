@@ -33,14 +33,27 @@
                                     &nbsp;&nbsp;
                                 </div>
                                 <div style="width:100px;float:left;overflow:hidden;margin-right:5px">{{d.CountryName}}</div>
-                                @*<a href="#" style="display: inline-block;width:20px;" title="Edit dive" >
-                                        <span class="fa fa-pencil" ng-click="diveCtrl.GetDive(d.DiveID)"></span>
-                                    </a>*@
 
-                                <a href="#" style="width:20px;display: inline-block;color:tomato" title="Delete dive">
+                                <a href="#" onclick="event.cancelBubble = true;" ng-click="diveCtrl.ShowDiveDelete(d.DiveID)" style="width:20px;display: inline-block;color:tomato" title="Delete dive">
                                     <span class="fa fa-trash"></span>
                                 </a>
                             </div>
+                            <div class="row text-right animate-show" ng-show="d.ShowDelete" style="background:transparent; width:100%;margin:0px;padding:0px;padding-top:8px;padding-right:5px;" >
+                                <span>
+                                    Are you sure?
+                                </span>
+
+                                <a class="btn btn-danger btn-sm disabled" onclick="event.cancelBubble = true;" ng-click="" style="margin-right:5px;margin-left:5px;">
+                                    <i class="fa fa-thumbs-up"></i>&nbsp;
+                                    Yes
+                                </a>
+
+                                <a class="btn btn-primary btn-sm" onclick="event.cancelBubble = true;" href="#" ng-click="diveCtrl.HideDiveDelete(d.DiveID)">
+                                    <i class="fa fa-thumbs-down"></i>&nbsp;
+                                    No
+                                </a>
+                            </div>
+
                         </div>
                     </li>
                 </ul>
@@ -290,69 +303,74 @@
 
 
     @*TODO - put this into separate view *@
-    <div ng-click='diveCtrl.HidePhoto()' ng-show="diveCtrl.showPhoto" ng-cloak class="grayFullScreen" style="overflow:auto">
-        <div class="centeredWindow" style="z-index:5; cursor:pointer; padding-left:15px;padding-right:15px;height:auto " onclick="event.cancelBubble = true;$('#largeImage').hide();">
-            <div class="row">
-                <p class="col-lg-6 col-md-5 col-sm-5 text-left top-offset">
-                    Photo <b>{{diveCtrl.selectedPhotoIndex + 1}} </b>from<b> {{diveCtrl.selectedDive.Photos.length}} </b>
-                </p>
-                <p class="col-lg-6 col-md-7 col-sm-7 text-right top-offset">
+    <div ng-click='diveCtrl.HidePhoto()' ng-show="diveCtrl.showPhoto" ng-cloak class="grayFullScreen" >   
+        <center>
+            <div class="centeredWindow" onclick="event.cancelBubble = true;$('#largeImage').hide();">
+                <div class="row">
+                    <p class="col-lg-6 col-md-5 col-sm-5 text-left top-offset">
+                        Photo <b>{{diveCtrl.selectedPhotoIndex + 1}} </b>from<b> {{diveCtrl.selectedDive.Photos.length}} </b>
+                    </p>
+                    <p class="col-lg-6 col-md-7 col-sm-7 text-right top-offset">
 
-                    <a ng-click="diveCtrl.HidePhoto()">
-                        Close
-                    </a>
-                </p>
-            </div>
-
-            <div style="overflow:hidden; height:470px;background:grey" id="largeImageImgDiv" ng-click="diveCtrl.ShowNext()">
-                <center style="height:100%">
-                    <img id="largeImageImg" ng-src="/api/getuserdivephotobyid/{{diveCtrl.currentUserEmail}}/{{diveCtrl.selectedDive.Photos[diveCtrl.selectedPhotoIndex].PhotoId}}" style="height:100%" />
-                </center>
-            </div>
-
-            <div class="row top-offset">
-                <p class="col-lg-2 text-left">Description:</p>
-                <div class="col-lg-10 text-right">
-                    <textarea rows="5" class="form-control input-sm" style="width:100%" ng-model="diveCtrl.selectedPhotoInfo.photoInfo"></textarea>
+                        <a ng-click="diveCtrl.HidePhoto()" style="cursor:pointer">
+                            Close
+                        </a>
+                    </p>
                 </div>
-            </div>
-            <div class="top-offset-lg text-left" style="margin-bottom:5px;padding-bottom:20px">
-                <div class="col-lg-12" style="padding:0;padding-bottom:10px;">
-                    <span class="col-lg-2 text-left" style="padding:0">Create date:</span>
 
-                    <span>&nbsp;<b class="top-offset-lg">{{diveCtrl.selectedPhotoInfo.photoDate}}</b></span>
+                <div style="overflow:hidden; height:470px;background:grey" id="largeImageImgDiv" ng-click="diveCtrl.ShowNext()">
+                    <center style="height:100%">
+                        <img id="largeImageImg" ng-src="/api/getuserdivephotobyid/{{diveCtrl.currentUserEmail}}/{{diveCtrl.selectedDive.Photos[diveCtrl.selectedPhotoIndex].PhotoId}}" style="height:100%" />
+                    </center>
+                </div>
 
-                    <div class="pull-right">                      
-
-                        <a class="btn btn-primary btn-sm" href="#">
-                            <i class="fa fa-save"></i>&nbsp;&nbsp;
-                            Save changes
-                        </a>
-
-                        <a class="btn btn-warning btn-sm" ng-click="diveCtrl.ShowPhotoDelete()" style="margin-left:5px">
-                            <i class="fa fa-trash"></i>&nbsp;&nbsp;
-                            Delete photo&nbsp;&nbsp;&nbsp;
-                        </a>
+                <div class="row top-offset">
+                    <p class="col-lg-2 text-left">Description:</p>
+                    <div class="col-lg-10 text-right">
+                        <textarea rows="5" class="form-control input-sm" style="width:100%" ng-model="diveCtrl.selectedPhotoInfo.photoInfo"></textarea>
                     </div>
                 </div>
-                <div class="col-lg-12 text-right top-offset-sm animate-show" style="padding:0;padding-bottom:10px;" ng-show="diveCtrl.ShowPhotoDelete">
+                <div class="row top-offset text-left" style="padding:15px; margin-bottom:5px;padding-bottom:10px">
+                    <div class="col-lg-12" style="padding:0;padding-bottom:10px;">
+                        <span class="col-lg-2 text-left" style="padding:0">Create date:</span>
+
+                        <span>&nbsp;<b class="top-offset-lg">{{diveCtrl.selectedPhotoInfo.photoDate}}</b></span>
+
+                        <div class="pull-right">
+
+                            <a class="btn btn-primary btn-sm" href="#">
+                                <i class="fa fa-save"></i>&nbsp;&nbsp;
+                                Save changes
+                            </a>
+
+                            <a class="btn btn-warning btn-sm" ng-click="diveCtrl.ShowPhotoDelete()" style="margin-left:5px">
+                                <i class="fa fa-trash"></i>&nbsp;&nbsp;
+                                Delete photo&nbsp;&nbsp;&nbsp;
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 text-right top-offset-sm animate-show" style="padding:0;padding-bottom:10px;" ng-show="diveCtrl.showPhotoDelete">
                         <span>
                             Are you sure?
                         </span>
 
-                        <a class="btn btn-danger btn-sm disabled" ng-click="" style="margin-right:1px;margin-left:10px;">
+                        <a class="btn btn-danger btn-sm disabled" ng-click="" style="margin-right:5px;margin-left:10px;">
                             <i class="fa fa-thumbs-up"></i>&nbsp;
                             Yes
                         </a>
 
-                        <a class="btn btn-primary btn-sm" href="#" ng-click="diveCtrl.HidePhotoDelete()" >
+                        <a class="btn btn-primary btn-sm" href="#" ng-click="diveCtrl.HidePhotoDelete()">
                             <i class="fa fa-thumbs-down"></i>&nbsp;
                             No
                         </a>
+                    </div>
+
                 </div>
 
             </div>
-        </div>
+
+        </center>    
+       
     </div>
 
 </form>

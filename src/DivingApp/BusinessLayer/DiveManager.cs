@@ -70,7 +70,7 @@ namespace DivingApp.BusinessLayer
                                           DiveNumber = n + 1,
                                           CountryID = d.Countries.CountryKod,
                                           CountryName = d.Countries.ValueEU,
-                                          DiveDate = d.DiveDate.ToShortDateString(),
+                                          DiveDate = d.DiveDate.ToString("dd.MM.yyyy"),
                                           Depth = d.MaxDepth,
                                           Time = d.TotalMinutes
                                       }).Reverse();

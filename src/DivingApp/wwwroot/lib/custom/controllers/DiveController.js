@@ -121,10 +121,11 @@ var Diving;
                 });
             };
             diveController.prototype.GetDive = function (diveId) {
+                this.HidePhotoDelete();
+                this.showSelectedDiveTab(0);
+                this.selectedDiveId = diveId;
                 var that = this;
-                that.showSelectedDiveTab(0);
-                that.selectedDiveId = diveId;
-                that.dataService.GetAuthorizedUserDiveById(diveId, function (data) {
+                this.dataService.GetAuthorizedUserDiveById(diveId, function (data) {
                     that.location = "";
                     that.resetPhoto();
                     that.selectedDive = data;
@@ -151,7 +152,14 @@ var Diving;
             diveController.prototype.HidePhotoDelete = function () {
                 this.showPhotoDelete = false;
             };
+            diveController.prototype.ShowDiveDelete = function (diveId) {
+                this.dives[this.dives.map(function (e) { return e.DiveID; }).indexOf(diveId)].ShowDelete = true;
+            };
+            diveController.prototype.HideDiveDelete = function (diveId) {
+                this.dives[this.dives.map(function (e) { return e.DiveID; }).indexOf(diveId)].ShowDelete = false;
+            };
             diveController.prototype.changeCurrentPhotoIndex = function (index) {
+                this.HidePhotoDelete();
                 if (index == -1)
                     this.HidePhoto();
                 else {
@@ -162,7 +170,6 @@ var Diving;
                         that.selectedPhotoInfo.photoDate = moment(data.Date).format('DD/MM/YYYY');
                         that.selectedPhotoInfo.photoInfo = data.Comment;
                         that.showPhoto = true;
-                        that.scope.$apply();
                     });
                 }
             };

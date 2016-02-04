@@ -1,4 +1,4 @@
-var appModule = angular.module("diving-app", []);
+var appModule = angular.module("diving-app", ['ngAnimate']);
 appModule.controller("loginController", ['$scope', function ($scope) { return new Diving.Controllers.loginController($scope); }]);
 appModule.controller('paspController', ['$scope', "DataService", Diving.Controllers.paspController]);
 appModule.controller('diveController', ['$scope', "DataService", Diving.Controllers.diveController]);

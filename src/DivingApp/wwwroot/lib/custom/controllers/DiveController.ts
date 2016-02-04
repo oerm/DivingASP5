@@ -160,18 +160,18 @@ module Diving.Controllers {
             });
         }
 
-        public GetDive(diveId: number) {          
+        public GetDive(diveId: number) {
+            this.HidePhotoDelete();
+            this.showSelectedDiveTab(0);
+            this.selectedDiveId = diveId;
             var that = this;
-            that.showSelectedDiveTab(0);
-           
-            that.selectedDiveId = diveId;
-            that.dataService.GetAuthorizedUserDiveById(diveId, function (data) {
+            this.dataService.GetAuthorizedUserDiveById(diveId, function (data) {
                 that.location = "";
                 that.resetPhoto();
-                that.selectedDive = data;               
-                that.showSelectedDiveTab(1);            
+                that.selectedDive = data;
+                that.showSelectedDiveTab(1);
             });
-        }       
+        }      
 
         public GetPhoto(id: number) {
             this.selectedPhotoIndex = this.selectedDive.Photos.map(function (e) { return e.PhotoId }).indexOf(id);
@@ -196,7 +196,16 @@ module Diving.Controllers {
             this.showPhotoDelete = false;
         }
 
+        public ShowDiveDelete(diveId: string) {
+            this.dives[this.dives.map(function (e) { return e.DiveID; }).indexOf(diveId)].ShowDelete = true;
+        }
+
+        public HideDiveDelete(diveId: string) {
+            this.dives[this.dives.map(function (e) { return e.DiveID; }).indexOf(diveId)].ShowDelete = false;
+        }
+
         private changeCurrentPhotoIndex(index: number) {
+            this.HidePhotoDelete();
             if (index == -1) this.HidePhoto();
             else {
                 var that = this;
@@ -206,7 +215,6 @@ module Diving.Controllers {
                     that.selectedPhotoInfo.photoDate = moment(data.Date).format('DD/MM/YYYY');
                     that.selectedPhotoInfo.photoInfo = data.Comment;
                     that.showPhoto = true;
-                    that.scope.$apply();
                 });
             }
         }
