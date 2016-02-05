@@ -6,10 +6,13 @@ var Diving;
     (function (Controllers) {
         var diveController = (function () {
             function diveController($scope, dataService) {
+                var scope = $scope.$parent;
+                scope.DiveChild = this;
                 this.dataService = dataService;
                 this.selectedPhotoIndex = -1;
                 this.selectedDiveId = -1;
                 this.showLoadingTab = true;
+                this.showDivesList = true;
                 this.showDivesTab = false;
                 this.showMapsTab = false;
                 this.showPhotosTab = false;
@@ -35,7 +38,7 @@ var Diving;
             diveController.prototype.init = function (userEmail) {
                 this.currentUserEmail = userEmail;
             };
-            diveController.prototype.showSelectedDiveTab = function (tabIndex) {
+            diveController.prototype.ShowSelectedDiveTab = function (tabIndex) {
                 if (tabIndex == 0)
                     this.showLoadingTab = true;
                 else {
@@ -86,7 +89,7 @@ var Diving;
                     }
                 }
             };
-            diveController.prototype.searchForLocation = function () {
+            diveController.prototype.SearchForLocation = function () {
                 this.marker.setMap(null);
                 this.showSearchingGeoStatus = true;
                 var geocoder = new google.maps.Geocoder();
@@ -122,14 +125,14 @@ var Diving;
             };
             diveController.prototype.GetDive = function (diveId) {
                 this.HidePhotoDelete();
-                this.showSelectedDiveTab(0);
+                this.ShowSelectedDiveTab(0);
                 this.selectedDiveId = diveId;
                 var that = this;
                 this.dataService.GetAuthorizedUserDiveById(diveId, function (data) {
                     that.location = "";
                     that.resetPhoto();
                     that.selectedDive = data;
-                    that.showSelectedDiveTab(1);
+                    that.ShowSelectedDiveTab(1);
                 });
             };
             diveController.prototype.GetPhoto = function (id) {
@@ -157,6 +160,19 @@ var Diving;
             };
             diveController.prototype.HideDiveDelete = function (diveId) {
                 this.dives[this.dives.map(function (e) { return e.DiveID; }).indexOf(diveId)].ShowDelete = false;
+            };
+            diveController.prototype.CreateNewDive = function () {
+                this.showDivesList = false;
+                this.selectedDive = new Object;
+                this.selectedDive.WeightIsOk = this.weights[0].Value;
+                this.selectedDive.SuitType = this.suits[0].Value;
+                this.selectedDive.Tank = this.tanks[0].Value;
+                this.selectedDive.CountryId = 804;
+            };
+            diveController.prototype.CancelCreateNewDive = function () {
+                if (this.dives.length > 0)
+                    this.GetDive(this.dives[0].DiveID);
+                this.showDivesList = true;
             };
             diveController.prototype.changeCurrentPhotoIndex = function (index) {
                 this.HidePhotoDelete();

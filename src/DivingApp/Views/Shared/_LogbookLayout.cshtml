@@ -12,7 +12,7 @@
   
 </head>
 
-<body>
+<body ng-app="diving-app" ng-controller="rootController as rootCtrl" >
     <nav class="navbar navbar-inverse">
         <div class="container">
             <div class="navbar-brand">
@@ -20,14 +20,14 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown active" ng-class="lgCtrl.showLogin? 'active' :''" ng-click="lgCtrl.showTab(1)">
+                    <li class="dropdown" ng-class="lgCtrl.showLogin? 'active' :''" ng-click="lgCtrl.showTab(1)">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-flag"></i>
                             &nbsp;Dives&nbsp;&nbsp;<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Create new dive</a></li>
-                            <li><a href="#">Show dives</a></li>
+                            <li><a href="#" ng-click="rootCtrl.DiveCreateNew()">Create new dive</a></li>
+                            <li><a href="#" ng-click="rootCtrl.DiveShowDives()">Show dives</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="#">Search for dive</a></li>
                         </ul>
@@ -40,21 +40,29 @@
                         </li>*@
 
                 </ul>
-                <div class="pull-right top-offset">
-
-
-                    <a class="btn btn-default btn-sm" asp-controller="Auth" asp-action="Edit">
-                        <i class="fa fa-edit"></i>
-                        &nbsp;
-                        Edit profile
-                    </a>
-                    &nbsp;
-                    <a class="btn btn-default btn-sm" asp-controller="Logbook" asp-action="Logout">
-                        <i class="fa fa-home"></i>
-                        &nbsp;
-                        Logout
-                    </a>
-                </div>
+                <ul class="nav navbar-nav pull-right">                  
+                    <li>
+                        <a asp-controller="Auth" asp-action="Edit">
+                            <i class="fa fa-edit"></i>
+                            &nbsp;
+                            Edit profile
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Logbook" asp-action="Logout">
+                            <i class="fa fa-home"></i>
+                            &nbsp;
+                            Logout
+                        </a>
+                    </li>
+                    @*<li>
+                        <div style="padding:2px; height:50px;width:50px;">
+                            <img src="/api/getuserphoto/@User.Identity.Name" onerror="this.src = '/images/icon.png'" class="img-thumbnail " style="height:100%;width:100%;padding:0;" />
+                        </div>
+                    </li>*@
+                  
+                </ul>
+             
             </div>
         </div>
     </nav>

@@ -22,6 +22,7 @@ module Diving.Controllers {
         public selectedPhotoIndex: number;
         public selectedPhotoInfo: photoDetailes;
 
+        public showDivesList: boolean; 
         public showDivesTab: boolean; 
         public showMapsTab: boolean;      
         public showPhotosTab: boolean;
@@ -36,17 +37,20 @@ module Diving.Controllers {
         private scope: any;
         private marker: any;  
 
-        constructor($scope, dataService: DataService.IPaspDataService) {          
-            this.dataService = dataService;
+        constructor($scope, dataService: DataService.IPaspDataService) {     
+            var scope = $scope.$parent;
+            scope.DiveChild = this;  
+            this.dataService = dataService;          
             this.selectedPhotoIndex = -1;
             this.selectedDiveId = -1; 
-            this.showLoadingTab = true;         
+            this.showLoadingTab = true; 
+            this.showDivesList = true;        
             this.showDivesTab = false; 
             this.showMapsTab = false;
             this.showPhotosTab = false;
             this.showPhoto = false;
             this.showPhotoDelete = false;
-            this.showSearchingGeoStatus = false;
+            this.showSearchingGeoStatus = false;           
             this.map = undefined;
             this.scope = $scope;
             var that = this;
@@ -68,7 +72,7 @@ module Diving.Controllers {
             this.currentUserEmail = userEmail;
         }       
 
-        public showSelectedDiveTab(tabIndex: number) {
+        public ShowSelectedDiveTab(tabIndex: number) {
             if (tabIndex == 0) this.showLoadingTab = true;
             else {
                 this.showLoadingTab = false;
@@ -124,7 +128,7 @@ module Diving.Controllers {
             }
         }
 
-        public searchForLocation() {
+        public SearchForLocation() {
             this.marker.setMap(null);
             this.showSearchingGeoStatus = true;
             var geocoder = new google.maps.Geocoder();
@@ -162,14 +166,14 @@ module Diving.Controllers {
 
         public GetDive(diveId: number) {
             this.HidePhotoDelete();
-            this.showSelectedDiveTab(0);
+            this.ShowSelectedDiveTab(0);
             this.selectedDiveId = diveId;
             var that = this;
             this.dataService.GetAuthorizedUserDiveById(diveId, function (data) {
                 that.location = "";
                 that.resetPhoto();
                 that.selectedDive = data;
-                that.showSelectedDiveTab(1);
+                that.ShowSelectedDiveTab(1);
             });
         }      
 
@@ -193,7 +197,7 @@ module Diving.Controllers {
         }
 
         public HidePhotoDelete() {
-            this.showPhotoDelete = false;
+            this.showPhotoDelete = false;          
         }
 
         public ShowDiveDelete(diveId: string) {
@@ -202,6 +206,20 @@ module Diving.Controllers {
 
         public HideDiveDelete(diveId: string) {
             this.dives[this.dives.map(function (e) { return e.DiveID; }).indexOf(diveId)].ShowDelete = false;
+        }
+
+        public CreateNewDive() {
+            this.showDivesList = false;
+            this.selectedDive = new Object;
+            this.selectedDive.WeightIsOk = this.weights[0].Value;
+            this.selectedDive.SuitType = this.suits[0].Value;
+            this.selectedDive.Tank = this.tanks[0].Value;
+            this.selectedDive.CountryId = 804;  
+        }
+
+        public CancelCreateNewDive() {
+            if (this.dives.length > 0) this.GetDive(this.dives[0].DiveID);
+            this.showDivesList = true;
         }
 
         private changeCurrentPhotoIndex(index: number) {
@@ -222,9 +240,7 @@ module Diving.Controllers {
         private resetPhoto() {
             this.selectedPhotoIndex = -1;
             this.changeCurrentPhotoIndex(this.selectedPhotoIndex);
-        }
-
-        
+        }        
     }
 }
 

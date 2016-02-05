@@ -2,21 +2,20 @@
     Layout = "_LogbookLayout";
 }
 
-<form asp-anit-forgery="true" ng-app="diving-app" ng-controller="diveController as diveCtrl" ng-init="diveCtrl.init('@User.Identity.Name')">
+<form asp-anit-forgery="true" ng-controller="diveController as diveCtrl" ng-init="diveCtrl.init('@User.Identity.Name')">
 
-
-    <div style="width:280px;display:inline-block" ng-cloak>
+    <div style="width:280px;display:inline-block" ng-show="diveCtrl.showDivesList" ng-cloak>
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="row">
                     <div style="display:inline-block;padding:5px;padding-left:10px">
                         <span class="navmenu-text"><b>My dives</b></span>
                     </div>
-                    <div class="btn-group pull-right" style="margin-right:10px;">
+                    <a class="btn-group pull-right" style="margin-right:10px;" ng-click="diveCtrl.CreateNewDive()">
                         <span class="btn btn-default btn-sm">
                             <span class="fa fa-plus"></span>&nbsp;&nbsp;Create new
                         </span>
-                    </div>
+                    </a>
                 </div>
             </div>
             <div class="panel-body" style="padding:0;margin-bottom:-1px;">
@@ -94,16 +93,19 @@
         </div>
     </div>
 
-
-    <div class="col-lg-9 col-md-8 col-sm-7 pull-right" style="display:inline-block;" ng-cloak>
+    <div ng-class="diveCtrl.showDivesList ? 'col-lg-9 col-md-8 col-sm-7 pull-right': 'col-lg-12'" style="display:inline-block;" ng-cloak>
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="row">
                     <div style="display:inline-block;padding:5px;padding-left:10px">
                         <span class="navmenu-text"><b>Dive description</b></span>
                     </div>
+                    
                     <div class="btn btn-default btn-sm pull-right" style="display:inline-block;margin-right:10px;">
                         <i class="fa fa-save"></i>&nbsp;&nbsp;Save changes
+                    </div>
+                    <div class="btn btn-default btn-sm pull-right" style="display:inline-block;margin-right:10px;" ng-show="!diveCtrl.showDivesList" ng-click="diveCtrl.CancelCreateNewDive()" >
+                        <i class="fa fa-hand-o-down"></i>&nbsp;&nbsp;Cancel changes
                     </div>
                 </div>
             </div>
@@ -117,19 +119,19 @@
             <div class="panel-body" ng-show="!diveCtrl.showLoadingTab">
                 <div class="row" style="padding-left:25px;">
                     <ul class="nav nav-pills">
-                        <li role="presentation" ng-class="diveCtrl.showDivesTab? 'active' :''" ng-click="diveCtrl.showSelectedDiveTab(1)">
+                        <li role="presentation" ng-class="diveCtrl.showDivesTab? 'active' :''" ng-click="diveCtrl.ShowSelectedDiveTab(1)">
                             <a href="#">
                                 <i class="fa fa-list"></i>&nbsp;&nbsp;
                                 Details
                             </a>
                         </li>
-                        <li role="presentation" ng-class="diveCtrl.showMapsTab? 'active' :''" ng-click="diveCtrl.showSelectedDiveTab(2)">
+                        <li role="presentation" ng-class="diveCtrl.showMapsTab? 'active' :''" ng-click="diveCtrl.ShowSelectedDiveTab(2)">
                             <a href="#">
                                 <i class="fa fa-globe"></i>&nbsp;&nbsp;
                                 Map
                             </a>
                         </li>
-                        <li role="presentation" ng-class="diveCtrl.showPhotosTab? 'active' :''" ng-click="diveCtrl.showSelectedDiveTab(3)">
+                        <li role="presentation" ng-show="diveCtrl.showDivesList" ng-class="diveCtrl.showPhotosTab? 'active' :''" ng-click="diveCtrl.ShowSelectedDiveTab(3)">
                             <a href="#">
                                 <i class="fa fa-image"></i>&nbsp;&nbsp;
                                 Photos ({{diveCtrl.selectedDive.Photos.length}})
@@ -153,11 +155,8 @@
                         Country
                     </div>
                     <div class="col-lg-4 col-md-8 top-offset-sm">
-
                         <select class="form-control input-sm" ng-model="diveCtrl.selectedDive.CountryId" ng-options="item.Value as item.Text for item in diveCtrl.countries">
-                            <option value="0">-- Select an option--</option>
                         </select>
-
                     </div>
 
                     <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg" placeholder="Dive location name">
@@ -185,7 +184,7 @@
                     </div>
                     <div class="col-lg-4 col-md-8 top-offset">
                         <select class="form-control input-sm" ng-model="diveCtrl.selectedDive.SuitType" ng-options="item.Value as item.Text for item in diveCtrl.suits">
-                            <option value="">-- Select an option--</option>
+                           
                         </select>
                     </div>
                     <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
@@ -193,7 +192,7 @@
                     </div>
                     <div class="col-lg-4 col-md-8 top-offset">
                         <select class="form-control input-sm" ng-model="diveCtrl.selectedDive.Tank" ng-options="item.Value as item.Text for item in diveCtrl.tanks">
-                            <option value="">-- Select an option--</option>
+                           
                         </select>
                     </div>
 
@@ -222,7 +221,7 @@
                     </div>
                     <div class="col-lg-4 col-md-8 top-offset">
                         <select class="form-control input-sm" ng-model="diveCtrl.selectedDive.WeightIsOk" ng-options="item.Value as item.Text for item in diveCtrl.weights">
-                            <option value="">-- Select an option--</option>
+                          
                         </select>
                     </div>
 
@@ -258,7 +257,7 @@
                             <input type="text" class="form-control input-sm" placeholder="Type location name" ng-model="diveCtrl.location" />
                         </div>
                         <div class="col-lg-2 col-md-2 ">
-                            <a href="#" class="btn btn-primary btn-sm pull-right" ng-class="{disabled: diveCtrl.showSearchingGeoStatus}" ng-click="diveCtrl.searchForLocation()">
+                            <a href="#" class="btn btn-primary btn-sm pull-right" ng-class="{disabled: diveCtrl.showSearchingGeoStatus}" ng-click="diveCtrl.SearchForLocation()">
                                 <i class="fa fa-search" ng-show="!diveCtrl.showSearchingGeoStatus"></i>
                                 <i class="fa fa-spinner fa-spin" ng-show="diveCtrl.showSearchingGeoStatus"></i>
                                 &nbsp;&nbsp;&nbsp;
@@ -300,7 +299,6 @@
             </div>
         </div>
     </div>
-
 
     @*TODO - put this into separate view *@
     <div ng-click='diveCtrl.HidePhoto()' ng-show="diveCtrl.showPhoto" ng-cloak class="grayFullScreen" >   

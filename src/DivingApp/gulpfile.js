@@ -27,11 +27,12 @@ gulp.task('buildjs', function () {
 });
 
 gulp.task('buildangularcontrollers', function () {
-      return gulp.src([path + "custom/services/paspinfoprovider.js",
-                       path + "custom/controllers/logincontroller.js",
-                       path + "custom/controllers/paspcontroller.js",
-                       path + "custom/controllers/divecontroller.js",
-                       path + "custom/app.js"])
+    return gulp.src([path + "custom/services/paspinfoprovider.js",
+                     path + "custom/controllers/rootcontroller.js",
+                     path + "custom/controllers/logincontroller.js",
+                     path + "custom/controllers/paspcontroller.js",
+                     path + "custom/controllers/divecontroller.js",
+                     path + "custom/app.js"])
                .pipe(concat('controllers.min.js'))
     /*
                .pipe(uglify({ mangle: false }))
