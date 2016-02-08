@@ -35,7 +35,7 @@ var Diving;
                     }
                 });
             }
-            diveController.prototype.init = function (userEmail) {
+            diveController.prototype.Init = function (userEmail) {
                 this.currentUserEmail = userEmail;
             };
             diveController.prototype.ShowSelectedDiveTab = function (tabIndex) {
@@ -54,31 +54,31 @@ var Diving;
                         this.showPhotosTab = false;
                         var that = this;
                         setTimeout(function () {
+                            var lat = that.selectedDive && that.selectedDive.Latitude ? that.selectedDive.Latitude : 1;
+                            var lan = that.selectedDive && that.selectedDive.Longitude ? that.selectedDive.Longitude : 1;
                             this.options = {
-                                zoom: 6,
-                                center: new google.maps.LatLng(that.selectedDive.Latitude, that.selectedDive.Longitude),
+                                zoom: that.selectedDive && that.selectedDive.Latitude && that.selectedDive.Longitude ? 6 : 2,
+                                center: new google.maps.LatLng(lat, lan),
                                 mapTypeId: google.maps.MapTypeId.ROADMAP
                             };
-                            if (!that.map) {
-                                that.map = new google.maps.Map(document.getElementById('map'), this.options);
-                                that.map.addListener('zoom_changed', function () {
-                                    that.scope.$apply();
+                            that.map = new google.maps.Map(document.getElementById('map'), this.options);
+                            that.map.addListener('zoom_changed', function () {
+                                that.scope.$apply();
+                            });
+                            that.map.addListener('click', function () {
+                                that.scope.$apply();
+                            });
+                            if (that.selectedDive && that.selectedDive.Latitude && that.selectedDive.Longitude) {
+                                that.marker = new google.maps.Marker({
+                                    map: that.map,
+                                    draggable: true,
+                                    title: that.selectedDive.Location,
+                                    position: new google.maps.LatLng(that.selectedDive.Latitude, that.selectedDive.Longitude)
                                 });
-                                that.map.addListener('click', function () {
-                                    that.scope.$apply();
+                                google.maps.event.addListener(that.marker, 'dragend', function () {
+                                    that.selectedDive.Latitude = that.marker.getPosition().lat().toFixed(6).replace(".", ",");
+                                    that.selectedDive.Longitude = that.marker.getPosition().lng().toFixed(6).replace(".", ",");
                                 });
-                                if (that.selectedDive && that.selectedDive.Latitude && that.selectedDive.Longitude) {
-                                    that.marker = new google.maps.Marker({
-                                        map: that.map,
-                                        draggable: true,
-                                        title: that.selectedDive.Location,
-                                        position: new google.maps.LatLng(that.selectedDive.Latitude, that.selectedDive.Longitude)
-                                    });
-                                    google.maps.event.addListener(that.marker, 'dragend', function () {
-                                        that.selectedDive.Latitude = that.marker.getPosition().lat().toFixed(6).replace(".", ",");
-                                        that.selectedDive.Longitude = that.marker.getPosition().lng().toFixed(6).replace(".", ",");
-                                    });
-                                }
                             }
                         });
                     }
@@ -168,6 +168,12 @@ var Diving;
                 this.selectedDive.SuitType = this.suits[0].Value;
                 this.selectedDive.Tank = this.tanks[0].Value;
                 this.selectedDive.CountryId = 804;
+                if (this.marker)
+                    this.marker.setMap(null);
+                this.ShowSelectedDiveTab(1);
+            };
+            diveController.prototype.SaveDive = function () {
+                this.dataService.SaveDive(this.selectedDive);
             };
             diveController.prototype.CancelCreateNewDive = function () {
                 if (this.dives.length > 0)

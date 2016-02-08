@@ -2,7 +2,7 @@
     Layout = "_LogbookLayout";
 }
 
-<form asp-anit-forgery="true" ng-controller="diveController as diveCtrl" ng-init="diveCtrl.init('@User.Identity.Name')">
+<form asp-anit-forgery="true" ng-controller="diveController as diveCtrl" ng-init="diveCtrl.Init('@User.Identity.Name')">
 
     <div style="width:280px;display:inline-block" ng-show="diveCtrl.showDivesList" ng-cloak>
         <div class="panel panel-primary">
@@ -101,7 +101,7 @@
                         <span class="navmenu-text"><b>Dive description</b></span>
                     </div>
                     
-                    <div class="btn btn-default btn-sm pull-right" style="display:inline-block;margin-right:10px;">
+                    <div class="btn btn-default btn-sm pull-right" style="display:inline-block;margin-right:10px;" ng-click="diveCtrl.SaveDive()">
                         <i class="fa fa-save"></i>&nbsp;&nbsp;Save changes
                     </div>
                     <div class="btn btn-default btn-sm pull-right" style="display:inline-block;margin-right:10px;" ng-show="!diveCtrl.showDivesList" ng-click="diveCtrl.CancelCreateNewDive()" >

@@ -7,7 +7,7 @@
 
     <div class="container">
 
-        <div class="row col-lg-12" style="top:70px">
+        <div class="row col-lg-12">
             <div class="text-success">@ViewBag.ChangedOkText</div>
             <div asp-validation-summary="ValidationSummary.All" class="text-danger" style="padding-top:10px;"></div>
 
@@ -107,7 +107,7 @@
                 <div class="row">
                     <div class="fileinput fileinput-new" data-provides="fileinput">
                         <div class="fileinput-new thumbnail top-offset" style="width: 200px; height: 185px;">
-                            <img src="/api/getuserphoto/@User.Identity.Name" alt="...">
+                            <img src="/api/getuserphoto/@User.Identity.Name" alt="..." onerror="this.src = '/images/icon.png'">
                         </div>
                         <div class="fileinput-preview thumbnail fileinput-exists top-offset" data-trigger="fileinput" style="width: 200px; height: 185px;"></div>
                         <div class="top-offset">
@@ -125,7 +125,7 @@
             </div>
         </div>
 
-        <div class="col-lg-12 row" style="margin-top:100px;padding-left:20px;">
+        <div class="col-lg-12 row top-offset-double" style="padding-left:20px;">
             <a class="btn btn-primary" asp-controller="home" asp-action="index">Return back</a>
             &nbsp;
             <div class="btn btn-primary" onclick="$(this).hide(); $('#passwordChangePanel').show();">Change password</div>

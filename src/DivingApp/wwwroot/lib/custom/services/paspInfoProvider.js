@@ -22,7 +22,7 @@ var Diving;
                 });
             };
             DataService.prototype.GetPhoto = function (email, photoId, callback) {
-                this.http.get('GetPhoto/' + email + '/' + photoId).success(function (data, status) {
+                this.http.get('/GetPhoto/' + email + '/' + photoId).success(function (data, status) {
                     callback(data);
                 }).error(function (error) {
                     callback(error);
@@ -44,6 +44,21 @@ var Diving;
             };
             DataService.prototype.GetDiveDictionaries = function (callback) {
                 this.http.get('/api/getdivedictionaries').success(function (data, status) {
+                    callback(data);
+                }).error(function (error) {
+                    callback(error);
+                });
+            };
+            DataService.prototype.SaveDive = function (dive, callback) {
+                var req = {
+                    method: 'POST',
+                    url: '/api/dives/saveDive',
+                    headers: {
+                        'Content-Type': undefined
+                    },
+                    data: dive
+                };
+                this.http(req).success(function (data, status) {
                     callback(data);
                 }).error(function (error) {
                     callback(error);

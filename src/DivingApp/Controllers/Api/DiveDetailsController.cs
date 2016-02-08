@@ -2,6 +2,7 @@
 using DivingApp.BusinessLayer.Interface;
 using DivingApp.Models;
 using DivingApp.Models.DataModel;
+using DivingApp.Models.ViewModel;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using System;
@@ -185,6 +186,18 @@ namespace DivingApp.Controllers.Api
             {
                 var user = await _userManager.FindByEmailAsync(User.Identity.Name);
                 var dive = _diveManager.GetDiveById(user.Id,diveId);
+                return Json(dive);
+            }
+            return new HttpUnauthorizedResult();
+        }
+
+        [Route("api/dives/saveDive")]
+        [HttpPost]
+        public async Task<IActionResult> SaveDive(DiveViewModel dive)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+              
                 return Json(dive);
             }
             return new HttpUnauthorizedResult();

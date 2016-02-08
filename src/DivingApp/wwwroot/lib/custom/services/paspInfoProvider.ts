@@ -26,7 +26,7 @@ module Diving.Services {
         }
 
         GetPhoto(email: string, photoId: string, callback: Function) {
-            this.http.get('GetPhoto/' + email + '/' + photoId).success((data, status) => {
+            this.http.get('/GetPhoto/' + email + '/' + photoId).success((data, status) => {
                 callback(data);
             }).error(error => {
                 callback(error);
@@ -56,13 +56,30 @@ module Diving.Services {
                 callback(error);
             });
         }   
+
+        SaveDive(dive: Object, callback: Function) {
+            var req = {
+                method: 'POST',
+                url: '/api/dives/saveDive',
+                headers: {
+                    'Content-Type': undefined
+                },
+                data: dive
+            }
+            this.http(req).success((data, status) => {
+                callback(data);
+            }).error(error => {
+                callback(error);
+            });
+        }   
     }
 
     export interface IPaspDataService {
         GetGeoPoints(email: string, callback: Function);
         GetAuthorizedUserDives(callback: Function);
         GetAuthorizedUserDiveById(diveId: string, callback: Function);
-        GetDiveDictionaries(allback: Function);
+        GetDiveDictionaries(callback: Function);
+        SaveDive(dive: Object, callback: Function);
     }
 }
 
