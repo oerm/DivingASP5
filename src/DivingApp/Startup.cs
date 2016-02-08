@@ -5,7 +5,7 @@ using DivingApp.Models;
 using DivingApp.Models.DataModel;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Framework.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DivingApp
 {

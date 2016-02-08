@@ -1,7 +1,7 @@
 ﻿///<reference path="../../typings/angularjs/angular.d.ts" /> 
 
 module Diving.Services {
-    export class DataService implements IPaspDataService {
+    export class DataService implements IDataService {
 
         private http;
 
@@ -62,9 +62,9 @@ module Diving.Services {
                 method: 'POST',
                 url: '/api/dives/saveDive',
                 headers: {
-                    'Content-Type': undefined
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                data: dive
+                data: $.param(dive)
             }
             this.http(req).success((data, status) => {
                 callback(data);
@@ -74,7 +74,7 @@ module Diving.Services {
         }   
     }
 
-    export interface IPaspDataService {
+    export interface IDataService {
         GetGeoPoints(email: string, callback: Function);
         GetAuthorizedUserDives(callback: Function);
         GetAuthorizedUserDiveById(diveId: string, callback: Function);

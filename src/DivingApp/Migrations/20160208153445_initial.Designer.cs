@@ -4,23 +4,18 @@ using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
 using DivingApp.Models;
-using Microsoft.Data.Entity.SqlServer.Metadata;
 
 namespace DivingApp.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    partial class InitMigration
+    [Migration("20160208153445_initial")]
+    partial class initial
     {
-        public override string Id
-        {
-            get { return "20151216143643_InitMigration"; }
-        }
-
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .Annotation("ProductVersion", "7.0.0-beta7-15540")
-                .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("DivingApp.Models.DataModel.Cert", b =>
                 {
@@ -28,7 +23,7 @@ namespace DivingApp.Migrations
 
                     b.Property<DateTime?>("DateArchieve");
 
-                    b.Property<decimal?>("DicCertCertID");
+                    b.Property<long?>("DicCertCertID");
 
                     b.Property<string>("Issuer");
 
@@ -36,12 +31,13 @@ namespace DivingApp.Migrations
 
                     b.Property<string>("UserId");
 
-                    b.Key("CertNumber");
+                    b.HasKey("CertNumber");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.DicCert", b =>
                 {
-                    b.Property<decimal>("CertID");
+                    b.Property<long>("CertID")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("CertName");
 
@@ -51,12 +47,13 @@ namespace DivingApp.Migrations
 
                     b.Property<byte>("Level");
 
-                    b.Key("CertID");
+                    b.HasKey("CertID");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.DicCountry", b =>
                 {
-                    b.Property<int>("CountryKod");
+                    b.Property<int>("CountryKod")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description");
 
@@ -80,39 +77,53 @@ namespace DivingApp.Migrations
 
                     b.Property<string>("ValueRU");
 
-                    b.Key("CountryKod");
+                    b.HasKey("CountryKod");
+                });
+
+            modelBuilder.Entity("DivingApp.Models.DataModel.DicDiveTime", b =>
+                {
+                    b.Property<byte>("TimeId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("TimeValue");
+
+                    b.HasKey("TimeId");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.DicSuit", b =>
                 {
-                    b.Property<byte>("SuitID");
+                    b.Property<byte>("SuitID")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("SuitValue");
 
-                    b.Key("SuitID");
+                    b.HasKey("SuitID");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.DicTank", b =>
                 {
-                    b.Property<byte>("TankId");
+                    b.Property<byte>("TankId")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("TankValue");
 
-                    b.Key("TankId");
+                    b.HasKey("TankId");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.DicWeightOk", b =>
                 {
-                    b.Property<byte>("WeightOkID");
+                    b.Property<byte>("WeightOkID")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("WeightOkValue");
 
-                    b.Key("WeightOkID");
+                    b.HasKey("WeightOkID");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.Dive", b =>
                 {
-                    b.Property<decimal>("DiveID");
+                    b.Property<long>("DiveID")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<double?>("AirTemperature");
 
@@ -120,11 +131,13 @@ namespace DivingApp.Migrations
 
                     b.Property<int?>("CountriesCountryKod");
 
-                    b.Property<decimal?>("Country");
+                    b.Property<long?>("Country");
+
+                    b.Property<byte?>("DicDiveTimeTimeId");
 
                     b.Property<DateTime>("DiveDate");
 
-                    b.Property<byte?>("DiveType");
+                    b.Property<byte?>("DiveTime");
 
                     b.Property<double?>("DiveX");
 
@@ -166,23 +179,25 @@ namespace DivingApp.Migrations
 
                     b.Property<byte?>("WeightOkWeightOkID");
 
-                    b.Key("DiveID");
+                    b.HasKey("DiveID");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.PhotoImg", b =>
                 {
-                    b.Property<decimal>("PhotoID");
+                    b.Property<long>("PhotoID")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<byte[]>("PhotoVal");
 
-                    b.Key("PhotoID");
+                    b.HasKey("PhotoID");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.Photos", b =>
                 {
-                    b.Property<decimal>("PhotoID");
+                    b.Property<long>("PhotoID")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("DiveID");
+                    b.Property<long>("DiveID");
 
                     b.Property<string>("PhotoComment");
 
@@ -194,7 +209,7 @@ namespace DivingApp.Migrations
 
                     b.Property<bool>("Status");
 
-                    b.Key("PhotoID");
+                    b.HasKey("PhotoID");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.User", b =>
@@ -210,14 +225,12 @@ namespace DivingApp.Migrations
                     b.Property<string>("City");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .ConcurrencyToken();
+                        .IsConcurrencyToken();
 
-                    b.Property<int?>("Country");
-
-                    b.Property<int?>("DicCountryCountryKod");
+                    b.Property<int?>("DicCountryId");
 
                     b.Property<string>("Email")
-                        .Annotation("MaxLength", 256);
+                        .HasAnnotation("MaxLength", 256);
 
                     b.Property<bool>("EmailConfirmed");
 
@@ -230,10 +243,10 @@ namespace DivingApp.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
                     b.Property<string>("NormalizedEmail")
-                        .Annotation("MaxLength", 256);
+                        .HasAnnotation("MaxLength", 256);
 
                     b.Property<string>("NormalizedUserName")
-                        .Annotation("MaxLength", 256);
+                        .HasAnnotation("MaxLength", 256);
 
                     b.Property<string>("PasswordHash");
 
@@ -250,17 +263,17 @@ namespace DivingApp.Migrations
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
-                        .Annotation("MaxLength", 256);
+                        .HasAnnotation("MaxLength", 256);
 
-                    b.Key("Id");
+                    b.HasKey("Id");
 
-                    b.Index("NormalizedEmail")
-                        .Annotation("Relational:Name", "EmailIndex");
+                    b.HasIndex("NormalizedEmail")
+                        .HasAnnotation("Relational:Name", "EmailIndex");
 
-                    b.Index("NormalizedUserName")
-                        .Annotation("Relational:Name", "UserNameIndex");
+                    b.HasIndex("NormalizedUserName")
+                        .HasAnnotation("Relational:Name", "UserNameIndex");
 
-                    b.Annotation("Relational:TableName", "AspNetUsers");
+                    b.HasAnnotation("Relational:TableName", "AspNetUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRole", b =>
@@ -268,20 +281,20 @@ namespace DivingApp.Migrations
                     b.Property<string>("Id");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .ConcurrencyToken();
+                        .IsConcurrencyToken();
 
                     b.Property<string>("Name")
-                        .Annotation("MaxLength", 256);
+                        .HasAnnotation("MaxLength", 256);
 
                     b.Property<string>("NormalizedName")
-                        .Annotation("MaxLength", 256);
+                        .HasAnnotation("MaxLength", 256);
 
-                    b.Key("Id");
+                    b.HasKey("Id");
 
-                    b.Index("NormalizedName")
-                        .Annotation("Relational:Name", "RoleNameIndex");
+                    b.HasIndex("NormalizedName")
+                        .HasAnnotation("Relational:Name", "RoleNameIndex");
 
-                    b.Annotation("Relational:TableName", "AspNetRoles");
+                    b.HasAnnotation("Relational:TableName", "AspNetRoles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim<string>", b =>
@@ -293,11 +306,12 @@ namespace DivingApp.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("RoleId");
+                    b.Property<string>("RoleId")
+                        .IsRequired();
 
-                    b.Key("Id");
+                    b.HasKey("Id");
 
-                    b.Annotation("Relational:TableName", "AspNetRoleClaims");
+                    b.HasAnnotation("Relational:TableName", "AspNetRoleClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim<string>", b =>
@@ -309,11 +323,12 @@ namespace DivingApp.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
-                    b.Key("Id");
+                    b.HasKey("Id");
 
-                    b.Annotation("Relational:TableName", "AspNetUserClaims");
+                    b.HasAnnotation("Relational:TableName", "AspNetUserClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserLogin<string>", b =>
@@ -324,11 +339,12 @@ namespace DivingApp.Migrations
 
                     b.Property<string>("ProviderDisplayName");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
-                    b.Key("LoginProvider", "ProviderKey");
+                    b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.Annotation("Relational:TableName", "AspNetUserLogins");
+                    b.HasAnnotation("Relational:TableName", "AspNetUserLogins");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole<string>", b =>
@@ -337,89 +353,93 @@ namespace DivingApp.Migrations
 
                     b.Property<string>("RoleId");
 
-                    b.Key("UserId", "RoleId");
+                    b.HasKey("UserId", "RoleId");
 
-                    b.Annotation("Relational:TableName", "AspNetUserRoles");
+                    b.HasAnnotation("Relational:TableName", "AspNetUserRoles");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.Cert", b =>
                 {
-                    b.Reference("DivingApp.Models.DataModel.DicCert")
-                        .InverseCollection()
-                        .ForeignKey("DicCertCertID");
+                    b.HasOne("DivingApp.Models.DataModel.DicCert")
+                        .WithMany()
+                        .HasForeignKey("DicCertCertID");
 
-                    b.Reference("DivingApp.Models.DataModel.User")
-                        .InverseCollection()
-                        .ForeignKey("UserId");
+                    b.HasOne("DivingApp.Models.DataModel.User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.Dive", b =>
                 {
-                    b.Reference("DivingApp.Models.DataModel.DicCountry")
-                        .InverseCollection()
-                        .ForeignKey("CountriesCountryKod");
+                    b.HasOne("DivingApp.Models.DataModel.DicCountry")
+                        .WithMany()
+                        .HasForeignKey("CountriesCountryKod");
 
-                    b.Reference("DivingApp.Models.DataModel.DicSuit")
-                        .InverseCollection()
-                        .ForeignKey("SuitSuitID");
+                    b.HasOne("DivingApp.Models.DataModel.DicDiveTime")
+                        .WithMany()
+                        .HasForeignKey("DicDiveTimeTimeId");
 
-                    b.Reference("DivingApp.Models.DataModel.DicTank")
-                        .InverseCollection()
-                        .ForeignKey("TankNameTankId");
+                    b.HasOne("DivingApp.Models.DataModel.DicSuit")
+                        .WithMany()
+                        .HasForeignKey("SuitSuitID");
 
-                    b.Reference("DivingApp.Models.DataModel.User")
-                        .InverseCollection()
-                        .ForeignKey("UserId");
+                    b.HasOne("DivingApp.Models.DataModel.DicTank")
+                        .WithMany()
+                        .HasForeignKey("TankNameTankId");
 
-                    b.Reference("DivingApp.Models.DataModel.DicWeightOk")
-                        .InverseCollection()
-                        .ForeignKey("WeightOkWeightOkID");
+                    b.HasOne("DivingApp.Models.DataModel.User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("DivingApp.Models.DataModel.DicWeightOk")
+                        .WithMany()
+                        .HasForeignKey("WeightOkWeightOkID");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.Photos", b =>
                 {
-                    b.Reference("DivingApp.Models.DataModel.Dive")
-                        .InverseCollection()
-                        .ForeignKey("DiveID");
+                    b.HasOne("DivingApp.Models.DataModel.Dive")
+                        .WithMany()
+                        .HasForeignKey("DiveID");
                 });
 
             modelBuilder.Entity("DivingApp.Models.DataModel.User", b =>
                 {
-                    b.Reference("DivingApp.Models.DataModel.DicCountry")
-                        .InverseCollection()
-                        .ForeignKey("DicCountryCountryKod");
+                    b.HasOne("DivingApp.Models.DataModel.DicCountry")
+                        .WithMany()
+                        .HasForeignKey("DicCountryId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim<string>", b =>
                 {
-                    b.Reference("Microsoft.AspNet.Identity.EntityFramework.IdentityRole")
-                        .InverseCollection()
-                        .ForeignKey("RoleId");
+                    b.HasOne("Microsoft.AspNet.Identity.EntityFramework.IdentityRole")
+                        .WithMany()
+                        .HasForeignKey("RoleId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim<string>", b =>
                 {
-                    b.Reference("DivingApp.Models.DataModel.User")
-                        .InverseCollection()
-                        .ForeignKey("UserId");
+                    b.HasOne("DivingApp.Models.DataModel.User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserLogin<string>", b =>
                 {
-                    b.Reference("DivingApp.Models.DataModel.User")
-                        .InverseCollection()
-                        .ForeignKey("UserId");
+                    b.HasOne("DivingApp.Models.DataModel.User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole<string>", b =>
                 {
-                    b.Reference("Microsoft.AspNet.Identity.EntityFramework.IdentityRole")
-                        .InverseCollection()
-                        .ForeignKey("RoleId");
+                    b.HasOne("Microsoft.AspNet.Identity.EntityFramework.IdentityRole")
+                        .WithMany()
+                        .HasForeignKey("RoleId");
 
-                    b.Reference("DivingApp.Models.DataModel.User")
-                        .InverseCollection()
-                        .ForeignKey("UserId");
+                    b.HasOne("DivingApp.Models.DataModel.User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
         }
     }

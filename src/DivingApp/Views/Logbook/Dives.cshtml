@@ -55,10 +55,7 @@
 
                         </div>
                     </li>
-                </ul>
-                <p class="list-group text-center top-offset-double" style="font-size: 24px;" ng-show="diveCtrl.Dives.length==0">
-                    No dives
-                </p>
+                </ul>           
 
             </div>
             <div class="panel-footer">
@@ -104,7 +101,7 @@
                     <div class="btn btn-default btn-sm pull-right" style="display:inline-block;margin-right:10px;" ng-click="diveCtrl.SaveDive()">
                         <i class="fa fa-save"></i>&nbsp;&nbsp;Save changes
                     </div>
-                    <div class="btn btn-default btn-sm pull-right" style="display:inline-block;margin-right:10px;" ng-show="!diveCtrl.showDivesList" ng-click="diveCtrl.CancelCreateNewDive()" >
+                    <div class="btn btn-default btn-sm pull-right" style="display:inline-block;margin-right:10px;" ng-show="!diveCtrl.showDivesList&&diveCtrl.Dives.length>0 " ng-click="diveCtrl.CancelCreateNewDive()" >
                         <i class="fa fa-hand-o-down"></i>&nbsp;&nbsp;Cancel changes
                     </div>
                 </div>
@@ -146,10 +143,17 @@
                     </div>
 
                     <div class="col-lg-2 col-md-4 form-group-sm top-offset ">
-                        Dive date
+                        * Dive date
                     </div>
                     <div class="col-lg-4 col-md-8 top-offset-sm">
                         <input type="text" class="form-control input-sm" placeholder="Select dive date" ng-model="diveCtrl.selectedDive.DiveDateString" />
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#DiveDate').datetimepicker({
+                                    format: 'DD/MM/YYYY'
+                                });
+                            });
+                        </script>
                     </div>
                     <div class="col-lg-2 col-md-4 form-group-sm top-offset">
                         Country
@@ -160,7 +164,7 @@
                     </div>
 
                     <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg" placeholder="Dive location name">
-                        Location
+                        * Location
                     </div>
                     <div class="col-lg-10 col-md-8 top-offset">
                         <input type="text" class="form-control input-sm" ng-model="diveCtrl.selectedDive.Location" />
@@ -184,7 +188,7 @@
                     </div>
                     <div class="col-lg-4 col-md-8 top-offset">
                         <select class="form-control input-sm" ng-model="diveCtrl.selectedDive.SuitType" ng-options="item.Value as item.Text for item in diveCtrl.suits">
-                           
+
                         </select>
                     </div>
                     <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
@@ -192,7 +196,7 @@
                     </div>
                     <div class="col-lg-4 col-md-8 top-offset">
                         <select class="form-control input-sm" ng-model="diveCtrl.selectedDive.Tank" ng-options="item.Value as item.Text for item in diveCtrl.tanks">
-                           
+
                         </select>
                     </div>
 
@@ -214,14 +218,15 @@
                         Total weights
                     </div>
                     <div class="col-lg-4 col-md-8 top-offset">
-                        <input type="text" class="form-control input-sm" placeholder="Kilos" ng-model="diveCtrl.selectedDive.Weight" />
+                        <input type="text" class="form-control input-sm" placeholder="Kilos" style="width:44%;display:inline-block" ng-model="diveCtrl.selectedDive.Weight" />
+                        <select class="form-control input-sm pull-right" style="width:44%;display:inline-block" ng-model="diveCtrl.selectedDive.DiveType" ng-options="item.Value as item.Text for item in diveCtrl.weights"></select>
                     </div>
                     <div class="col-lg-2 col-md-4 form-group-sm top-offset-lg">
-                        Weights suit
+                        Dive time
                     </div>
                     <div class="col-lg-4 col-md-8 top-offset">
-                        <select class="form-control input-sm" ng-model="diveCtrl.selectedDive.WeightIsOk" ng-options="item.Value as item.Text for item in diveCtrl.weights">
-                          
+                        <select class="form-control input-sm" ng-model="diveCtrl.selectedDive.DiveTime" ng-options="item.Value as item.Text for item in diveCtrl.time">
+
                         </select>
                     </div>
 
@@ -301,7 +306,7 @@
     </div>
 
     @*TODO - put this into separate view *@
-    <div ng-click='diveCtrl.HidePhoto()' ng-show="diveCtrl.showPhoto" ng-cloak class="grayFullScreen" >   
+    <div ng-click='diveCtrl.HidePhoto()' ng-show="diveCtrl.showPhoto" ng-cloak class="grayFullScreen" >
         <center>
             <div class="centeredWindow" onclick="event.cancelBubble = true;$('#largeImage').hide();">
                 <div class="row">
@@ -367,8 +372,8 @@
 
             </div>
 
-        </center>    
-       
+        </center>
+
     </div>
 
 </form>

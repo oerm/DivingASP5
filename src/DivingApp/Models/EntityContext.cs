@@ -43,5 +43,7 @@ namespace DivingApp.Models
         public DbSet<DicTank> DicTankTypes { get; set; }
 
         public DbSet<DicWeightOk> DicWeightOk { get; set; }
+
+        public DbSet<DicDiveTime> DicDiveTime { get; set; }
     }
 }

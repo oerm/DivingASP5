@@ -18,5 +18,10 @@
         public DiveShowDives() {
             this.scope.DiveChild.CancelCreateNewDive();
         }
+
+        public HasDives() {
+            this.scope.DiveChild.dives && this.scope.DiveChild.dives.length > 0;
+        }
+
     }
 }

@@ -40,29 +40,39 @@ namespace DivingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(NewUserViewModel viewModel)
         {
-            if (!string.Equals(viewModel.Password, viewModel.ConfirmPassword))
+            try
             {
-                ModelState.AddModelError("", "Passwords mismatch");
-            }
+                if (!string.Equals(viewModel.Password, viewModel.ConfirmPassword))
+                {
+                    ModelState.AddModelError("", "Passwords mismatch");
+                }
 
-            if (ModelState.IsValid)
+                if (ModelState.IsValid)
+                {
+                    User model = Mapper.Map<User>(viewModel);
+                    var result = await _manager.CreateAsync(model, viewModel.Password);
+
+                    if (result.Succeeded)
+                    {
+                        await _signManager.SignInAsync(model, true);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", string.Join(Environment.NewLine, result.Errors.Select(er => er.Description)));
+                    }
+                }
+            }
+            catch (Exception ex)
             {
-                User model = Mapper.Map<User>(viewModel);
-                var result = await _manager.CreateAsync(model, viewModel.Password);
-
-                if (result.Succeeded)
-                {
-                    await _signManager.SignInAsync(model, true);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", string.Join(Environment.NewLine, result.Errors.Select(er => er.Description)));
-                }
+                ModelState.AddModelError("", ex.InnerException.Message.ToString());
             }
-
-            FillViewBag();
+            finally
+            {
+                FillViewBag();              
+            }
             return View(viewModel);
+
         }
 
         public async Task<IActionResult> Edit()
@@ -138,18 +148,11 @@ namespace DivingApp.Controllers
                                                          new SelectListItem()
                                                          {
                                                              Text = item.ValueEU,
-                                                             Value = item.CountryKod.ToString()
+                                                             Value = item.CountryKod.ToString(),
+                                                             Selected = string.Equals(item.CountryKod, AuthController.emptyCountryCode)
                                                          })
                                                  .OrderBy(item=> item.Text)
                                                  .ToList();
-
-            countries.Add(new SelectListItem()
-            {
-                Text = "Not selected",
-                Value = AuthController.emptyCountryCode.ToString(),
-                Selected = true
-            });
-
 
             if (selectedCountryCode != AuthController.emptyCountryCode)
             {

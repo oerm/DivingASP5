@@ -8,6 +8,7 @@ using Microsoft.AspNet.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Authorization;
 
 namespace DivingApp.Controllers.Api
 {
@@ -129,12 +130,23 @@ namespace DivingApp.Controllers.Api
                                             .OrderBy(item => item.Text)
                                             .ToList();
 
+            var time = _context.DicDiveTime.ToArray().Select((item, i) =>
+                                                 new
+                                                 {
+                                                     Selected = i == 0,
+                                                     Text = item.TimeValue,
+                                                     Value = item.TimeId
+                                                 })
+                                         .OrderBy(item => item.Value)
+                                         .ToList();
+
             return Json(new
             {
                 Suits = suits,
                 Weights = weights,
                 Tanks = tanks,
-                Countries = countries
+                Countries = countries,
+                Time = time
             });
         }
 
@@ -194,10 +206,12 @@ namespace DivingApp.Controllers.Api
         [Route("api/dives/saveDive")]
         [HttpPost]
         public async Task<IActionResult> SaveDive(DiveViewModel dive)
-        {
+        {            
             if (User.Identity.IsAuthenticated)
             {
-              
+                if (ModelState.IsValid)
+                {
+                }
                 return Json(dive);
             }
             return new HttpUnauthorizedResult();

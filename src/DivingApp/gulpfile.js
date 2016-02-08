@@ -27,7 +27,7 @@ gulp.task('buildjs', function () {
 });
 
 gulp.task('buildangularcontrollers', function () {
-    return gulp.src([path + "custom/services/paspinfoprovider.js",
+    return gulp.src([path + "custom/services/dataprovider.js",
                      path + "custom/controllers/rootcontroller.js",
                      path + "custom/controllers/logincontroller.js",
                      path + "custom/controllers/paspcontroller.js",

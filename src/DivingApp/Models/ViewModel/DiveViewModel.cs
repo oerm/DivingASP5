@@ -28,18 +28,22 @@ namespace DivingApp.Models.ViewModel
         [Required]
         public Nullable<long> CountryId { get; set; }
 
+        [Required]
         public string Location { get; set; }
 
+        [Required]
         public Nullable<byte> DiveType { get; set; }
-
+      
         public Nullable<double> Weight { get; set; }
 
+        [Required]
         public Nullable<byte> WeightIsOk { get; set; }
-        
+
+        [Required]
         public Nullable<byte> Tank { get; set; }
-
+      
         public Nullable<byte> TankStart { get; set; }
-
+      
         public Nullable<byte> TankEnd { get; set; }
 
         public Nullable<double> AirTemperature { get; set; }
@@ -54,6 +58,7 @@ namespace DivingApp.Models.ViewModel
 
         public Nullable<byte> FiveMetersMinutes { get; set; }
 
+        [Required]
         public Nullable<byte> SuitType { get; set; }
 
         public string Comments { get; set; }

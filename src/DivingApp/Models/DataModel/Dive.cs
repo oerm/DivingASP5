@@ -24,7 +24,7 @@ namespace DivingApp.Models.DataModel
 
         public string Location { get; set; }
 
-        public Nullable<byte> DiveType { get; set; }
+        public Nullable<byte> DiveTime { get; set; }
 
         public Nullable<double> Weight { get; set; }
 
@@ -67,6 +67,8 @@ namespace DivingApp.Models.DataModel
         public virtual DicTank TankName { get; set; }
 
         public virtual DicWeightOk WeightOk { get; set; }
+
+        public virtual DicDiveTime DicDiveTime { get; set; }
 
         public virtual User User { get; set; }
 

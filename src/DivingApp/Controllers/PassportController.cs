@@ -2,6 +2,7 @@
 using DivingApp.BusinessLayer.Interface;
 using DivingApp.Models;
 using DivingApp.Models.DataModel;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;

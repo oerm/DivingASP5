@@ -202,22 +202,41 @@ VALUES (N'20151221143656_DicCountryMigration', N'7.0.0-beta7-15540');;
 GO
 
 
-
+SET IDENTITY_INSERT [Diving].[dbo].[DicCountry] ON
 INSERT INTO [Diving].[dbo].[DicCountry]  ([CountryKod],[Description],[Flag],[FullName],[PhoneCode],[ShortName],[ShortName2],[Tmp1],[Tmp2],[Tmp3],[ValueEU],[ValueRU])
 SELECT [dic_val_kod],[description],[flag],[fullname],[phone_code],[smallname],[smallname2],[tmp1],[tmp2],[tmp3],[dic_val_ua],[dic_val_ru] FROM [DIVING_TMP].[dbo].[Dic_Countries]
-
+INSERT INTO [Diving].[dbo].[DicCountry]  ([CountryKod],[Description],[Flag],[FullName],[PhoneCode],[ShortName],[ShortName2],[Tmp1],[Tmp2],[Tmp3],[ValueEU],[ValueRU])
+VALUES(0,'Empty',null,'','','','','','','','Not available','Not available')
+SET IDENTITY_INSERT [Diving].[dbo].[DicCountry] OFF
+GO
+SET IDENTITY_INSERT [Diving].[dbo].[DicCert] ON
 insert into [Diving].[dbo].[DicCert] ([CertID],[CertName],[Description],[IsGeneral],[Level])
 SELECT [CertID],[CertName],[Description],[IsGeneral],[Level] FROM [DIVING_TMP].[dbo].[Dic_Certs]
-
-insert into [Diving].[dbo].[DicSuit]
+SET IDENTITY_INSERT [Diving].[dbo].[DicCert] OFF
+GO
+SET IDENTITY_INSERT [Diving].[dbo].[DicSuit] ON
+insert into [Diving].[dbo].[DicSuit] ([SuitID],[SuitValue])
 SELECT TOP 1000 [SuitID],[SuitValue] FROM [DIVING_TMP].[dbo].[Dic_Suit]
-
-insert into  [Diving].[dbo].[DicTank]
+SET IDENTITY_INSERT [Diving].[dbo].[DicSuit] OFF
+GO
+SET IDENTITY_INSERT [Diving].[dbo].[DicTank] ON
+insert into  [Diving].[dbo].[DicTank]([TankId],[TankValue])
 SELECT [TankId],[TankValue] FROM [DIVING_TMP].[dbo].[Dic_Tank]
-
-insert into  [Diving].[dbo].[DicWeightOk]
+SET IDENTITY_INSERT [Diving].[dbo].[DicTank] OFF
+GO
+SET IDENTITY_INSERT [Diving].[dbo].[DicWeightOk] ON
+insert into  [Diving].[dbo].[DicWeightOk] (WeightOkID,WeightOkValue)
 SELECT [WeightOkID],[WeightOkValue] FROM [DIVING_TMP].[dbo].[Dic_WeightOk]
-
+SET IDENTITY_INSERT [Diving].[dbo].[DicWeightOk] OFF
+GO
+SET IDENTITY_INSERT [Diving].[dbo].[DicDiveTime] ON
+insert into [Diving].[dbo].[DicDiveTime](TimeId,TimeValue) values (1,'Morning')
+insert into [Diving].[dbo].[DicDiveTime](TimeId,TimeValue)  values(2,'Noon')
+insert into [Diving].[dbo].[DicDiveTime](TimeId,TimeValue)  values(3,'Evening')
+insert into [Diving].[dbo].[DicDiveTime](TimeId,TimeValue)  values(4,'Night')
+SET IDENTITY_INSERT [Diving].[dbo].[DicDiveTime] OFF
+GO
+ 
 SET IDENTITY_INSERT [Diving].[dbo].[Dive] ON
 INSERT INTO [Diving].[dbo].[Dive] ([DiveID],[AirTemperature],[Comments],[CountriesCountryKod],[Country],[DiveDate],[DiveType],[DiveX],[DiveY]
       ,[FiveMetersMinutes],[Location],[MaxDepth],[Status],[SuitSuitID],[SuitType],[Tank],[TankEnd],[TankNameTankId],[TankStart]

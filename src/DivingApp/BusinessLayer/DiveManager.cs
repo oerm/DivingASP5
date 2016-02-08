@@ -30,8 +30,8 @@ namespace DivingApp.BusinessLayer
                                         CountryId = d.Country,
                                         AirTemperature = d.AirTemperature,
                                         Comments = d.Comments,
-                                        DiveDateString = d.DiveDate.ToString("dd.MM.yyyy"),
-                                        DiveType = d.DiveType,
+                                        DiveDateString = d.DiveDate.ToString("dd/MM/yyyy"),
+                                        DiveType = d.DiveTime,
                                         FiveMetersMinutes = d.FiveMetersMinutes,
                                         Latitude = d.DiveX,
                                         Location = d.Location,
@@ -60,21 +60,28 @@ namespace DivingApp.BusinessLayer
 
         public IEnumerable<DiveShortViewModel> GetShortDivesListByUserId(string userId)
         {
-            var dives = _context.Dives.Where(d => d.User.Id == userId && d.Status)
-                                      .Include(d => d.Countries)
-                                      .OrderBy(d => d.DiveDate)
-                                      .ToArray()
-                                      .Select((d, n) => new DiveShortViewModel
-                                      {
-                                          DiveID = d.DiveID,
-                                          DiveNumber = n + 1,
-                                          CountryID = d.Countries.CountryKod,
-                                          CountryName = d.Countries.ValueEU,
-                                          DiveDate = d.DiveDate.ToString("dd.MM.yyyy"),
-                                          Depth = d.MaxDepth,
-                                          Time = d.TotalMinutes
-                                      }).Reverse();
-            return dives;
+            try
+            {
+                var dives = _context.Dives.Where(d => d.User.Id == userId && d.Status)
+                                          .Include(d => d.Countries)
+                                          .OrderBy(d => d.DiveDate)
+                                          .ToArray()
+                                          .Select((d, n) => new DiveShortViewModel
+                                          {
+                                              DiveID = d.DiveID,
+                                              DiveNumber = n + 1,
+                                              CountryID = d.Countries.CountryKod,
+                                              CountryName = d.Countries.ValueEU,
+                                              DiveDate = d.DiveDate.ToString("dd/MM/yyyy"),
+                                              Depth = d.MaxDepth,
+                                              Time = d.TotalMinutes
+                                          }).Reverse();
+                return dives;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
            
         }
     }

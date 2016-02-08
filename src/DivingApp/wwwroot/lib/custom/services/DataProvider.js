@@ -54,9 +54,9 @@ var Diving;
                     method: 'POST',
                     url: '/api/dives/saveDive',
                     headers: {
-                        'Content-Type': undefined
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    data: dive
+                    data: $.param(dive)
                 };
                 this.http(req).success(function (data, status) {
                     callback(data);

@@ -12,6 +12,7 @@ using AutoMapper;
 using DivingApp.Models.ViewModel;
 using DivingApp.BusinessLayer.Interface;
 using DivingApp.BusinessLayer;
+using Microsoft.AspNet.Authorization;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 

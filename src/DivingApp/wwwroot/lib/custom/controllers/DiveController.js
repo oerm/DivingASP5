@@ -27,12 +27,16 @@ var Diving;
                     that.suits = data.Suits;
                     that.weights = data.Weights;
                     that.tanks = data.Tanks;
-                });
-                dataService.GetAuthorizedUserDives(function (data) {
-                    that.dives = data;
-                    if (data.length > 0) {
-                        that.GetDive(data[0].DiveID);
-                    }
+                    that.time = data.Time;
+                    that.dataService.GetAuthorizedUserDives(function (data) {
+                        that.dives = data;
+                        if (data.length > 0) {
+                            that.GetDive(data[0].DiveID);
+                        }
+                        else {
+                            that.CreateNewDive();
+                        }
+                    });
                 });
             }
             diveController.prototype.Init = function (userEmail) {
@@ -90,7 +94,8 @@ var Diving;
                 }
             };
             diveController.prototype.SearchForLocation = function () {
-                this.marker.setMap(null);
+                if (this.marker)
+                    this.marker.setMap(null);
                 this.showSearchingGeoStatus = true;
                 var geocoder = new google.maps.Geocoder();
                 var that = this;
@@ -167,12 +172,15 @@ var Diving;
                 this.selectedDive.WeightIsOk = this.weights[0].Value;
                 this.selectedDive.SuitType = this.suits[0].Value;
                 this.selectedDive.Tank = this.tanks[0].Value;
+                this.selectedDive.DiveTime = this.time[0].Value;
                 this.selectedDive.CountryId = 804;
+                this.selectedDive.DiveDate = this.selectedDive.DiveDateString = moment(Date.now()).format('DD/MM/YYYY');
                 if (this.marker)
                     this.marker.setMap(null);
                 this.ShowSelectedDiveTab(1);
             };
             diveController.prototype.SaveDive = function () {
+                this.selectedDive.DiveDate = this.selectedDive.DiveDateString;
                 this.dataService.SaveDive(this.selectedDive);
             };
             diveController.prototype.CancelCreateNewDive = function () {

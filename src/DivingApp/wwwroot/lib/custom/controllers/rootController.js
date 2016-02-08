@@ -13,6 +13,9 @@ var Diving;
             rootController.prototype.DiveShowDives = function () {
                 this.scope.DiveChild.CancelCreateNewDive();
             };
+            rootController.prototype.HasDives = function () {
+                this.scope.DiveChild.dives && this.scope.DiveChild.dives.length > 0;
+            };
             return rootController;
         })();
         Controllers.rootController = rootController;
