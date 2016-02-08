@@ -41,22 +41,25 @@ namespace DivingApp.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(viewModel.Email);
-                var signInResult = await _signManager.PasswordSignInAsync(user,
-                                                                          viewModel.Password,
-                                                                          viewModel.RememberMe,
-                                                                          false);
-
-
-                if (signInResult.Succeeded)
+                if (user != null)
                 {
-                    if (string.IsNullOrWhiteSpace(returnUrl))
+                    var signInResult = await _signManager.PasswordSignInAsync(user,
+                                                                              viewModel.Password,
+                                                                              viewModel.RememberMe,
+                                                                              false);
+
+
+                    if (signInResult.Succeeded)
                     {
-                        return RedirectToAction(HomeController.DiveControllerName,
-                                                HomeController.DiveControllerDefaultActionName);
-                    }
-                    else
-                    {
-                        return Redirect(returnUrl);
+                        if (string.IsNullOrWhiteSpace(returnUrl))
+                        {
+                            return RedirectToAction(HomeController.DiveControllerName,
+                                                    HomeController.DiveControllerDefaultActionName);
+                        }
+                        else
+                        {
+                            return Redirect(returnUrl);
+                        }
                     }
                 }
                 ModelState.AddModelError("", HomeController.LoginFailedMessage);

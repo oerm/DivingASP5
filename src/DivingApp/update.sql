@@ -238,19 +238,23 @@ SET IDENTITY_INSERT [Diving].[dbo].[DicDiveTime] OFF
 GO
  
 SET IDENTITY_INSERT [Diving].[dbo].[Dive] ON
-INSERT INTO [Diving].[dbo].[Dive] ([DiveID],[AirTemperature],[Comments],[CountriesCountryKod],[Country],[DiveDate],[DiveType],[DiveX],[DiveY]
+INSERT INTO [Diving].[dbo].[Dive] ([DiveID],[AirTemperature],[Comments],[CountriesCountryKod],[Country],[DiveDate],[DiveTime],[DiveX],[DiveY]
       ,[FiveMetersMinutes],[Location],[MaxDepth],[Status],[SuitSuitID],[SuitType],[Tank],[TankEnd],[TankNameTankId],[TankStart]
       ,[TotalMinutes],[UpdDate],[UserId],[Visibility],[WaterTemperature],[Weight],[WeightIsOk],[WeightOkWeightOkID])
 SELECT  [DiveID],[AirTemperature],[Comments],[Country],[Country],[DiveDate],[DiveType],[DiveX],[DiveY]
       ,[FiveMetersMinutes],[Location],[MaxDepth],[Status],[SuitType],[SuitType],[Tank],[TankEnd],[Tank],[TankStart]
-      ,[TotalMinutes],[UpdDate],[UserId],[Visibility],[WaterTemperature],[Weight],[WeightIsOk],[WeightIsOk]
-FROM [DIVING_TMP].[dbo].[Dives] 
+      ,[TotalMinutes],[UpdDate],'59d0b5be-4b00-4309-803e-9b2d1d7fc295',[Visibility],[WaterTemperature],[Weight],[WeightIsOk],[WeightIsOk]
+FROM [DIVING_old].[dbo].[Dives] 
 SET IDENTITY_INSERT [Diving].[dbo].[Dive] OFF
 
+SET IDENTITY_INSERT [Diving].[dbo].[Photos] ON
 INSERT INTO [Diving].[dbo].[Photos] ([PhotoID],[DiveID],[PhotoComment],[PhotoDate],[PhotoName],[PhotoThumb],[Status])
-SELECT [PhotoID],[DiveID],[PhotoComment] ,[PhotoDate],[PhotoName] ,[PhotoThumb],[Status] FROM [DIVING_TMP].[dbo].[Photos]
+SELECT [PhotoID],[DiveID],[PhotoComment] ,[PhotoDate],[PhotoName] ,[PhotoThumb],[Status] FROM [DIVING_old].[dbo].[Photos]
+SET IDENTITY_INSERT [Diving].[dbo].[Photos] OFF
 
+SET IDENTITY_INSERT [Diving].[dbo].[PhotoImg] ON
 INSERT INTO [Diving].[dbo].[PhotoImg] ([PhotoID],[PhotoVal])
-SELECT [PhotoID],[PhotoVal] FROM [DIVING_TMP].[dbo].[Photos]
+SELECT [PhotoID],[PhotoVal] FROM [DIVING_old].[dbo].[Photos]
+SET IDENTITY_INSERT [Diving].[dbo].[PhotoImg] OFF
 
 
