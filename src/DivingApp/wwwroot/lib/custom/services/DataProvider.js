@@ -8,14 +8,16 @@ var Diving;
                 this.http = $http;
             }
             DataService.prototype.GetGeoPoints = function (email, callback) {
-                this.http.get('/api/getdiveswithcoordinates/' + email).success(function (data, status) {
+                this.http.get('/api/dives/getdiveswithcoordinates/' + email, {
+                    cache: false
+                }).success(function (data, status) {
                     callback(data);
                 }).error(function (error) {
                     callback(error);
                 });
             };
             DataService.prototype.GetPhotosIds = function (email, diveId, minPhoto, callback) {
-                this.http.get('/api/getuserphotoidsbydiveids/' + email + '/' + diveId + '/' + minPhoto).success(function (data, status) {
+                this.http.get('/api/dives/getuserphotoidsbydiveids/' + email + '/' + diveId + '/' + minPhoto).success(function (data, status) {
                     callback(data);
                 }).error(function (error) {
                     callback(error);
@@ -29,27 +31,35 @@ var Diving;
                 });
             };
             DataService.prototype.GetAuthorizedUserDives = function (callback) {
-                this.http.get('/api/getuserdives').success(function (data, status) {
+                var req = {
+                    method: 'GET',
+                    url: '/api/dives/getuserdives/' + Date.now(),
+                    cache: false,
+                    headers: { 'Cache-Control': 'no-cache' }
+                };
+                this.http(req).success(function (data, status) {
                     callback(data);
                 }).error(function (error) {
                     callback(error);
                 });
             };
             DataService.prototype.GetAuthorizedUserDiveById = function (diveId, callback) {
-                this.http.get('/api/getuserdivebyid/' + diveId).success(function (data, status) {
+                this.http.get('/api/dives/getuserdivebyid/' + diveId, {
+                    cache: false
+                }).success(function (data, status) {
                     callback(data);
                 }).error(function (error) {
                     callback(error);
                 });
             };
             DataService.prototype.GetDiveDictionaries = function (callback) {
-                this.http.get('/api/getdivedictionaries').success(function (data, status) {
+                this.http.get('/api/dives/getdivedictionaries').success(function (data, status) {
                     callback(data);
                 }).error(function (error) {
                     callback(error);
                 });
             };
-            DataService.prototype.SaveDive = function (dive, callback) {
+            DataService.prototype.SaveDive = function (dive, callback, errorHandler) {
                 var req = {
                     method: 'POST',
                     url: '/api/dives/saveDive',
@@ -59,6 +69,13 @@ var Diving;
                     data: $.param(dive)
                 };
                 this.http(req).success(function (data, status) {
+                    callback(data);
+                }).error(function (error) {
+                    errorHandler(error);
+                });
+            };
+            DataService.prototype.DeleteDive = function (diveId, callback) {
+                this.http.get('/api/dives/deleteDive/' + diveId).success(function (data, status) {
                     callback(data);
                 }).error(function (error) {
                     callback(error);

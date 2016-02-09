@@ -28,7 +28,7 @@ module Diving.Controllers {
 
         public selectedDive;
 
-        constructor($scope, PaspService: Pasp.IPaspDataService) {          
+        constructor($scope, PaspService: Pasp.IDataService) {          
             this.paspService = PaspService;
             this.selectedDiveId = -1;
             this.selectedPhotoIndex = -1;

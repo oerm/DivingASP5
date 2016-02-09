@@ -32,7 +32,7 @@ namespace DivingApp.Models.ViewModel
         public string Location { get; set; }
 
         [Required]
-        public Nullable<byte> DiveType { get; set; }
+        public Nullable<byte> DiveTime { get; set; }
       
         public Nullable<double> Weight { get; set; }
 

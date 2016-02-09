@@ -33,7 +33,7 @@ namespace DivingApp.Controllers.Api
         }
 
         [AllowAnonymous]
-        [Route("api/getdiveswithcoordinates/{username}")]
+        [Route("api/dives/getdiveswithcoordinates/{username}")]
         [HttpGet]
         public async Task<JsonResult> GetDivesWithCoordinates(string username)
         {
@@ -42,7 +42,7 @@ namespace DivingApp.Controllers.Api
         }
 
         [AllowAnonymous]
-        [HttpGet("api/getuserdivephotobyid/{Email}/{PhotoId}")]
+        [HttpGet("api/dives/getuserdivephotobyid/{Email}/{PhotoId}")]
         public async Task<IActionResult> GetUserDivePhotoById(string Email, long PhotoId)
         {
             if (!string.IsNullOrWhiteSpace(Email))
@@ -55,7 +55,7 @@ namespace DivingApp.Controllers.Api
                         var photo = _photoManager.GetPhoto(user.Id, PhotoId);
                         return File(photo, imageContentType);
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         return new HttpNotFoundResult();
                     }
@@ -65,7 +65,7 @@ namespace DivingApp.Controllers.Api
         }
 
         [AllowAnonymous]
-        [HttpGet("api/getuserthumbdivephotobyid/{Email}/{PhotoId}")]
+        [HttpGet("api/dives/getuserthumbdivephotobyid/{Email}/{PhotoId}")]
         public async Task<IActionResult> GetUserThumbDivePhotoById(string Email, long PhotoId)
         {
             if (!string.IsNullOrWhiteSpace(Email))
@@ -88,7 +88,7 @@ namespace DivingApp.Controllers.Api
         }
 
         [AllowAnonymous]
-        [HttpGet("/api/getdivedictionaries")]
+        [HttpGet("/api/dives/getdivedictionaries")]
         public IActionResult GetDictionaries()
         {
             var countries = _context.DicCountries.Select(item =>
@@ -153,7 +153,7 @@ namespace DivingApp.Controllers.Api
       
 
         [AllowAnonymous]
-        [Route("api/getuserphotoidsbydiveids/{userMail}/{diveId}/{minId}")]
+        [Route("api/dives/getuserphotoidsbydiveids/{userMail}/{diveId}/{minId}")]
         [HttpGet]
         public async Task<IActionResult> GetUserPhotoIdsByDiveIds(string userMail, long diveId, long minId)
         {
@@ -167,7 +167,7 @@ namespace DivingApp.Controllers.Api
                         var photos = _photoManager.GetPhotoIdsByDiveId(user.Id, diveId, minId);
                         return Json(photos);
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         return new HttpNotFoundResult();
                     }
@@ -176,8 +176,8 @@ namespace DivingApp.Controllers.Api
             return new HttpNotFoundResult();        
         }
 
-     
-        [Route("api/getuserdives")]
+        //TODO - make proper caching
+        [Route("api/dives/getuserdives/{nocache}")]
         [HttpGet]
         public async Task<IActionResult> GetShortDives()
         {
@@ -190,7 +190,7 @@ namespace DivingApp.Controllers.Api
             return new HttpUnauthorizedResult();        
         }
 
-        [Route("api/getuserdivebyid/{diveId}")]
+        [Route("api/dives/getuserdivebyid/{diveId}")]
         [HttpGet]
         public async Task<IActionResult> GetDiveById(long diveId)
         {
@@ -211,8 +211,39 @@ namespace DivingApp.Controllers.Api
             {
                 if (ModelState.IsValid)
                 {
+                    var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+                    if (dive.DiveID == 0)
+                    {
+                        var result = _diveManager.SaveDive(dive, user);
+                    }
+                    return new HttpOkResult();
                 }
-                return Json(dive);
+                this.Response.StatusCode = 400;
+                return Json(ModelState.Values.Where(v => v.ValidationState == Microsoft.AspNet.Mvc.ModelBinding.ModelValidationState.Invalid)
+                                             .Select(m => new
+                                             {
+                                                 error = m.Errors.First().ErrorMessage.ToString()
+                                             }));
+            }
+            return new HttpUnauthorizedResult();
+        }
+
+        [Route("api/dives/deleteDive/{diveId}")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteDive(long diveId)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+                    if (diveId > 0)
+                    {
+                        var result = _diveManager.DeleteDive(diveId, user);
+                    }
+                    return new HttpOkResult();
+                }
+                return new BadRequestResult();             
             }
             return new HttpUnauthorizedResult();
         }

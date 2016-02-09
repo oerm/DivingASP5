@@ -37,12 +37,12 @@
                                     <span class="fa fa-trash"></span>
                                 </a>
                             </div>
-                            <div class="row text-right animate-show" ng-show="d.ShowDelete" style="background:transparent; width:100%;margin:0px;padding:0px;padding-top:8px;padding-right:5px;" >
+                            <div class="row text-right animate-show" ng-show="d.ShowDelete" style="background:transparent; width:100%;margin:0;padding:0;padding-top:8px;padding-right:5px;" >
                                 <span>
                                     Are you sure?
                                 </span>
 
-                                <a class="btn btn-danger btn-sm disabled" onclick="event.cancelBubble = true;" ng-click="" style="margin-right:5px;margin-left:5px;">
+                                <a class="btn btn-danger btn-sm disabled" onclick="event.cancelBubble = true;" ng-click="diveCtrl.DeleteDive(d.DiveID)" style="margin-right:5px;margin-left:5px;">
                                     <i class="fa fa-thumbs-up"></i>&nbsp;
                                     Yes
                                 </a>
@@ -88,6 +88,17 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="text-danger" ng-show="diveCtrl.errors&&diveCtrl.errors.length>0" ng-cloak>         
+        <div class="text-left"   >
+            <p><b>Following errors occured while saving the dive</b><p>
+        </div>
+        <ul>
+            <li ng-repeat="e in diveCtrl.errors">
+                {{e.error}}
+            </li>
+        </ul>       
     </div>
 
     <div ng-class="diveCtrl.showDivesList ? 'col-lg-9 col-md-8 col-sm-7 pull-right': 'col-lg-12'" style="display:inline-block;" ng-cloak>
@@ -146,7 +157,7 @@
                         * Dive date
                     </div>
                     <div class="col-lg-4 col-md-8 top-offset-sm">
-                        <input type="text" class="form-control input-sm" placeholder="Select dive date" ng-model="diveCtrl.selectedDive.DiveDateString" />
+                        <input type="text" id="DiveDate" class="form-control input-sm" placeholder="Select dive date" ng-model="diveCtrl.selectedDive.DiveDateString" />
                         <script type="text/javascript">
                             $(function () {
                                 $('#DiveDate').datetimepicker({
@@ -286,7 +297,7 @@
                         <div class="text-justify" style="padding:0" ng-show="diveCtrl.selectedDive.Photos.length>0">
                             <div style="display:inline-block" ng-repeat="photo in diveCtrl.selectedDive.Photos">
                                 <div ng-click="diveCtrl.GetPhoto(photo.PhotoId)" class="thumbnail" style="cursor:pointer; margin-left:10px;margin-top:10px;width:140px;height:110px;overflow: hidden;position: relative;">
-                                    <img style="position: relative;max-width:133px;max-height:100px;height:100%; vertical-align:central" src="/api/getuserthumbdivephotobyid/{{diveCtrl.currentUserEmail}}/{{photo.PhotoId}}" />
+                                    <img style="position: relative;max-width:133px;max-height:100px;height:100%; vertical-align:central" src="/api/dives/getuserthumbdivephotobyid/{{diveCtrl.currentUserEmail}}/{{photo.PhotoId}}" />
                                 </div>
                             </div>
                         </div>
@@ -323,7 +334,7 @@
 
                 <div style="overflow:hidden; height:470px;background:grey" id="largeImageImgDiv" ng-click="diveCtrl.ShowNext()">
                     <center style="height:100%">
-                        <img id="largeImageImg" ng-src="/api/getuserdivephotobyid/{{diveCtrl.currentUserEmail}}/{{diveCtrl.selectedDive.Photos[diveCtrl.selectedPhotoIndex].PhotoId}}" style="height:100%" />
+                        <img id="largeImageImg" ng-src="/api/dives/getuserdivephotobyid/{{diveCtrl.currentUserEmail}}/{{diveCtrl.selectedDive.Photos[diveCtrl.selectedPhotoIndex].PhotoId}}" style="height:100%" />
                     </center>
                 </div>
 

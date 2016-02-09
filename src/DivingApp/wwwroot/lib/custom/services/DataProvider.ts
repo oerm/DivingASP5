@@ -10,7 +10,9 @@ module Diving.Services {
         }
 
         GetGeoPoints(email: string, callback: Function) {
-            this.http.get('/api/getdiveswithcoordinates/' + email).success((data, status) => {
+            this.http.get('/api/dives/getdiveswithcoordinates/' + email, {
+                cache: false
+            }).success((data, status) => {
                 callback(data);
             }).error(error => {
                 callback(error);
@@ -18,7 +20,7 @@ module Diving.Services {
         }
 
         GetPhotosIds(email: string, diveId: string, minPhoto: number, callback: Function) {
-            this.http.get('/api/getuserphotoidsbydiveids/' + email + '/' + diveId + '/' + minPhoto).success((data, status) => {
+            this.http.get('/api/dives/getuserphotoidsbydiveids/' + email + '/' + diveId + '/' + minPhoto).success((data, status) => {
                 callback(data);
             }).error(error => {
                 callback(error);
@@ -34,7 +36,15 @@ module Diving.Services {
         }
 
         GetAuthorizedUserDives(callback: Function) {
-            this.http.get('/api/getuserdives').success((data, status) => {
+
+            var req = {
+                method: 'GET',
+                url: '/api/dives/getuserdives/' + Date.now(),
+                cache: false,
+                headers: { 'Cache-Control': 'no-cache' }
+            }
+
+            this.http(req).success((data, status) => {
                 callback(data);
             }).error(error => {
                 callback(error);
@@ -42,7 +52,9 @@ module Diving.Services {
         }
 
         GetAuthorizedUserDiveById(diveId: string, callback: Function) {
-            this.http.get('/api/getuserdivebyid/' + diveId).success((data, status) => {
+            this.http.get('/api/dives/getuserdivebyid/' + diveId, {
+                cache: false
+            }).success((data, status) => {
                 callback(data);
             }).error(error => {
                 callback(error);
@@ -50,14 +62,14 @@ module Diving.Services {
         }
 
         GetDiveDictionaries(callback: Function) {
-            this.http.get('/api/getdivedictionaries').success((data, status) => {
+            this.http.get('/api/dives/getdivedictionaries').success((data, status) => {
                 callback(data);
             }).error(error => {
                 callback(error);
             });
         }   
 
-        SaveDive(dive: Object, callback: Function) {
+        SaveDive(dive: Object, callback: Function, errorHandler: Function) {
             var req = {
                 method: 'POST',
                 url: '/api/dives/saveDive',
@@ -67,6 +79,14 @@ module Diving.Services {
                 data: $.param(dive)
             }
             this.http(req).success((data, status) => {
+                callback(data);
+            }).error(error => {
+                errorHandler(error);
+            });
+        }   
+
+        DeleteDive(diveId: number, callback: Function) {
+            this.http.get('/api/dives/deleteDive/' + diveId).success((data, status) => {
                 callback(data);
             }).error(error => {
                 callback(error);
@@ -79,7 +99,8 @@ module Diving.Services {
         GetAuthorizedUserDives(callback: Function);
         GetAuthorizedUserDiveById(diveId: string, callback: Function);
         GetDiveDictionaries(callback: Function);
-        SaveDive(dive: Object, callback: Function);
+        SaveDive(dive: Object, callback: Function, errorHandler: Function);
+        DeleteDive(diveId: number, callback: Function);
     }
 }
 

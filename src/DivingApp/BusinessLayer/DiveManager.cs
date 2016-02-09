@@ -6,10 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using DivingApp.Models.ViewModel;
 using Microsoft.Data.Entity;
+using DivingApp.Models.DataModel;
 
 namespace DivingApp.BusinessLayer
 {
-    public class DiveManager: IDiveManager
+    public class DiveManager : IDiveManager
     {
         private EntityContext _context;
 
@@ -31,7 +32,7 @@ namespace DivingApp.BusinessLayer
                                         AirTemperature = d.AirTemperature,
                                         Comments = d.Comments,
                                         DiveDateString = d.DiveDate.ToString("dd/MM/yyyy"),
-                                        DiveType = d.DiveTime,
+                                        DiveTime = d.DiveTime,
                                         FiveMetersMinutes = d.FiveMetersMinutes,
                                         Latitude = d.DiveX,
                                         Location = d.Location,
@@ -80,9 +81,54 @@ namespace DivingApp.BusinessLayer
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-           
+        }
+
+        public bool SaveDive(DiveViewModel dive, User user)
+        {
+            try
+            {
+                var newDive = new Dive()
+                {
+                    User = user,
+                    Country = dive.CountryId,
+                    Countries = _context.DicCountries.Where(c => c.CountryKod == dive.CountryId).First(),
+                    AirTemperature = dive.AirTemperature,
+                    Comments = dive.Comments,
+                    DiveDate = dive.DiveDate,
+                    DiveTime = dive.DiveTime,
+                    FiveMetersMinutes = dive.FiveMetersMinutes,
+                    DiveX = dive.Latitude,
+                    Location = dive.Location,
+                    DiveY = dive.Longitude,
+                    MaxDepth = dive.MaxDepth,
+                    SuitType = dive.SuitType,
+                    Tank = dive.Tank,
+                    TankEnd = dive.TankEnd,
+                    TankStart = dive.TankStart,
+                    TotalMinutes = dive.TotalMinutes,
+                    Visibility = dive.Visibility,
+                    WaterTemperature = dive.WaterTemperature,
+                    Weight = dive.Weight,
+                    WeightIsOk = dive.WeightIsOk,
+                    Status = true
+                };
+                _context.Dives.Add(newDive);
+
+                return _context.SaveChanges() > 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool DeleteDive(long diveId, User user)
+        {
+            var dive = _context.Dives.Where(d => d.User.Id == user.Id && d.DiveID == diveId).First();
+            _context.Remove(dive);
+            return _context.SaveChanges() > 0;
         }
     }
 }

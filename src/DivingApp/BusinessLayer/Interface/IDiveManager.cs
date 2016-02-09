@@ -1,4 +1,5 @@
-﻿using DivingApp.Models.ViewModel;
+﻿using DivingApp.Models.DataModel;
+using DivingApp.Models.ViewModel;
 using System.Collections.Generic;
 
 namespace DivingApp.BusinessLayer.Interface
@@ -8,5 +9,9 @@ namespace DivingApp.BusinessLayer.Interface
         IEnumerable<DiveShortViewModel> GetShortDivesListByUserId(string userId);
 
         DiveViewModel GetDiveById(string userId, long diveId);
+
+        bool SaveDive(DiveViewModel dive, User user);
+
+        bool DeleteDive(long diveId, User user);
     }
 }

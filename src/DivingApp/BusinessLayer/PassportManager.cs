@@ -61,7 +61,7 @@ namespace DivingApp.BusinessLayer
                                    AirTemperature = d.AirTemperature,
                                    Comments = d.Comments,
                                    DiveDate = d.DiveDate,
-                                   DiveType = d.DiveTime,
+                                   DiveTime = d.DiveTime,
                                    FiveMetersMinutes = d.FiveMetersMinutes,
                                    Latitude = d.DiveX,
                                    Location = d.Location,

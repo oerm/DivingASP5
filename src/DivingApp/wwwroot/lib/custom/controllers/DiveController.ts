@@ -1,5 +1,5 @@
-﻿///<reference path="../../../typings/angularjs/angular.d.ts" /> 
-///<reference path="../../../typings/google.maps.d.ts" /> 
+﻿///<reference path="../../typings/angularjs/angular.d.ts" /> 
+///<reference path="../../typings/google.maps.d.ts" /> 
 
 module Diving.Controllers {
 
@@ -32,6 +32,7 @@ module Diving.Controllers {
         public showPhoto: boolean;
         public showPhotoDelete: boolean;
 
+        public errors: any;
         public location: string;
         public map: any;
         private options: any;       
@@ -60,17 +61,9 @@ module Diving.Controllers {
                 that.suits = data.Suits;
                 that.weights = data.Weights
                 that.tanks = data.Tanks;   
-                that.time = data.Time; 
-                that.dataService.GetAuthorizedUserDives(function (data) {
-                    that.dives = data;
-                    if (data.length > 0) {
-                        that.GetDive(data[0].DiveID);
-                    }
-                    else {
-                        that.CreateNewDive();
-                    }
-                });                         
-            });     
+                that.time = data.Time;                 
+                that.refreshDives(that);                                  
+            });    
              
         }
 
@@ -153,14 +146,14 @@ module Diving.Controllers {
                         draggable: true,
                         position: results[0].geometry.location
                     });
-                    that.selectedDive.Latitude = results[0].geometry.location.lat().toFixed(6).replace(".", ",");
-                    that.selectedDive.Longitude = results[0].geometry.location.lng().toFixed(6).replace(".", ",");
-                    var lat = results[0].geometry.location.lat().toFixed(6).replace(".", ",");
-                    var lgn = results[0].geometry.location.lng().toFixed(6).replace(".", ",");
+                    that.selectedDive.Latitude = results[0].geometry.location.lat().toFixed(6);
+                    that.selectedDive.Longitude = results[0].geometry.location.lng().toFixed(6);
+                    var lat = results[0].geometry.location.lat().toFixed(6);
+                    var lgn = results[0].geometry.location.lng().toFixed(6);
                   
                     google.maps.event.addListener(that.marker, 'dragend', function () {
-                        that.selectedDive.Latitude = that.marker.getPosition().lat().toFixed(6).replace(".", ",");
-                        that.selectedDive.Longitude = that.marker.getPosition().lng().toFixed(6).replace(".", ",");                      
+                        that.selectedDive.Latitude = that.marker.getPosition().lat().toFixed(6);
+                        that.selectedDive.Longitude = that.marker.getPosition().lng().toFixed(6);                      
                     });
                 } else {
                     alert("Failed to make request to GEO service: " + status);
@@ -180,6 +173,7 @@ module Diving.Controllers {
                 that.resetPhoto();
                 that.selectedDive = data;
                 that.ShowSelectedDiveTab(1);
+                that.showDivesList = true;       
             });
         }      
 
@@ -228,13 +222,47 @@ module Diving.Controllers {
         }
 
         public SaveDive() {
+            this.ShowSelectedDiveTab(0);
             this.selectedDive.DiveDate = this.selectedDive.DiveDateString;
-            this.dataService.SaveDive(this.selectedDive);
+            var that = this;
+            this.dataService.SaveDive(this.selectedDive,
+                function (data) {
+                    that.refreshDives(that);
+                },
+                function (error) {
+                    that.errors = error;
+                    that.ShowSelectedDiveTab(1);
+                });
+        }
+
+        public DeleteDive(diveId: number) {
+            this.ShowSelectedDiveTab(0);
+            var that = this;
+            this.dataService.DeleteDive(diveId,
+                function (data) {
+                    that.refreshDives(that);
+                },
+                function (error) {
+                    that.errors = error;
+                    that.ShowSelectedDiveTab(1);
+                });
         }
 
         public CancelCreateNewDive() {
             if (this.dives.length > 0) this.GetDive(this.dives[0].DiveID);
             this.showDivesList = true;
+        }
+
+        private refreshDives(context) {
+            context.dataService.GetAuthorizedUserDives(function (data) {
+                context.dives = data;
+                if (data.length > 0) {
+                    context.GetDive(data[0].DiveID);
+                }
+                else {
+                    context.CreateNewDive();
+                }
+            });
         }
 
         private changeCurrentPhotoIndex(index: number) {
