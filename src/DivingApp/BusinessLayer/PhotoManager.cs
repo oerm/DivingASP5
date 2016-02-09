@@ -79,10 +79,10 @@ namespace DivingApp.BusinessLayer
 
         public byte[] GetPhoto(string userId, long photoId)
         {
-            var isUserPhotoCheck = _context.Dives.Where(d => d.User.Id == userId && d.Status)
+            var isUserPhotoCheck = _context.Dives.Where(d => d.User.Id == userId && d.Status == true)
                                                  .Include(d => d.Photos)
-                                                 .Where(d => d.Photos.Any(p => p.PhotoID == photoId))
-                                                 .ToArray();
+                                                 .ToArray()
+                                                 .Where(d => d.Photos.Any(p => p.PhotoID == photoId));
 
             if (isUserPhotoCheck.Any())
             {
@@ -99,9 +99,9 @@ namespace DivingApp.BusinessLayer
         public byte[] GetThumbPhoto(string userId, long photoId)
         {
             var isUserPhotoCheck = _context.Dives.Where(d => d.User.Id == userId && d.Status)
-                                                .Include(d => d.Photos)
-                                                .Where(d => d.Photos.Any(p => p.PhotoID == photoId))
-                                                .ToArray();
+                                                .Include(d => d.Photos)                                             
+                                                .ToArray()
+                                                .Where(d => d.Photos.Any(p => p.PhotoID == photoId));
 
             if (isUserPhotoCheck.Any())
             {

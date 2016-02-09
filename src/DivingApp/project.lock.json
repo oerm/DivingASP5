@@ -5649,7 +5649,7 @@
     },
     "ImageProcessor/2.3.2": {
       "type": "package",
-      "sha512": "ws1yw4PkrYb716SPWXSIPZDqcOQAno/I2mZcxQJmUm1b2Cc92DwSeHd9nx/XLpmLyTUscro3vzwL165abtC98A==",
+      "sha512": "E+7ELjqKSLdkkkepHzaOQ8Vb5nFkp0jCb2y3lkmDtdO9Ql5O08r18Elqdy9dmJRnyIEvU1n+kLvsNwZ6H5hAgA==",
       "files": [
         "ImageProcessor.2.3.2.nupkg",
         "ImageProcessor.2.3.2.nupkg.sha512",
@@ -7248,7 +7248,7 @@
     "System.Reflection.Metadata/1.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "RLIE4sSt2zngMLuqM6YmxBH99mTumtT4DNZE4+msfEaInUP5iCLQT+BHPl+2cjSAP1pdALyAjLB8RtCB+WGGWQ==",
+      "sha512": "a8VsRm/B0Ik1o5FumSMWmpwbG7cvIIajAYhzTTy9VB9XItByJDQHGZkQTIAdsvVJ6MI5O3uH/lb0izgQDlDIWA==",
       "files": [
         "lib/dotnet5.2/System.Reflection.Metadata.dll",
         "lib/dotnet5.2/System.Reflection.Metadata.xml",
