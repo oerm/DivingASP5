@@ -12,7 +12,7 @@ using Microsoft.AspNet.Authorization;
 
 namespace DivingApp.Controllers.Api
 {
-    public class DiveDetailsController: Controller
+    public class DiveController: Controller
     {
         const string imageContentType = "image/jpeg";
 
@@ -22,8 +22,7 @@ namespace DivingApp.Controllers.Api
         IPhotoManager _photoManager;
         IDiveManager _diveManager;
 
-
-        public DiveDetailsController(EntityContext context, UserManager<User> userManager)
+        public DiveController(EntityContext context, UserManager<User> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -190,7 +189,8 @@ namespace DivingApp.Controllers.Api
             return new HttpUnauthorizedResult();        
         }
 
-        [Route("api/dives/getuserdivebyid/{diveId}")]
+        //TODO - make proper caching
+        [Route("api/dives/getuserdivebyid/{diveId}/{nocache}")]
         [HttpGet]
         public async Task<IActionResult> GetDiveById(long diveId)
         {
@@ -212,9 +212,40 @@ namespace DivingApp.Controllers.Api
                 if (ModelState.IsValid)
                 {
                     var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+                   
                     if (dive.DiveID == 0)
                     {
-                        var result = _diveManager.SaveDive(dive, user);
+                        _diveManager.SaveDive(dive, user);
+                    }
+                    else
+                    {
+                        _diveManager.UpdateDive(dive, user);
+                    }
+                     
+                    return new HttpOkResult();
+                }
+                this.Response.StatusCode = 400;
+                return Json(ModelState.Values.Where(v => v.ValidationState == Microsoft.AspNet.Mvc.ModelBinding.ModelValidationState.Invalid)
+                                             .Select(m => new
+                                             {
+                                                 error = m.Errors.First().ErrorMessage.ToString()
+                                             }));
+            }
+            return new HttpUnauthorizedResult();
+        }
+
+        [Route("api/dives/updateDive")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateDive(DiveViewModel dive)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+                    if (dive.DiveID == 0)
+                    {
+                        var result = _diveManager.UpdateDive(dive, user);
                     }
                     return new HttpOkResult();
                 }
@@ -229,7 +260,7 @@ namespace DivingApp.Controllers.Api
         }
 
         [Route("api/dives/deleteDive/{diveId}")]
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> DeleteDive(long diveId)
         {
             if (User.Identity.IsAuthenticated)

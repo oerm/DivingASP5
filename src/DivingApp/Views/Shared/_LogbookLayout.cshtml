@@ -20,7 +20,7 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown" ng-class="lgCtrl.showLogin? 'active' :''" ng-click="lgCtrl.showTab(1)">
+                    <li class="dropdown" ng-class="rootCtrl.showDive? 'active' :''" ng-click="rootCtrl.showTab(1)">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-flag"></i>
                             &nbsp;Dives&nbsp;&nbsp;<span class="caret"></span>
@@ -32,12 +32,19 @@
                             <li class="disabled"><a href="#">Search for dive</a></li>
                         </ul>
                     </li>
-                    @*<li ng-class="lgCtrl.showSearch? 'active' :''" ng-click="lgCtrl.showTab(2)">
-                                <a href="#">
-                                    <i class="fa fa-search"></i>
-                                    &nbsp;Search Diver
-                                </a>
-                        </li>*@
+                    <li ng-class="rootCtrl.showSearch? 'active' :''" ng-click="rootCtrl.showTab(2)">
+                        <a href="#">
+                            <i class="fa fa-search"></i>
+                            &nbsp;Search Diver
+                        </a>
+                    </li>
+                    <li ng-class="rootCtrl.showNews? 'active' :''" ng-click="rootCtrl.showTab(3)">
+                        <a href="#">
+                            <i class="fa fa-newspaper-o"></i>
+                            &nbsp;News
+                        </a>
+                    </li>
+                   
 
                 </ul>
                 <ul class="nav navbar-nav pull-right">                  

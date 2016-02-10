@@ -31,6 +31,7 @@ module Diving.Controllers {
         public showSearchingGeoStatus: boolean;
         public showPhoto: boolean;
         public showPhotoDelete: boolean;
+        public showUpdateMessage: boolean;
 
         public errors: any;
         public location: string;
@@ -52,7 +53,8 @@ module Diving.Controllers {
             this.showPhotosTab = false;
             this.showPhoto = false;
             this.showPhotoDelete = false;
-            this.showSearchingGeoStatus = false;           
+            this.showSearchingGeoStatus = false;    
+            this.showUpdateMessage = false;       
             this.map = undefined;
             this.scope = $scope;
             var that = this;
@@ -61,8 +63,8 @@ module Diving.Controllers {
                 that.suits = data.Suits;
                 that.weights = data.Weights
                 that.tanks = data.Tanks;   
-                that.time = data.Time;                 
-                that.refreshDives(that);                                  
+                that.time = data.Time;
+                that.refreshDives(that, -1, false);                                  
             });    
              
         }
@@ -71,7 +73,7 @@ module Diving.Controllers {
             this.currentUserEmail = userEmail;
         }       
 
-        public ShowSelectedDiveTab(tabIndex: number) {
+        public ShowSelectedDiveTab(tabIndex: number) {           
             if (tabIndex == 0) this.showLoadingTab = true;
             else {
                 this.showLoadingTab = false;
@@ -82,6 +84,7 @@ module Diving.Controllers {
                 }
 
                 if (tabIndex == 2) {
+                    this.showUpdateMessage = false;  
                     this.showDivesTab = false;
                     this.showMapsTab = true;
                     this.showPhotosTab = false;
@@ -120,6 +123,7 @@ module Diving.Controllers {
                 }
 
                 if (tabIndex == 3) {
+                    this.showUpdateMessage = false;  
                     this.showDivesTab = false;
                     this.showMapsTab = false;
                     this.showPhotosTab = true;
@@ -164,6 +168,7 @@ module Diving.Controllers {
         }
 
         public GetDive(diveId: number) {
+            this.showUpdateMessage = false;
             this.HidePhotoDelete();
             this.ShowSelectedDiveTab(0);
             this.selectedDiveId = diveId;
@@ -218,16 +223,18 @@ module Diving.Controllers {
             this.selectedDive.CountryId = 804;  
             this.selectedDive.DiveDate = this.selectedDive.DiveDateString = moment(Date.now()).format('DD/MM/YYYY');
             if (this.marker) this.marker.setMap(null);  
-            this.ShowSelectedDiveTab(1);           
+            this.ShowSelectedDiveTab(1);
+            this.showUpdateMessage = false;         
         }
 
         public SaveDive() {
             this.ShowSelectedDiveTab(0);
             this.selectedDive.DiveDate = this.selectedDive.DiveDateString;
+            var selectedId = this.selectedDive && this.selectedDive.DiveID ? this.selectedDive.DiveID : -1;
             var that = this;
             this.dataService.SaveDive(this.selectedDive,
                 function (data) {
-                    that.refreshDives(that);
+                    that.refreshDives(that, selectedId, (selectedId > 0));
                 },
                 function (error) {
                     that.errors = error;
@@ -235,12 +242,12 @@ module Diving.Controllers {
                 });
         }
 
-        public DeleteDive(diveId: number) {
-            this.ShowSelectedDiveTab(0);
+        public DeleteDive(diveId: number) {         
             var that = this;
             this.dataService.DeleteDive(diveId,
                 function (data) {
-                    that.refreshDives(that);
+                    that.refreshDives(that, -1, false);
+                    that.ShowSelectedDiveTab(1);
                 },
                 function (error) {
                     that.errors = error;
@@ -253,15 +260,16 @@ module Diving.Controllers {
             this.showDivesList = true;
         }
 
-        private refreshDives(context) {
+        private refreshDives(context, diveId, showUpdated) {
             context.dataService.GetAuthorizedUserDives(function (data) {
                 context.dives = data;
                 if (data.length > 0) {
-                    context.GetDive(data[0].DiveID);
+                    context.GetDive(diveId == -1 ? data[0].DiveID : diveId);
                 }
                 else {
                     context.CreateNewDive();
                 }
+                context.showUpdateMessage = showUpdated;
             });
         }
 

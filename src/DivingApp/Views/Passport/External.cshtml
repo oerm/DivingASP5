@@ -16,7 +16,7 @@
                     <div class="col-xs-8 col-md-9 col-lg-10">
                         <p>Diver: <b>@Model.Fio</b></p>
                         <p>Age: @(Model.Age > 0 ? @Model.Age + " years": "Unknown")</p>
-                        <p>Origin: @Model.Country &nbsp; <img title='@Model.Country' src='/api/getcountryflag/@Model.CountryId' style="margin-top:-2px" /></p>
+                        <p>Origin: @Model.Country &nbsp; <img title='@Model.Country' src='/api/getcountryflag/@Model.CountryId' onerror="this.src = '/images/small_pict.png'"  style="margin-top:-2px" /></p>
                         <p>Number of dives: @Model.DivesCount</p>
                         <p><b>Diving statistics:</b></p>
                         <p>Top certifiaction level: @Model.MaxCertName</p>
@@ -112,24 +112,24 @@
 
                                 @foreach (var d in Model.Dives.Select((d, n) => new { dive = d, number = n + 1 }))
                                 {
-                                    <div class="list-group-item row" style="border-top-left-radius:0;border-top-right-radius:0;padding-left:0px" id="dive_@d.dive.DiveID">
+                                    <div class="list-group-item row" style="border-top-left-radius:0;border-top-right-radius:0;padding-left:0" id="dive_@d.dive.DiveID">
 
                                         <div class="col-lg-2 col-sm-2 col-md-2 col-xs-4">
                                             <div>№ <b>@d.number</b> from <b>@d.dive.DiveDate.ToString("dd.MM.yyyy")</b></div>
-                                            <div class="top-offset"><img src='/Images/clock.png' title='time of dive in minutes' style="margin-top:-3px" /> &nbsp;: @d.dive.TotalMinutes minutes</div>
-                                            <div><img src='/Images/arrow-315.png' title='dive depth' style="margin-top:-3px" />&nbsp; : @d.dive.MaxDepth meters</div>
+                                            <div class="top-offset"><img src='/Images/clock.png' title='time of dive in minutes' style="margin-top:-3px" /> &nbsp;: @((d.dive.TotalMinutes != null) ? @d.dive.TotalMinutes.ToString() : "0")  minutes</div>
+                                            <div><img src='/Images/arrow-315.png' title='dive depth' style="margin-top:-3px" />&nbsp; : @((d.dive.MaxDepth != null) ? @d.dive.MaxDepth.ToString() : "0")  meters</div>
                                         </div>
 
                                         <div class="col-lg-8 col-sm-8 col-md-7 col-xs-8" style="padding:0">
-                                            @if (d.dive.DiveType == 1)
+                                            @if (d.dive.DiveTime == 1)
                                             {<img src="/Images/morning_sun.png" style='margin-top:-3px;' /> }
-                                            @if (d.dive.DiveType == 2)
+                                            @if (d.dive.DiveTime == 2)
                                             {<img src="/Images/noon_sun.png" style='margin-top:-3px;' /> }
-                                            @if (d.dive.DiveType == 3)
+                                            @if (d.dive.DiveTime == 3)
                                             {<img src="/Images/evening_moon.png" style='margin-top:-3px;' /> }
-                                            @if (d.dive.DiveType == 4)
+                                            @if (d.dive.DiveTime == 4)
                                             {<img src="/Images/moon.png" style='margin-top:-3px;' /> }
-                                            : @d.dive.Comments
+                                            : @((d.dive.Comments!= null && d.dive.Comments.Length>0) ?@d.dive.Comments: "No comments")
                                         </div>
 
                                         <div class="col-lg-2 col-sm-2 col-md-3 hidden-xs">

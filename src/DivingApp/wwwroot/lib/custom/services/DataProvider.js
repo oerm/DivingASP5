@@ -44,7 +44,7 @@ var Diving;
                 });
             };
             DataService.prototype.GetAuthorizedUserDiveById = function (diveId, callback) {
-                this.http.get('/api/dives/getuserdivebyid/' + diveId, {
+                this.http.get('/api/dives/getuserdivebyid/' + diveId + '/' + Date.now(), {
                     cache: false
                 }).success(function (data, status) {
                     callback(data);
@@ -75,7 +75,7 @@ var Diving;
                 });
             };
             DataService.prototype.DeleteDive = function (diveId, callback) {
-                this.http.get('/api/dives/deleteDive/' + diveId).success(function (data, status) {
+                this.http.delete('/api/dives/deleteDive/' + diveId).success(function (data, status) {
                     callback(data);
                 }).error(function (error) {
                     callback(error);

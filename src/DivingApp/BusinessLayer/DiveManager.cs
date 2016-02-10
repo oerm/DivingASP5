@@ -112,6 +112,7 @@ namespace DivingApp.BusinessLayer
                     WaterTemperature = dive.WaterTemperature,
                     Weight = dive.Weight,
                     WeightIsOk = dive.WeightIsOk,
+                    UpdDate = DateTime.Now,
                     Status = true
                 };
                 _context.Dives.Add(newDive);
@@ -124,11 +125,45 @@ namespace DivingApp.BusinessLayer
             }
         }
 
+        public bool UpdateDive(DiveViewModel dive, User user)
+        {
+            try
+            {
+                var updDive = _context.Dives.Where(d => d.User.Id == user.Id && d.DiveID == dive.DiveID).First();
+                updDive.Country = dive.CountryId;
+                updDive.Countries = _context.DicCountries.Where(c => c.CountryKod == dive.CountryId).First();
+                updDive.AirTemperature = dive.AirTemperature;
+                updDive.Comments = dive.Comments;
+                updDive.DiveDate = dive.DiveDate;
+                updDive.DiveTime = dive.DiveTime;
+                updDive.FiveMetersMinutes = dive.FiveMetersMinutes;
+                updDive.DiveX = dive.Latitude;
+                updDive.Location = dive.Location;
+                updDive.DiveY = dive.Longitude;
+                updDive.MaxDepth = dive.MaxDepth;
+                updDive.SuitType = dive.SuitType;
+                updDive.Tank = dive.Tank;
+                updDive.TankEnd = dive.TankEnd;
+                updDive.TankStart = dive.TankStart;
+                updDive.TotalMinutes = dive.TotalMinutes;
+                updDive.Visibility = dive.Visibility;
+                updDive.WaterTemperature = dive.WaterTemperature;
+                updDive.Weight = dive.Weight;
+                updDive.WeightIsOk = dive.WeightIsOk;
+                updDive.UpdDate = DateTime.Now;
+                return _context.SaveChanges() > 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool DeleteDive(long diveId, User user)
         {
             var dive = _context.Dives.Where(d => d.User.Id == user.Id && d.DiveID == diveId).First();
-            _context.Remove(dive);
+            dive.Status = false;         
             return _context.SaveChanges() > 0;
-        }
+        }      
     }
 }

@@ -13,5 +13,7 @@ namespace DivingApp.BusinessLayer.Interface
         bool SaveDive(DiveViewModel dive, User user);
 
         bool DeleteDive(long diveId, User user);
+
+        bool UpdateDive(DiveViewModel dive, User user);
     }
 }

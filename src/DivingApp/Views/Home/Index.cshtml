@@ -81,7 +81,7 @@
                                 </div>
                                 <div style="display:inline-block;vertical-align:top;padding-top:7px">
                                     <p><b>Birth year:</b> {{p.BirthYear}}<b>&nbsp;&nbsp; Diver: </b>{{p.FullName}}</p>
-                                    <div><b>Email: </b> {{p.UserName}} <b>&nbsp;&nbsp;Contact: </b>{{p.PhoneNumber}} &nbsp;&nbsp;&nbsp;<img style="margin-top:-2px" ng-src="api/getcountryflag/{{p.CountryKod}}" /></div>
+                                    <div><b>Email: </b> {{p.UserName}} <b>&nbsp;&nbsp;Contact: </b>{{p.PhoneNumber}} &nbsp;&nbsp;&nbsp;<img style="margin-top:-2px" ng-src="api/getcountryflag/{{p.CountryKod}}" onerror="this.src = '/images/small_pict.png'" /></div>
                                 </div>
                                 <div class="pull-right" >
                                     <div class="btn btn-primary btn-sm top-offset-double" ng-click="lgCtrl.openPasp(p.UserName)" style="top:25%">Open</div>

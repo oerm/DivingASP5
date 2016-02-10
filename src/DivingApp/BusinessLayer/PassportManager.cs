@@ -41,8 +41,8 @@ namespace DivingApp.BusinessLayer
             model.Country = country.ValueEU;
             model.CountryId = country.CountryKod;
             model.DivesCount = dives.Count();
-            model.MaxDepth = dives.Any() ? dives.Select(d => d.MaxDepth.Value).Max() : 0;
-            model.SumDiveMinutes = dives.Select(d => (int)d.TotalMinutes).Sum();
+            model.MaxDepth = dives.Any() ? dives.Where(d => d.MaxDepth != null).Select(d => d.MaxDepth.Value).Max() : 0;
+            model.SumDiveMinutes = dives.Where(d => d.TotalMinutes != null).Select(d => (int)d.TotalMinutes).Sum();
             model.diveCountries = dives.Where(d=> d.Countries!= null)
                                        .GroupBy(d => d.Countries.CountryKod)
                                        .Select(c=> new GroupedCountryViewModel

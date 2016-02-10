@@ -52,7 +52,7 @@ module Diving.Services {
         }
 
         GetAuthorizedUserDiveById(diveId: string, callback: Function) {
-            this.http.get('/api/dives/getuserdivebyid/' + diveId, {
+            this.http.get('/api/dives/getuserdivebyid/' + diveId + '/' + Date.now(), {
                 cache: false
             }).success((data, status) => {
                 callback(data);
@@ -86,7 +86,7 @@ module Diving.Services {
         }   
 
         DeleteDive(diveId: number, callback: Function) {
-            this.http.get('/api/dives/deleteDive/' + diveId).success((data, status) => {
+            this.http.delete('/api/dives/deleteDive/' + diveId).success((data, status) => {
                 callback(data);
             }).error(error => {
                 callback(error);
@@ -99,7 +99,7 @@ module Diving.Services {
         GetAuthorizedUserDives(callback: Function);
         GetAuthorizedUserDiveById(diveId: string, callback: Function);
         GetDiveDictionaries(callback: Function);
-        SaveDive(dive: Object, callback: Function, errorHandler: Function);
+        SaveDive(dive: Object, callback: Function, errorHandler: Function);      
         DeleteDive(diveId: number, callback: Function);
     }
 }

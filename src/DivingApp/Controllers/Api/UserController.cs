@@ -1,20 +1,14 @@
-﻿using System;
+﻿using AutoMapper;
+using DivingApp.BusinessLayer.Interface;
+using DivingApp.Models;
+using DivingApp.Models.DataModel;
+using DivingApp.Models.ViewModel;
+using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
-using DivingApp.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
-using DivingApp.Models.DataModel;
-using Newtonsoft.Json;
-using Microsoft.AspNet.Identity;
-using AutoMapper;
-using DivingApp.Models.ViewModel;
-using DivingApp.BusinessLayer.Interface;
-using DivingApp.BusinessLayer;
-using Microsoft.AspNet.Authorization;
-
-// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DivingApp.Controllers.Api
 {
@@ -46,35 +40,7 @@ namespace DivingApp.Controllers.Api
             var searchResults = Mapper.Map<IEnumerable<UsersSearchResultViewModel>>(foundUsers);
 
             return Json(searchResults);
-        }       
-
-
-        [HttpPost]
-        [AllowAnonymous]
-        public JsonResult SaveMainPhoto()
-        {
-            return null;
-            //try
-            //{
-               
-            //    var ext = Request.B .FileName.Split('\\')[Request.Files[0].FileName.Split('\\').Length - 1];
-            //    var filename = ControllerContext.HttpContext.Server.MapPath("~/Uploads//" + Request.Form["guid"] + "_" + ext);
-            //    Request.Files[0].SaveAs(filename);
-            //    if (Request.Params["userId"] != "")
-            //    {
-            //        var root = new DIVINGEntities();
-            //        var userToChange = root.Users.Where(usr => usr.Email == Request.Params["userId"].ToString()).FirstOrDefault();
-            //        byte[] buffer = new byte[Request.Files[0].InputStream.Length];
-            //        Request.Files[0].InputStream.Read(buffer, 0, (int)Request.Files[0].InputStream.Length);
-            //        userToChange.Photo = buffer;
-            //        root.SaveChanges();
-            //    }
-            //}
-            //catch {
-            //    return Content("failed");
-            //}
-            //return Content("success");
-        }       
+        }  
 
         [HttpGet("api/getcountryflag/{countrycode}")]
         [AllowAnonymous]
