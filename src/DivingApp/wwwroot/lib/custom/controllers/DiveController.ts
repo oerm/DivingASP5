@@ -173,13 +173,15 @@ module Diving.Controllers {
             this.ShowSelectedDiveTab(0);
             this.selectedDiveId = diveId;
             var that = this;
-            this.dataService.GetAuthorizedUserDiveById(diveId, function (data) {
-                that.location = "";
-                that.resetPhoto();
-                that.selectedDive = data;
-                that.ShowSelectedDiveTab(1);
-                that.showDivesList = true;       
-            });
+            setTimeout(function () {
+                that.dataService.GetAuthorizedUserDiveById(diveId, function (data) {
+                    that.location = "";
+                    that.resetPhoto();
+                    that.selectedDive = data;
+                    that.ShowSelectedDiveTab(1);
+                    that.showDivesList = true;
+                })
+            }, 250);
         }      
 
         public GetPhoto(id: number) {
@@ -228,6 +230,7 @@ module Diving.Controllers {
         }
 
         public SaveDive() {
+            this.errors = null;
             this.ShowSelectedDiveTab(0);
             this.selectedDive.DiveDate = this.selectedDive.DiveDateString;
             var selectedId = this.selectedDive && this.selectedDive.DiveID ? this.selectedDive.DiveID : -1;

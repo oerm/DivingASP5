@@ -23,7 +23,7 @@
                 <ul class="list-group" style="padding:0;margin-bottom:0" ng-show="diveCtrl.dives.length==0">
                     <li class="list-group-item text-center" style="padding:20px; border-radius:0;border-left:0;border-right:0">
                         <p>No dives in logbook</p>
-                        <p>Click 'Create new' to create dive</p>
+                        <p>Fill dive form and click 'Save changes'</p>
                     </li>
                 </ul>
 
@@ -99,18 +99,21 @@
                 </div>
             </div>
         </div>
+
+            <div class="text-danger" ng-show="diveCtrl.errors&&diveCtrl.errors.length>0" ng-cloak>
+                <div class="text-center">
+                    <p><b>Following errors occured while saving:</b><p>
+                </div>
+                <ul>
+                    <li ng-repeat="e in diveCtrl.errors">
+                        {{e.error}}
+                    </li>
+                </ul>
+            </div>
+
     </div>
 
-    <div class="text-danger" ng-show="diveCtrl.errors&&diveCtrl.errors.length>0" ng-cloak>         
-        <div class="text-left">
-            <p><b>Following errors occured while saving the dive</b><p>
-        </div>
-        <ul>
-            <li ng-repeat="e in diveCtrl.errors">
-                {{e.error}}
-            </li>
-        </ul>       
-    </div>
+   
 
     <div class="col-lg-9 col-md-8 col-sm-7 pull-right" style="display:inline-block;" ng-cloak>
         <div class="panel panel-primary">
@@ -323,6 +326,7 @@
                     </div>
 
                     <div class="row">
+                        <ng-upload-form url="//jquery-file-upload.appspot.com/" auto-upload="true" size-limit="500000"></ng-upload-form>
                         <div class="pull-right" style="display: inline-block;padding:5px;padding-right:15px">
                             <span>
                                 <b>Total photos</b> &nbsp;

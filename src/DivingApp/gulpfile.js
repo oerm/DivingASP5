@@ -13,7 +13,15 @@ var gulp = require('gulp'),
 var path = "wwwroot/lib/";
 
 gulp.task('buildjs', function () {
-    return gulp.src([path + "jquery/dist/jquery.js",                     
+    return gulp.src([path + "jquery/dist/jquery.js",
+                     path + "jquery-file-upload/js/vendor/jquery.postmessage-transport.js",
+                     path + "jquery-file-upload/js/cors/jquery.xdr-transport.js",
+                     path + "jquery-file-upload/js/vendor/jquery.ui.widget.js",
+                     path + "jquery-file-upload/js/jquery.fileupload.js",
+                     path + "jquery-file-upload/js/jquery.fileupload-ui.js",
+                     path + "jquery-file-upload/js/jquery.fileupload-process.js",
+                     path + "jquery-file-upload/js/jquery.fileupload-image.js",
+                     path + "jquery-file-upload/js/jquery.fileupload-validate.js",                                    
                      path + "bootstrap/dist/js/bootstrap.js",
                      path + "bootstrap/js/modal.js",
                      path + "moment/min/moment.min.js",
@@ -22,7 +30,9 @@ gulp.task('buildjs', function () {
                      path + "eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
                      path + "jasny-bootstrap/js/jasny-bootstrap.js"])
                .pipe(concat('site.min.js'))
+               /*
                .pipe(uglify({ mangle: false }))
+               */
                .pipe(gulp.dest('wwwroot/js'));    
 });
 
@@ -32,17 +42,21 @@ gulp.task('buildangularcontrollers', function () {
                      path + "custom/controllers/logincontroller.js",
                      path + "custom/controllers/paspcontroller.js",
                      path + "custom/controllers/divecontroller.js",
+                     path + "custom/controllers/filedestroycontroller.js",
+                     path + "custom/directives/fileuploaddirective.js",
+                     path + "jquery-file-upload/js/jquery.fileupload-angular.js",
                      path + "custom/app.js"])
                .pipe(concat('controllers.min.js'))
-    /*
+                /*
                .pipe(uglify({ mangle: false }))
-    */
+                */
                .pipe(gulp.dest('wwwroot/js'));
 });
 
 gulp.task('buildcss', function () {
     return gulp.src([path + "bootstrap/dist/css/bootstrap.css",
-                     
+                     path + "jquery-file-upload/css/jquery.fileupload.css",
+                     path + "jquery-file-upload/css/jquery.fileupload-ui.css",
                      path + "font-awesome/css/font-awesome.css",
                      path + "jasny-bootstrap/css/jasny-bootstrap.css",
                      path + "eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",

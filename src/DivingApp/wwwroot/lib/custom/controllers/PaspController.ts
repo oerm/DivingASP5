@@ -60,7 +60,7 @@ module Diving.Controllers {
                 var that = this;
                 setTimeout(function () {
                     this.options = {
-                        zoom: 2,
+                        zoom: 3,
                         center: new google.maps.LatLng(1, 1),
                         mapTypeId: google.maps.MapTypeId.ROADMAP
                     };
@@ -80,37 +80,39 @@ module Diving.Controllers {
                         that.markers = [];
                         var marker;
                         for (var i = 0; i < data.length; i++) {
-                            var clickHandler = function () {
-                                var currentDive = data[i];
-                                var diveId = data[i].DiveId;
-                                marker = new google.maps.Marker({
-                                    map: that.map,
-                                    draggable: false,
-                                    title: data[i].Location + ": " + data[i].DiveComment,
-                                    position: new google.maps.LatLng(data[i].CoordinateX, data[i].CoordinateY)
-                                });
-                                marker.data = data[i];
-                                marker.addListener('click', function (e) {                                   
-                                    that.selectedGeoDive = this.data;
-                                    var overlay = new google.maps.OverlayView();
-                                    overlay.draw = function () { };
-                                    overlay.setMap(that.map);
-                                    var proj = overlay.getProjection();
-                                    var pos = this.getPosition();
-                                    var p = proj.fromLatLngToContainerPixel(pos);
-                                    $('#geoDiveDetails').css({
-                                        top: p.y + $('#geoDiveDetails').parent().position().top - $('#geoDiveDetails').height(),
-                                        left: p.x + 40,
-                                        position: 'absolute'
-                                    }); 
-                                    that.showGeoDiveInfo = true;  
-                                    that.scope.$apply();                                    
-                                });
+                            if (data[i].CoordinateX && data[i].CoordinateY) {
+                                var clickHandler = function () {
+                                    var currentDive = data[i];
+                                    var diveId = data[i].DiveId;
+                                    marker = new google.maps.Marker({
+                                        map: that.map,
+                                        draggable: false,
+                                        title: data[i].Location + ": " + data[i].DiveComment,
+                                        position: new google.maps.LatLng(data[i].CoordinateX, data[i].CoordinateY)
+                                    });
+                                    marker.data = data[i];
+                                    marker.addListener('click', function (e) {
+                                        that.selectedGeoDive = this.data;
+                                        var overlay = new google.maps.OverlayView();
+                                        overlay.draw = function () { };
+                                        overlay.setMap(that.map);
+                                        var proj = overlay.getProjection();
+                                        var pos = this.getPosition();
+                                        var p = proj.fromLatLngToContainerPixel(pos);
+                                        $('#geoDiveDetails').css({
+                                            top: p.y + $('#geoDiveDetails').parent().position().top - $('#geoDiveDetails').height(),
+                                            left: p.x + 40,
+                                            position: 'absolute'
+                                        });
+                                        that.showGeoDiveInfo = true;
+                                        that.scope.$apply();
+                                    });
 
 
-                                that.markers.push(marker);
-                            };
-                            clickHandler();
+                                    that.markers.push(marker);
+                                };
+                                clickHandler();
+                            }
                         }
                         var marker = new MarkerClusterer(that.map, that.markers);
                     });

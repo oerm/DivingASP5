@@ -45,8 +45,13 @@ namespace DivingApp.Controllers.Api
         [HttpGet("api/getcountryflag/{countrycode}")]
         [AllowAnonymous]
         public ActionResult GetFlag(int countrycode)
-        {            
-            return base.File(_photoManager.GetFlag(countrycode), "image/jpeg");
+        {
+            if (countrycode > 0)
+            {
+                return base.File(_photoManager.GetFlag(countrycode), "image/jpeg");
+            }
+            return new HttpNotFoundResult();
+           
         }
 
         [HttpGet("api/getuserphoto/{Email}")]

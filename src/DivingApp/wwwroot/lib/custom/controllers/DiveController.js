@@ -129,13 +129,15 @@ var Diving;
                 this.ShowSelectedDiveTab(0);
                 this.selectedDiveId = diveId;
                 var that = this;
-                this.dataService.GetAuthorizedUserDiveById(diveId, function (data) {
-                    that.location = "";
-                    that.resetPhoto();
-                    that.selectedDive = data;
-                    that.ShowSelectedDiveTab(1);
-                    that.showDivesList = true;
-                });
+                setTimeout(function () {
+                    that.dataService.GetAuthorizedUserDiveById(diveId, function (data) {
+                        that.location = "";
+                        that.resetPhoto();
+                        that.selectedDive = data;
+                        that.ShowSelectedDiveTab(1);
+                        that.showDivesList = true;
+                    });
+                }, 250);
             };
             diveController.prototype.GetPhoto = function (id) {
                 this.selectedPhotoIndex = this.selectedDive.Photos.map(function (e) { return e.PhotoId; }).indexOf(id);
@@ -178,6 +180,7 @@ var Diving;
                 this.showUpdateMessage = false;
             };
             diveController.prototype.SaveDive = function () {
+                this.errors = null;
                 this.ShowSelectedDiveTab(0);
                 this.selectedDive.DiveDate = this.selectedDive.DiveDateString;
                 var selectedId = this.selectedDive && this.selectedDive.DiveID ? this.selectedDive.DiveID : -1;
