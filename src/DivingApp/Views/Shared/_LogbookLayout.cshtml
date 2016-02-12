@@ -75,24 +75,24 @@
              
             </div>
         </div>
-    </nav>
+    </nav>   
+       
+        @*<div class="formContainer" ng-app="uploadModule">
+                <ng-upload-form url="//jquery-file-upload.appspot.com/" auto-upload="true" size-limit="500000"></ng-upload-form>
+            </div>*@
+        <main id="body" style="padding-bottom:80px;">
+            <div class="container">
+                @RenderBody()
+            </div>
+        </main>
 
-    <div class="formContainer" ng-app="uploadModule">fff
-        <ng-upload-form url="//jquery-file-upload.appspot.com/" auto-upload="true" size-limit="500000"></ng-upload-form>
-    </div>
-    <main id="body" style="padding-bottom:80px;">
-        <div class="container">
-            @RenderBody()
-        </div>
-    </main>
-
-    <footer class="navbar navbar-default navbar-fixed-bottom">
-        <div class="container">
-            <h3 class="navbar-brand">
-                &copy; @DateTime.Now.Year - Oleksii Yermolenko
-            </h3>
-        </div>
-    </footer>
+        <footer class="navbar navbar-default navbar-fixed-bottom">
+            <div class="container">
+                <h3 class="navbar-brand">
+                    &copy; @DateTime.Now.Year - Oleksii Yermolenko
+                </h3>
+            </div>
+        </footer>
 
 </body>
 </html>
