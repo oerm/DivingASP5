@@ -32,8 +32,6 @@ namespace DivingApp.Models
 
         public DbSet<Photos> Photos { get; set; }
 
-        public DbSet<PhotoImg> PhotoImgSet { get; set; }
-
         public DbSet<DicCert> DicCerts { get; set; }
 
         public DbSet<DicCountry> DicCountries { get; set; }

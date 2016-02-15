@@ -18,6 +18,8 @@ gulp.task('buildjs', function () {
                      path + "bootstrap/js/modal.js",
                      path + "moment/min/moment.min.js",
                      path + "angular/angular.js",
+                     path + "blueimp-load-image/js/load-image.all.min.js",
+                     path + "blueimp-canvas-to-blob/js/canvas-to-blob.js",
                      path + "jquery-file-upload/uploader.js",
                      path + "angular-animate/angular-animate.js",
                      path + "eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",

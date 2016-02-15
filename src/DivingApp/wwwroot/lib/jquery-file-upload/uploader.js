@@ -2914,7 +2914,7 @@
       // even if the previous action was rejected:
       always: true,
       // Options taken from the global options map:
-      acceptFileTypes: '@',
+      acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
       maxFileSize: '@',
       minFileSize: '@',
       maxNumberOfFiles: '@',
@@ -3060,9 +3060,10 @@
             };
           });
           file.$submit = function () {
-            if (!file.error) {
-              return data.submit();
-            }
+              if (!file.error) {
+                  data.form[0].diveid.value = data.scope.$parent.$parent.diveCtrl.selectedDiveId;
+                  return data.submit();
+              }
           };
           file.$cancel = function () {
             return data.abort();
@@ -3498,7 +3499,7 @@
   app.directive('ngUploadForm', [function () {
       return {
         restrict: 'E',
-        templateUrl: './templates/fileform.html',
+        templateUrl: '/templates/fileform.html',
         scope: {
           allowed: '@',
           url: '@',
@@ -3510,7 +3511,12 @@
         controller: ['$scope', '$element', 'fileUpload', function (
             $scope, $element, fileUpload) {
           $scope.$on('fileuploaddone', function (e, data) {
-            fileUpload.addFieldData($scope.name, data._response.result.files[0].result);
+              fileUpload.addFieldData($scope.name, data._response.result.files[0].result);
+              $scope.$parent.diveCtrl.selectedDive.Photos.push(
+             {
+                 Date: new Date,
+                 PhotoId: data._response.result.files[0].id
+             });
           });
 
           $scope.options = {

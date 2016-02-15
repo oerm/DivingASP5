@@ -7,6 +7,7 @@ using DivingApp.Models;
 using Microsoft.Data.Entity;
 using System.IO;
 using ImageProcessor.Imaging.Formats;
+using DivingApp.Models.DataModel;
 
 namespace DivingApp.BusinessLayer
 {
@@ -26,44 +27,7 @@ namespace DivingApp.BusinessLayer
             return _context.DicCountries.Where(c => c.CountryKod == countryCode)
                                         .Select(c => c.Flag)
                                         .First();
-        }
-
-        //    public decimal SaveImage(byte[] file, string filename, Decimal diveId)
-        //    {
-        //        Photos photo = new Photos()
-        //        {
-        //            DiveID = diveId,
-        //            PhotoDate = DateTime.Now,
-        //            PhotoName = filename,                
-
-        //            Status = false
-        //        };    
-        //        photo.PhotoImg.PhotoVal=file;
-        //        root.Photos.Add(photo);
-        //        var rowsAdded = root.SaveChanges();
-        //        return photo.PhotoID;
-        //    }
-
-        //    public bool ConfirmSaving(Decimal? photoId, String comment = "")
-        //    {           
-        //        var item = (from photo in root.Photos where photo.PhotoID == photoId select photo).FirstOrDefault();
-        //        if (item != null)
-        //        {
-        //            item.PhotoComment = comment;
-        //            item.Status = true;
-        //            var rowsAdded = root.SaveChanges();
-        //            return rowsAdded > 0;
-        //        }
-        //        return false;
-        //    }
-
-        //    public Boolean DeletePhoto(Decimal photoId)
-        //    {
-        //        var photo = (from img in root.Photos where img.PhotoID == photoId select img).First();
-        //        photo.Status = false;
-        //        var rowsDeleted = root.SaveChanges();
-        //        return rowsDeleted > 0;
-        //    }
+        }      
 
         public IEnumerable<long> GetPhotoIdsByDiveId(string userId, long diveId, long minPhotoId = -1)
         {
@@ -86,7 +50,7 @@ namespace DivingApp.BusinessLayer
 
             if (isUserPhotoCheck.Any())
             {
-                return _context.PhotoImgSet.Where(p => p.PhotoID == photoId)
+                return _context.Photos.Where(p => p.PhotoID == photoId)
                                            .Select(p => p.PhotoVal)
                                            .First();
             }
@@ -105,7 +69,7 @@ namespace DivingApp.BusinessLayer
 
             if (isUserPhotoCheck.Any())
             {
-                return GetThumb(_context.PhotoImgSet.Where(p => p.PhotoID == photoId)
+                return GetThumb(_context.Photos.Where(p => p.PhotoID == photoId)
                                            .Select(p => p.PhotoVal)
                                            .First(), qualityProcent);
             }
@@ -115,13 +79,37 @@ namespace DivingApp.BusinessLayer
             }
         }
 
-        //    public PhotoDetails GetPhotoDetails(Decimal photoId)
-        //    {
-        //        var file = (from img in root.Photos where img.PhotoID == photoId select new { img.PhotoImg.PhotoVal, img.PhotoComment, img.PhotoDate }).First();
-        //        System.IO.MemoryStream myMemStream = new System.IO.MemoryStream(file.PhotoVal);
-        //        System.Drawing.Image fullsizeImage = System.Drawing.Image.FromStream(myMemStream);
-        //        return new PhotoDetails() { Comment = file.PhotoComment, Date = file.PhotoDate, Size = fullsizeImage.Size };   
-        //    }
+        public long AddPhoto(long diveId, User user, byte[] photo, string name)
+        {
+            var dive = _context.Dives.Where(d => d.User.Id == user.Id && d.DiveID == diveId).First();
+            var photoDesc = new Photos()
+            {
+                DiveID = diveId,
+                Status = true,
+                PhotoDate = DateTime.Now,
+                PhotoName = name,
+                PhotoVal = photo
+            };
+
+            _context.Photos.Add(photoDesc);
+            _context.SaveChanges();
+
+            return photoDesc.PhotoID;
+        }
+
+        public Boolean DeletePhoto(long photoId, string userId)
+        {
+           var photo = _context.Dives
+                    .Include(d=> d.Photos)
+                    .Where(d => d.User.Id == userId && d.Photos.Any(p=>p.PhotoID == photoId))
+                    .SelectMany(d => d.Photos)
+                    .Where(p=> p.PhotoID == photoId)
+                    .First();
+
+            photo.Status = false;           
+            var rowsDeleted = _context.SaveChanges();
+            return rowsDeleted > 0;
+        }
 
         private byte[] GetThumb(byte[] photo, int qualityProcentage)
         {           

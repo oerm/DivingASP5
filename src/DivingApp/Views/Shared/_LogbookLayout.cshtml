@@ -14,8 +14,7 @@
 
 
 
-<body ng-app="diving-app" ng-controller="rootController as rootCtrl" >
-   
+<body ng-app="diving-app" ng-controller="rootController as rootCtrl" >   
     <nav class="navbar navbar-inverse">
         <div class="container">
             <div class="navbar-brand">
@@ -75,13 +74,10 @@
              
             </div>
         </div>
-    </nav>   
-       
-        @*<div class="formContainer" ng-app="uploadModule">
-                <ng-upload-form url="//jquery-file-upload.appspot.com/" auto-upload="true" size-limit="500000"></ng-upload-form>
-            </div>*@
+    </nav>         
+    
         <main id="body" style="padding-bottom:80px;">
-            <div class="container">
+            <div class="container">               
                 @RenderBody()
             </div>
         </main>

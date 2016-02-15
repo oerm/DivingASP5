@@ -9,6 +9,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Http;
+using System.IO;
 
 namespace DivingApp.Controllers.Api
 {
@@ -278,5 +280,47 @@ namespace DivingApp.Controllers.Api
             }
             return new HttpUnauthorizedResult();
         }
+
+        [Route("api/dives/uploadfile")]
+        [HttpPost]
+        public async Task<IActionResult> UploadFile()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+
+                var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+                var diveId = int.Parse(this.Request.Form["diveid"]);
+                var fileBase = (IFormFile)this.Request.Form.Files[0];
+                MemoryStream target = new MemoryStream();
+                fileBase.OpenReadStream().CopyTo(target);
+                if (diveId > 0)
+                {
+                    var result = _photoManager.AddPhoto(diveId, user, target.ToArray(), fileBase.ContentDisposition);
+                    var jsonResult = Json(
+                        new
+                        {
+                            files = new PhotoResult[]
+                            {
+                                new PhotoResult
+                                {
+                                    url = "url",
+                                    thumbnailUrl = string.Format("/api/dives/getuserthumbdivephotobyid/{0}/{1}", User.Identity.Name ,result),
+                                    type = "image/jpeg",
+                                    size = target.Length,
+                                    deleteUrl = "deleteUrl",
+                                    deleteType = "DELETE",
+                                    id = result.ToString()
+                                }
+                            }
+                        });
+                    return jsonResult;
+                }
+              
+                return new BadRequestResult();
+            }
+            return new HttpUnauthorizedResult();
+        }
     }
+
+   
 }

@@ -29,8 +29,7 @@ namespace DivingApp.Models.DataModel
         public System.DateTime PhotoDate { get; set; }
 
         public bool Status { get; set; }
-    
-        //public virtual Dives Dives { get; set; }
-        //public virtual PhotoImg PhotoImg { get; set; }
+
+        public byte[] PhotoVal { get; set; }
     }
 }
