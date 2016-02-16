@@ -18,19 +18,17 @@ namespace DivingApp.Controllers.Api
     {
         const string imageContentType = "image/jpeg";
 
-        EntityContext _context;
         UserManager<User> _userManager;
         IPassportManager _passportManager;
         IPhotoManager _photoManager;
         IDiveManager _diveManager;
 
-        public DiveController(EntityContext context, UserManager<User> userManager)
+        public DiveController(UserManager<User> userManager)
         {
-            _context = context;
             _userManager = userManager;
-            _passportManager = new PassportManager(context);
-            _photoManager = new PhotoManager(context);
-            _diveManager = new DiveManager(context);
+            _passportManager = new PassportManager();
+            _photoManager = new PhotoManager();
+            _diveManager = new DiveManager();
         }
 
         [AllowAnonymous]
@@ -81,7 +79,7 @@ namespace DivingApp.Controllers.Api
                     }
                     catch (Exception ex)
                     {
-                        return new HttpNotFoundResult();
+                       return await this.GetUserDivePhotoById(Email, PhotoId);                    
                     }
                 }
             }
@@ -92,7 +90,9 @@ namespace DivingApp.Controllers.Api
         [HttpGet("/api/dives/getdivedictionaries")]
         public IActionResult GetDictionaries()
         {
-            var countries = _context.DicCountries.Select(item =>
+            using (EntityContext _context = new EntityContext())
+            {
+                var countries = _context.DicCountries.Select(item =>
                                                          new
                                                          {
                                                              Text = item.ValueEU,
@@ -101,54 +101,55 @@ namespace DivingApp.Controllers.Api
                                                  .OrderBy(item => item.Text)
                                                  .ToList();
 
-            var tanks = _context.DicTankTypes.ToArray().Select((item, i) =>
+                var tanks = _context.DicTankTypes.ToArray().Select((item, i) =>
+                                                            new
+                                                            {
+                                                                Selected = i == 0,
+                                                                Text = item.TankValue,
+                                                                Value = item.TankId
+                                                            })
+                                                    .OrderBy(item => item.Text)
+                                                    .ToList();
+
+                var weights = _context.DicWeightOk.ToArray().Select((item, i) =>
+                                                           new
+                                                           {
+                                                               Selected = i == 0,
+                                                               Text = item.WeightOkValue,
+                                                               Value = item.WeightOkID
+                                                           })
+                                                   .OrderBy(item => item.Text)
+                                                   .ToList();
+
+                var suits = _context.DicSuitTypes.ToArray().Select((item, i) =>
                                                         new
                                                         {
                                                             Selected = i == 0,
-                                                            Text = item.TankValue,
-                                                            Value = item.TankId
+                                                            Text = item.SuitValue,
+                                                            Value = item.SuitID
                                                         })
                                                 .OrderBy(item => item.Text)
                                                 .ToList();
 
-            var weights = _context.DicWeightOk.ToArray().Select((item, i) =>
-                                                       new
-                                                       {
-                                                           Selected = i == 0,
-                                                           Text = item.WeightOkValue,
-                                                           Value = item.WeightOkID
-                                                       })
-                                               .OrderBy(item => item.Text)
-                                               .ToList();
+                var time = _context.DicDiveTime.ToArray().Select((item, i) =>
+                                                     new
+                                                     {
+                                                         Selected = i == 0,
+                                                         Text = item.TimeValue,
+                                                         Value = item.TimeId
+                                                     })
+                                             .OrderBy(item => item.Value)
+                                             .ToList();
 
-            var suits = _context.DicSuitTypes.ToArray().Select((item, i) =>
-                                                    new
-                                                    {
-                                                        Selected = i == 0,
-                                                        Text = item.SuitValue,
-                                                        Value = item.SuitID
-                                                    })
-                                            .OrderBy(item => item.Text)
-                                            .ToList();
-
-            var time = _context.DicDiveTime.ToArray().Select((item, i) =>
-                                                 new
-                                                 {
-                                                     Selected = i == 0,
-                                                     Text = item.TimeValue,
-                                                     Value = item.TimeId
-                                                 })
-                                         .OrderBy(item => item.Value)
-                                         .ToList();
-
-            return Json(new
-            {
-                Suits = suits,
-                Weights = weights,
-                Tanks = tanks,
-                Countries = countries,
-                Time = time
-            });
+                return Json(new
+                {
+                    Suits = suits,
+                    Weights = weights,
+                    Tanks = tanks,
+                    Countries = countries,
+                    Time = time
+                });
+            }
         }
 
       

@@ -3510,13 +3510,15 @@
         },
         controller: ['$scope', '$element', 'fileUpload', function (
             $scope, $element, fileUpload) {
-          $scope.$on('fileuploaddone', function (e, data) {
-              fileUpload.addFieldData($scope.name, data._response.result.files[0].result);
+            $scope.$on('fileuploaddone', function (e, data) {
+              $scope.queue = [];
+            //  fileUpload.addFieldData($scope.name, data._response.result.files[0].result);
               $scope.$parent.diveCtrl.selectedDive.Photos.push(
              {
                  Date: new Date,
                  PhotoId: data._response.result.files[0].id
              });
+              $scope.$apply();
           });
 
           $scope.options = {

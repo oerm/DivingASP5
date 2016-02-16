@@ -12,16 +12,12 @@ namespace DivingApp.BusinessLayer
 {
     public class DiveManager : IDiveManager
     {
-        private EntityContext _context;
-
-        public DiveManager(EntityContext context)
-        {
-            _context = context;
-        }
 
         public DiveViewModel GetDiveById(string userId, long diveId)
         {
-            var dive = _context.Dives.Where(d => d.User.Id == userId && d.DiveID == diveId && d.Status)
+            using (EntityContext _context = new EntityContext())
+            {
+                var dive = _context.Dives.Where(d => d.User.Id == userId && d.DiveID == diveId && d.Status)
                                     .Include(d => d.Countries)
                                     .Include(d => d.Photos)
                                     .ToArray()
@@ -54,116 +50,127 @@ namespace DivingApp.BusinessLayer
                                             Comment = p.PhotoComment
                                         }).ToArray()
                                     }).First();
-
-
-            return dive;
+                return dive;
+            }
         }
 
         public IEnumerable<DiveShortViewModel> GetShortDivesListByUserId(string userId)
         {
-            try
+            using (EntityContext _context = new EntityContext())
             {
-                var dives = _context.Dives.Where(d => d.User.Id == userId && d.Status)
-                                          .Include(d => d.Countries)
-                                          .OrderBy(d => d.DiveDate)
-                                          .ToArray()
-                                          .Select((d, n) => new DiveShortViewModel
-                                          {
-                                              DiveID = d.DiveID,
-                                              DiveNumber = n + 1,
-                                              CountryID = d.Countries.CountryKod,
-                                              CountryName = d.Countries.ValueEU,
-                                              DiveDate = d.DiveDate.ToString("dd/MM/yyyy"),
-                                              Depth = d.MaxDepth,
-                                              Time = d.TotalMinutes
-                                          }).Reverse();
-                return dives;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                try
+                {
+                    var dives = _context.Dives.Where(d => d.User.Id == userId && d.Status)
+                                              .Include(d => d.Countries)
+                                              .OrderBy(d => d.DiveDate)
+                                              .ToArray()
+                                              .Select((d, n) => new DiveShortViewModel
+                                              {
+                                                  DiveID = d.DiveID,
+                                                  DiveNumber = n + 1,
+                                                  CountryID = d.Countries.CountryKod,
+                                                  CountryName = d.Countries.ValueEU,
+                                                  DiveDate = d.DiveDate.ToString("dd/MM/yyyy"),
+                                                  Depth = d.MaxDepth,
+                                                  Time = d.TotalMinutes
+                                              }).Reverse();
+                    return dives;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 
         public bool SaveDive(DiveViewModel dive, User user)
         {
-            try
+            using (EntityContext _context = new EntityContext())
             {
-                var newDive = new Dive()
+                try
                 {
-                    User = user,
-                    Country = dive.CountryId,
-                    Countries = _context.DicCountries.Where(c => c.CountryKod == dive.CountryId).First(),
-                    AirTemperature = dive.AirTemperature,
-                    Comments = dive.Comments,
-                    DiveDate = dive.DiveDate,
-                    DiveTime = dive.DiveTime,
-                    FiveMetersMinutes = dive.FiveMetersMinutes,
-                    DiveX = dive.Latitude,
-                    Location = dive.Location,
-                    DiveY = dive.Longitude,
-                    MaxDepth = dive.MaxDepth,
-                    SuitType = dive.SuitType,
-                    Tank = dive.Tank,
-                    TankEnd = dive.TankEnd,
-                    TankStart = dive.TankStart,
-                    TotalMinutes = dive.TotalMinutes,
-                    Visibility = dive.Visibility,
-                    WaterTemperature = dive.WaterTemperature,
-                    Weight = dive.Weight,
-                    WeightIsOk = dive.WeightIsOk,
-                    UpdDate = DateTime.Now,
-                    Status = true
-                };
-                _context.Dives.Add(newDive);
+                    var newDive = new Dive()
+                    {
+                        User = user,
+                        Country = dive.CountryId,
+                        Countries = _context.DicCountries.Where(c => c.CountryKod == dive.CountryId).First(),
+                        AirTemperature = dive.AirTemperature,
+                        Comments = dive.Comments,
+                        DiveDate = dive.DiveDate,
+                        DiveTime = dive.DiveTime,
+                        FiveMetersMinutes = dive.FiveMetersMinutes,
+                        DiveX = dive.Latitude,
+                        Location = dive.Location,
+                        DiveY = dive.Longitude,
+                        MaxDepth = dive.MaxDepth,
+                        SuitType = dive.SuitType,
+                        Tank = dive.Tank,
+                        TankEnd = dive.TankEnd,
+                        TankStart = dive.TankStart,
+                        TotalMinutes = dive.TotalMinutes,
+                        Visibility = dive.Visibility,
+                        WaterTemperature = dive.WaterTemperature,
+                        Weight = dive.Weight,
+                        WeightIsOk = dive.WeightIsOk,
+                        UpdDate = DateTime.Now,
+                        Status = true
+                    };
+                    _context.Dives.Add(newDive);
 
-                return _context.SaveChanges() > 0;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                    return _context.SaveChanges() > 0;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 
         public bool UpdateDive(DiveViewModel dive, User user)
         {
-            try
+            using (EntityContext _context = new EntityContext())
             {
-                var updDive = _context.Dives.Where(d => d.User.Id == user.Id && d.DiveID == dive.DiveID).First();
-                updDive.Country = dive.CountryId;
-                updDive.Countries = _context.DicCountries.Where(c => c.CountryKod == dive.CountryId).First();
-                updDive.AirTemperature = dive.AirTemperature;
-                updDive.Comments = dive.Comments;
-                updDive.DiveDate = dive.DiveDate;
-                updDive.DiveTime = dive.DiveTime;
-                updDive.FiveMetersMinutes = dive.FiveMetersMinutes;
-                updDive.DiveX = dive.Latitude;
-                updDive.Location = dive.Location;
-                updDive.DiveY = dive.Longitude;
-                updDive.MaxDepth = dive.MaxDepth;
-                updDive.SuitType = dive.SuitType;
-                updDive.Tank = dive.Tank;
-                updDive.TankEnd = dive.TankEnd;
-                updDive.TankStart = dive.TankStart;
-                updDive.TotalMinutes = dive.TotalMinutes;
-                updDive.Visibility = dive.Visibility;
-                updDive.WaterTemperature = dive.WaterTemperature;
-                updDive.Weight = dive.Weight;
-                updDive.WeightIsOk = dive.WeightIsOk;
-                updDive.UpdDate = DateTime.Now;
-                return _context.SaveChanges() > 0;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                try
+                {
+                    var updDive = _context.Dives.Where(d => d.User.Id == user.Id && d.DiveID == dive.DiveID).First();
+                    updDive.Country = dive.CountryId;
+                    updDive.Countries = _context.DicCountries.Where(c => c.CountryKod == dive.CountryId).First();
+                    updDive.AirTemperature = dive.AirTemperature;
+                    updDive.Comments = dive.Comments;
+                    updDive.DiveDate = dive.DiveDate;
+                    updDive.DiveTime = dive.DiveTime;
+                    updDive.FiveMetersMinutes = dive.FiveMetersMinutes;
+                    updDive.DiveX = dive.Latitude;
+                    updDive.Location = dive.Location;
+                    updDive.DiveY = dive.Longitude;
+                    updDive.MaxDepth = dive.MaxDepth;
+                    updDive.SuitType = dive.SuitType;
+                    updDive.Tank = dive.Tank;
+                    updDive.TankEnd = dive.TankEnd;
+                    updDive.TankStart = dive.TankStart;
+                    updDive.TotalMinutes = dive.TotalMinutes;
+                    updDive.Visibility = dive.Visibility;
+                    updDive.WaterTemperature = dive.WaterTemperature;
+                    updDive.Weight = dive.Weight;
+                    updDive.WeightIsOk = dive.WeightIsOk;
+                    updDive.UpdDate = DateTime.Now;
+                    return _context.SaveChanges() > 0;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 
         public bool DeleteDive(long diveId, User user)
         {
-            var dive = _context.Dives.Where(d => d.User.Id == user.Id && d.DiveID == diveId).First();
-            dive.Status = false;         
-            return _context.SaveChanges() > 0;
+            using (EntityContext _context = new EntityContext())
+            {
+                var dive = _context.Dives.Where(d => d.User.Id == user.Id && d.DiveID == diveId).First();
+                dive.Status = false;
+                return _context.SaveChanges() > 0;
+            }
         }      
     }
 }

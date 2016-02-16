@@ -13,15 +13,13 @@ namespace DivingApp.Controllers
 {
     public class PassportController : Controller
     {
-        EntityContext _context;
         UserManager<User> _userManager;
         IPassportManager _passportManager;
 
-        public PassportController(EntityContext context, UserManager<User> userManager)
+        public PassportController(UserManager<User> userManager)
         {
-            _context = context;
             _userManager = userManager;
-            _passportManager = new PassportManager(_context); 
+            _passportManager = new PassportManager(); 
         }
 
         [HttpGet("passport/external/{username}")]

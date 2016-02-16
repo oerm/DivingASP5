@@ -15,7 +15,6 @@ namespace DivingApp.Models.ViewModel
         public long DiveNumber { get; set; }
 
         [Required]
-        [DataType(DataType.DateTime)]
         public DateTime DiveDate
         {
             get { return _diveDate; }
