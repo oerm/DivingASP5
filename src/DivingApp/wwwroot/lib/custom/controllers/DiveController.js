@@ -202,6 +202,15 @@ var Diving;
                     that.ShowSelectedDiveTab(1);
                 });
             };
+            diveController.prototype.DeletePhoto = function (photoId) {
+                var that = this;
+                this.dataService.DeletePhoto(photoId, function (data) {
+                    that.selectedDive.Photos.splice(that.selectedPhotoIndex, 1);
+                    that.resetPhoto();
+                }, function (error) {
+                    alert('Failed to delete photo');
+                });
+            };
             diveController.prototype.CancelCreateNewDive = function () {
                 if (this.dives.length > 0)
                     this.GetDive(this.dives[0].DiveID);

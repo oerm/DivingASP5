@@ -258,6 +258,18 @@ module Diving.Controllers {
                 });
         }
 
+        public DeletePhoto(photoId: number) {
+            var that = this;
+            this.dataService.DeletePhoto(photoId,
+                function (data) {                    
+                    that.selectedDive.Photos.splice(that.selectedPhotoIndex, 1);
+                    that.resetPhoto();
+                },
+                function (error) {
+                    alert('Failed to delete photo');
+                });
+        }
+
         public CancelCreateNewDive() {
             if (this.dives.length > 0) this.GetDive(this.dives[0].DiveID);
             this.showDivesList = true;

@@ -15,7 +15,7 @@ namespace DivingApp.BusinessLayer
     {
         private const string notFoundString = "Photo with id {0} not found for this user";
         private const int qualityProcent = 20;
-        private object locker = new object();
+        private static object locker = new object();
 
         public PhotoManager()
         {
@@ -40,7 +40,7 @@ namespace DivingApp.BusinessLayer
                                  .First();
 
                 return dive.Photos.OrderBy(p => p.PhotoID)
-                                  .Where(p => p.PhotoID > minPhotoId)
+                                  .Where(p => p.PhotoID > minPhotoId && p.Status)
                                   .Select(p => p.PhotoID);
             }                                   
         }
@@ -49,22 +49,32 @@ namespace DivingApp.BusinessLayer
         public byte[] GetPhoto(string userId, long photoId)
         {
             using (EntityContext _context = new EntityContext())
-            {
-                var isUserPhotoCheck = _context.Dives.Where(d => d.User.Id == userId && d.Status == true)
-                                                 .Include(d => d.Photos)
-                                                 .ToArray()
-                                                 .Where(d => d.Photos.Any(p => p.PhotoID == photoId));
+            {               
+                try
+                {
+                    var diveId = _context.Photos.Where(p => p.PhotoID == photoId)
+                                                          .Select(p => p.DiveID)
+                                                          .First();
 
-                if (isUserPhotoCheck.Any())
-                {
-                    return _context.Photos.Where(p => p.PhotoID == photoId)
-                                               .Select(p => p.PhotoVal)
-                                               .First();
+                    var isUserPhotoCheck = _context.Dives.Where(d => d.User.Id == userId && d.Status && d.DiveID == diveId);
+                                               
+                    if (isUserPhotoCheck.Any())
+                    {
+                        return _context.Photos.Where(p => p.PhotoID == photoId && p.Status)
+                                                   .Select(p => p.PhotoVal)
+                                                   .First();
+                    }
+                    else
+                    {
+                        throw new Exception(string.Format(notFoundString, photoId));
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    throw new Exception(string.Format(notFoundString, photoId));
+                    return null;
                 }
+
+              
             }
         }
 
@@ -72,16 +82,18 @@ namespace DivingApp.BusinessLayer
         {
             using (EntityContext _context = new EntityContext())
             {
-                var isUserPhotoCheck = _context.Dives.Where(d => d.User.Id == userId && d.Status)
-                                                .Include(d => d.Photos)
-                                                .ToArray()
-                                                .Where(d => d.Photos.Any(p => p.PhotoID == photoId));
+                var diveId = _context.Photos.Where(p => p.PhotoID == photoId)
+                                                        .Select(p => p.DiveID)
+                                                        .First();
+
+                var isUserPhotoCheck = _context.Dives.Where(d => d.User.Id == userId && d.Status && d.DiveID == diveId);
 
                 if (isUserPhotoCheck.Any())
                 {
-                    return GetThumb(_context.Photos.Where(p => p.PhotoID == photoId)
-                                               .Select(p => p.PhotoVal)
-                                               .First(), qualityProcent);
+                  
+                        return GetThumb(_context.Photos.Where(p => p.PhotoID == photoId)
+                                                   .Select(p => p.PhotoVal)
+                                                   .First(), qualityProcent);                   
                 }
                 else
                 {
@@ -116,36 +128,43 @@ namespace DivingApp.BusinessLayer
         {
             using (EntityContext _context = new EntityContext())
             {
-                var photo = _context.Dives
-                    .Include(d => d.Photos)
-                    .Where(d => d.User.Id == userId && d.Photos.Any(p => p.PhotoID == photoId))
-                    .SelectMany(d => d.Photos)
-                    .Where(p => p.PhotoID == photoId)
-                    .First();
+                var rowsDeleted = 0;
+                var diveId = _context.Photos.Where(p => p.PhotoID == photoId)
+                                                      .Select(p => p.DiveID)
+                                                      .First();
 
-                photo.Status = false;
-                var rowsDeleted = _context.SaveChanges();
+                var isUserPhotoCheck = _context.Dives.Where(d => d.User.Id == userId && d.Status && d.DiveID == diveId);
+
+                if (isUserPhotoCheck.Any())
+                {
+                    _context.Photos.Where(p => p.PhotoID == photoId).First().Status = false;
+                    rowsDeleted = _context.SaveChanges();
+                }
+
                 return rowsDeleted > 0;
             }
         }
 
         private byte[] GetThumb(byte[] photo, int qualityProcentage)
         {
-            using (var imageFactory = new ImageFactory())
+            lock (locker)
             {
-                using (var newStream = new MemoryStream())
+                using (var imageFactory = new ImageFactory())
                 {
-                    imageFactory.Load(photo)
-                            .Resolution(7, 5)
-                            .Format(new JpegFormat()
-                            {
-                                Quality = qualityProcentage
-                            })
-                            .Quality(qualityProcentage)
-                            .Save(newStream);
-                    byte[] modifiedFile = new byte[newStream.Length];
-                    newStream.Read(modifiedFile, 0, modifiedFile.Length);
-                    return modifiedFile;
+                    using (var newStream = new MemoryStream())
+                    {
+                        imageFactory.Load(photo)
+                                .Resolution(7, 5)
+                                .Format(new JpegFormat()
+                                {
+                                    Quality = qualityProcentage
+                                })
+                                .Quality(qualityProcentage)
+                                .Save(newStream);
+                        byte[] modifiedFile = new byte[newStream.Length];
+                        newStream.Read(modifiedFile, 0, modifiedFile.Length);
+                        return modifiedFile;
+                    }
                 }
             }
         }

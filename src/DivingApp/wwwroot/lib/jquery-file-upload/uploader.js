@@ -3061,7 +3061,7 @@
           });
           file.$submit = function () {
               if (!file.error) {
-                  data.form[0].diveid.value = data.scope.$parent.$parent.diveCtrl.selectedDiveId;
+                  data.form[0].diveid.value = $(data.form[0]).parent()[0].id;               
                   return data.submit();
               }
           };
@@ -3121,10 +3121,7 @@
           if (e.isDefaultPrevented()) {
             return false;
           }
-          var that = this;
-          data.scope.$apply(function () {
-            data.handleResponse.call(that, e, data);
-          });
+          data.scope.queue.splice(data.scope.queue.map(function (e) { return e.$$hashKey; }).indexOf(data.files[0].$$hashKey),1)
         },
         fail: function (e, data) {
           if (e.isDefaultPrevented()) {
@@ -3262,6 +3259,7 @@
             return $element.fileupload('add', data);
           },
           send: function (data) {
+            $scope.clear();
             return $element.fileupload('send', data);
           },
           process: function (data) {
@@ -3510,15 +3508,13 @@
         },
         controller: ['$scope', '$element', 'fileUpload', function (
             $scope, $element, fileUpload) {
-            $scope.$on('fileuploaddone', function (e, data) {
-              $scope.queue = [];
-            //  fileUpload.addFieldData($scope.name, data._response.result.files[0].result);
-              $scope.$parent.diveCtrl.selectedDive.Photos.push(
+            $scope.$on('fileuploaddone', function (e, data) {           
+             $scope.$parent.diveCtrl.selectedDive.Photos.push(
              {
                  Date: new Date,
                  PhotoId: data._response.result.files[0].id
              });
-              $scope.$apply();
+             $scope.$apply();
           });
 
           $scope.options = {

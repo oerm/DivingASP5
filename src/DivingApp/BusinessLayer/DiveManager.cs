@@ -17,39 +17,45 @@ namespace DivingApp.BusinessLayer
         {
             using (EntityContext _context = new EntityContext())
             {
-                var dive = _context.Dives.Where(d => d.User.Id == userId && d.DiveID == diveId && d.Status)
-                                    .Include(d => d.Countries)
-                                    .Include(d => d.Photos)
-                                    .ToArray()
-                                    .Select(d => new DiveViewModel
-                                    {
-                                        DiveID = d.DiveID,
-                                        CountryId = d.Country,
-                                        AirTemperature = d.AirTemperature,
-                                        Comments = d.Comments,
-                                        DiveDateString = d.DiveDate.ToString("dd/MM/yyyy"),
-                                        DiveTime = d.DiveTime,
-                                        FiveMetersMinutes = d.FiveMetersMinutes,
-                                        Latitude = d.DiveX,
-                                        Location = d.Location,
-                                        Longitude = d.DiveY,
-                                        MaxDepth = d.MaxDepth,
-                                        SuitType = d.SuitType,
-                                        Tank = d.Tank,
-                                        TankEnd = d.TankEnd,
-                                        TankStart = d.TankStart,
-                                        TotalMinutes = d.TotalMinutes,
-                                        Visibility = d.Visibility,
-                                        WaterTemperature = d.WaterTemperature,
-                                        Weight = d.Weight,
-                                        WeightIsOk = d.WeightIsOk,
-                                        Photos = d.Photos.Select(p => new PhotoViewModel
+                DiveViewModel dive = null;
+                try
+                {
+                    dive = _context.Dives.Where(d => d.User.Id == userId && d.DiveID == diveId && d.Status)
+                                        .Include(d => d.Countries)
+                                        .Include(d => d.Photos)                                       
+                                        .Select(d => new DiveViewModel
                                         {
-                                            PhotoId = (int)p.PhotoID,
-                                            Date = p.PhotoDate,
-                                            Comment = p.PhotoComment
-                                        }).ToArray()
-                                    }).First();
+                                            DiveID = d.DiveID,
+                                            CountryId = d.Country,
+                                            AirTemperature = d.AirTemperature,
+                                            Comments = d.Comments,                                       
+                                            DiveTime = d.DiveTime,
+                                            FiveMetersMinutes = d.FiveMetersMinutes,
+                                            Latitude = d.DiveX,
+                                            Location = d.Location,
+                                            Longitude = d.DiveY,
+                                            MaxDepth = d.MaxDepth,
+                                            SuitType = d.SuitType,
+                                            Tank = d.Tank,
+                                            TankEnd = d.TankEnd,
+                                            TankStart = d.TankStart,
+                                            TotalMinutes = d.TotalMinutes,
+                                            Visibility = d.Visibility,
+                                            WaterTemperature = d.WaterTemperature,
+                                            Weight = d.Weight,
+                                            WeightIsOk = d.WeightIsOk,
+                                            Photos = d.Photos.Where(p => p.Status).Select(p => new PhotoViewModel
+                                            {
+                                                PhotoId = p.PhotoID,
+                                                Date = p.PhotoDate,
+                                                Comment = p.PhotoComment
+                                            }).ToArray()
+                                        }).First();
+                }
+                catch(Exception ex)
+                {
+
+                }
                 return dive;
             }
         }

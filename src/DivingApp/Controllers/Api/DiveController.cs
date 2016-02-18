@@ -321,6 +321,21 @@ namespace DivingApp.Controllers.Api
             }
             return new HttpUnauthorizedResult();
         }
+
+        [Route("api/dives/deletephoto/{photoId}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFile(long photoId)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+
+                var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+                var result = _photoManager.DeletePhoto(photoId, user.Id);
+                if (result) return new HttpOkResult();
+                return new BadRequestResult();
+            }
+            return new HttpUnauthorizedResult();
+        }
     }
 
    

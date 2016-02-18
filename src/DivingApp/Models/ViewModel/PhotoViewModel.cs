@@ -7,7 +7,7 @@ namespace DivingApp.Models.ViewModel
 {
     public class PhotoViewModel
     {
-        public int PhotoId { get; set; }
+        public long PhotoId { get; set; }
 
         public string Comment { get; set; }
 

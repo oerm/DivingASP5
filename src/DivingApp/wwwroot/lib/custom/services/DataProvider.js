@@ -81,6 +81,13 @@ var Diving;
                     callback(error);
                 });
             };
+            DataService.prototype.DeletePhoto = function (photoId, callback) {
+                this.http.delete('/api/dives/deletePhoto/' + photoId).success(function (data, status) {
+                    callback(data);
+                }).error(function (error) {
+                    callback(error);
+                });
+            };
             return DataService;
         })();
         Services.DataService = DataService;

@@ -92,6 +92,14 @@ module Diving.Services {
                 callback(error);
             });
         }   
+
+        DeletePhoto(photoId: number, callback: Function) {
+            this.http.delete('/api/dives/deletePhoto/' + photoId).success((data, status) => {
+                callback(data);
+            }).error(error => {
+                callback(error);
+            });
+        }   
     }
 
     export interface IDataService {
